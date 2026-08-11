@@ -113,9 +113,7 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
             f"run: mypy {MYPY_TARGETS}",
             "run: python scripts/docs_audit.py",
         ),
-        "docs/capability_status.md": (
-            "End-to-end offline showcase",
-        ),
+        "docs/capability_status.md": ("End-to-end offline showcase",),
     }
     for relative, markers in required.items():
         path = root / relative
