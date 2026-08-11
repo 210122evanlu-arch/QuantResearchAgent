@@ -14,7 +14,7 @@ from schemas.enums import AnalysisMethod, TaskType
 from schemas.platform import ResearchRequest
 
 ROOT = Path(__file__).resolve().parents[1]
-BENCHMARK_VERSION = "1.2"
+BENCHMARK_VERSION = "1.3"
 
 
 @dataclass(frozen=True)
@@ -148,6 +148,17 @@ SHOWCASE_CASES = (
             "## 局限性与可信边界",
         ),
         1_500,
+    ),
+    ShowcaseCase(
+        "market_strategy",
+        "reports/showcase/a_share_market_strategy.md",
+        (
+            "## Partner View",
+            "## 风格与行业配置矩阵",
+            "## 三情景策略矩阵",
+            "## 风险与可信边界",
+        ),
+        2_000,
     ),
     ShowcaseCase(
         "momentum_research",

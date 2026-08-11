@@ -31,7 +31,7 @@
 
 标准化任务输入覆盖研究对象、证券代码、研究主题、评估截止日、数据范围、辩论开关与交付类型。Intent Router 据此分发至对应服务线，并将研究产物汇总为统一 Schema 下的可审计交付物。
 
-六条服务线均已具备标准化输入与路由契约，但交付成熟度并不相同：量化研究、上市公司研究、行业研究、统计事件研究与经营风险咨询已有端到端案例；市场策略仍以路由和模板能力为主。完整边界见[能力成熟度说明](docs/capability_status.md)。
+六条服务线均已具备标准化输入、专属执行工作流、委员会评审和端到端案例。离线案例用于稳定验证业务链路，并不代表所有真实数据源和生产部署能力已经完成；完整边界见[能力成熟度说明](docs/capability_status.md)。
 
 ## 研究与咨询工作流
 
@@ -87,6 +87,8 @@
 
 统计事件研究案例：[比亚迪产销快报事件研究](reports/showcase/byd_event_study.md)。链路将真实公告定位与明确标记的离线收益夹具分层管理，通过市场模型计算逐日异常收益、多个窗口 CAR、t-stat 和双侧 p-value，并检查事件重叠与数据来源。报告不会把方法夹具解释为示例证券的真实历史表现。
 
+市场策略案例：[A股市场环境、风格与配置情景研究](reports/showcase/a_share_market_strategy.md)。案例以国家统计局、人民银行和上交所公开材料建立宏观与政策证据层，通过五类有界信号和固定权重识别市场环境，再输出风格/行业矩阵、三情景概率、触发条件与动态监测清单。离线归一化信号不被表述为实时择时判断。
+
 模型通用性案例：[动量因子预测能力研究](reports/showcase/momentum_factor_research.md)。案例完全不使用 IVOL，通过实体固定效应回归和含交易成本的多空回测验证 ModelDesign、Estimator Router 与 ExperimentResult 可以复用于其他金融课题。另见 [DCF 与敏感性分析](reports/showcase/dcf_sensitivity_showcase.md)。
 
 运行方式：
@@ -136,7 +138,7 @@ python3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m uvicorn api.app:app --host 127.0.0.1 --port 8000
 ```
 
-服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询、贵州茅台公司研究、高端白酒行业研究与比亚迪统计事件研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
+服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器覆盖六条服务线的代表案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
 
 `POST /v1/events/analyze` 接受 EvidenceRecord 列表，返回事件指纹、重复项数量、重大性、影响方向、受影响报告章节和研究更新动作。
 
@@ -170,6 +172,9 @@ python3.11 -m venv .venv
 
 # 统计事件研究：市场模型、逐日AR、CAR、显著性与污染检查
 .\.venv\Scripts\python.exe -m examples.byd_event_study_demo
+
+# 市场策略：环境评分、风格/行业观点与三情景配置框架
+.\.venv\Scripts\python.exe -m examples.a_share_market_strategy_demo
 
 # 非 IVOL 研究：动量信号、实体固定效应与交易成本后回测
 .\.venv\Scripts\python.exe -m examples.momentum_factor_demo
@@ -297,7 +302,7 @@ QuantResearchAgent/
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock
 ```
 
-GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与七份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
+GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与八份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
 
 ## 发布与贡献
 

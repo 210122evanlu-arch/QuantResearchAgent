@@ -35,6 +35,8 @@ def test_health_and_capability_discovery(tmp_path: Path) -> None:
                 "company_research",
                 "industry_research",
                 "event_study",
+                "market_strategy",
+                "quant_research",
                 "corporate_advisory",
             }
             metrics = (await client.get("/v1/operations/metrics")).json()
@@ -132,6 +134,56 @@ def test_submit_event_study_and_download_report(tmp_path: Path) -> None:
             assert report.status_code == 200
             assert "## 方法与估计设计" in report.text
             assert "不得被解释为" in report.text
+
+    asyncio.run(scenario())
+
+
+def test_submit_market_strategy_and_download_report(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        async with await _client(create_app(report_directory=tmp_path)) as client:
+            submitted = await client.post(
+                "/v1/jobs",
+                json={
+                    "task_type": TaskType.MARKET_STRATEGY.value,
+                    "question": "研究A股市场环境与配置情景。",
+                    "as_of_date": "2025-02-28",
+                },
+            )
+            assert submitted.status_code == 202
+            job_id = submitted.json()["job_id"]
+            job = (await client.get(f"/v1/jobs/{job_id}")).json()
+            assert job["status"] == JobStatus.COMPLETED
+            assert job["summary"]["deliverable"] == "market_strategy"
+
+            report = await client.get(f"/v1/jobs/{job_id}/report")
+            assert report.status_code == 200
+            assert "## 三情景策略矩阵" in report.text
+            assert "离线信号评分不代表实时市场状态" in report.text
+
+    asyncio.run(scenario())
+
+
+def test_submit_quant_research_and_download_report(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        async with await _client(create_app(report_directory=tmp_path)) as client:
+            submitted = await client.post(
+                "/v1/jobs",
+                json={
+                    "task_type": TaskType.QUANT_RESEARCH.value,
+                    "question": "研究动量信号是否预测未来收益。",
+                    "topics": ["momentum"],
+                    "as_of_date": "2026-08-08",
+                },
+            )
+            assert submitted.status_code == 202
+            job_id = submitted.json()["job_id"]
+            job = (await client.get(f"/v1/jobs/{job_id}")).json()
+            assert job["status"] == JobStatus.COMPLETED
+            assert job["summary"]["deliverable"] == "quant_research"
+
+            report = await client.get(f"/v1/jobs/{job_id}/report")
+            assert report.status_code == 200
+            assert "Non-IVOL Generalisation Demo" in report.text
 
     asyncio.run(scenario())
 

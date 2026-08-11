@@ -13,9 +13,11 @@ from api.schemas import (
     ResearchJob,
 )
 from api.service import JobRunner, ResearchJobService
+from examples.a_share_market_strategy_demo import run_a_share_market_strategy_demo
 from examples.baijiu_industry_research_demo import run_baijiu_industry_research_demo
 from examples.business_risk_consulting_demo import run_business_risk_consulting_demo
 from examples.byd_event_study_demo import run_byd_event_study_demo
+from examples.momentum_factor_demo import run_momentum_factor_demo
 from examples.moutai_company_research_demo import run_moutai_company_research_demo
 from schemas.enums import TaskType
 from schemas.events import EventAnalysisRequest, EventIntelligenceResult
@@ -57,9 +59,23 @@ def offline_showcase_runner(request: ResearchRequest, output: Path) -> dict[str,
             "company": result["event_study_result"].design.company_name,
             "deliverable": "event_study",
         }
+    if request.task_type == TaskType.MARKET_STRATEGY:
+        result = run_a_share_market_strategy_demo(output)
+        return {
+            "market": result["market_strategy_report"].market_name,
+            "deliverable": "market_strategy",
+        }
+    if request.task_type == TaskType.QUANT_RESEARCH:
+        regression, backtest, _path = run_momentum_factor_demo(output)
+        return {
+            "method": regression.method,
+            "validation": backtest.method,
+            "deliverable": "quant_research",
+        }
     raise ValueError(
         "offline showcase supports BYD corporate_advisory, Moutai company_research, "
-        "high-end baijiu industry_research, and BYD event_study"
+        "high-end baijiu industry_research, BYD event_study, and A-share "
+        "market_strategy, and momentum quant_research"
     )
 
 
@@ -93,6 +109,8 @@ def create_app(
             TaskType.COMPANY_RESEARCH,
             TaskType.INDUSTRY_RESEARCH,
             TaskType.EVENT_STUDY,
+            TaskType.MARKET_STRATEGY,
+            TaskType.QUANT_RESEARCH,
             TaskType.CORPORATE_ADVISORY,
         }
         return [

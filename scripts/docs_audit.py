@@ -115,7 +115,6 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
         ),
         "docs/capability_status.md": (
             "End-to-end offline showcase",
-            "Route contract and template",
         ),
     }
     for relative, markers in required.items():

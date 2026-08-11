@@ -11,6 +11,8 @@ All notable changes to this project are documented in this file.
 - Industry-research execution through the bundled Research Jobs API and release evaluation.
 - Statistical event-study workflow with market-model estimation, daily abnormal returns, multi-window CAR, significance tests, contamination review, and committee revision control.
 - BYD sales-announcement method showcase separating real disclosure evidence from deterministic fixture returns.
+- End-to-end market-strategy workflow with deterministic regime scoring, style and sector views, probability-constrained scenarios, committee revision control, and API execution.
+- A-share strategy showcase grounded in official macro, central-bank, and exchange evidence while separating offline normalized signals from real-time market claims.
 
 ### Changed
 

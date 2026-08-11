@@ -53,6 +53,17 @@ market-model parameters, daily abnormal returns, CAR significance, contamination
 check, and the explicit separation between real disclosure evidence and fixture
 returns.
 
+To close with the platform's cross-asset strategy capability:
+
+```powershell
+.\.venv\Scripts\python.exe -m examples.a_share_market_strategy_demo
+```
+
+Open `reports/market_strategy/a_share_market_strategy_demo.md`. Show the bounded
+five-signal score, style/sector matrix, three probability-constrained scenarios,
+trigger conditions, monitoring list, and distinction between official facts and
+offline normalized signals.
+
 ## 4. Demonstrate engineering controls
 
 ```powershell
@@ -61,16 +72,16 @@ returns.
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Explain that the release benchmark protects six routing contracts and seven showcase
+Explain that the release benchmark protects six routing contracts and eight showcase
 deliverables, while the documentation audit prevents broken links, version drift,
 and inconsistent quality commands.
 
 ## 5. Close with the boundary
 
 Open [Capability maturity](capability_status.md). State clearly that quantitative
-research, company research, industry research, statistical event study, and
-corporate advisory have end-to-end showcases; market strategy currently has a
-route/template contract and remains expansion work.
+All six service lines now have end-to-end offline showcases. Clarify that this is
+workflow readiness, not a claim that every licensed data source, live refresh path,
+or production deployment control is complete.
 
 Live Provider calls and public-data refreshes are optional follow-up demonstrations.
 They should only be used when credentials, quota, cutoff dates, and network access

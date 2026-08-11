@@ -29,6 +29,7 @@ from schemas.industry_research import (
     IndustryResearchReviewResult,
 )
 from schemas.literature import RetrievedPaper
+from schemas.market_strategy import MarketStrategyReport, MarketStrategyReviewResult
 from schemas.model_design import ModelDesign
 from schemas.platform import AnalysisBundle, ResearchRequest, WorkflowSelection
 from schemas.report import FinalReport
@@ -70,6 +71,8 @@ class ResearchState(TypedDict, total=False):
     event_study_result: EventStudyResult
     event_study_report: EventStudyReport
     event_study_review: EventStudyReviewResult
+    market_strategy_report: MarketStrategyReport
+    market_strategy_review: MarketStrategyReviewResult
     review_result: ReviewResult
     final_report: FinalReport
     report_markdown_path: str

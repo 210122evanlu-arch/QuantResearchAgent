@@ -9,8 +9,8 @@ def test_approved_release_benchmark_passes() -> None:
     result = build_release_evaluation(ROOT)
 
     assert result["summary"] == {
-        "total": 13,
-        "passed": 13,
+        "total": 14,
+        "passed": 14,
         "failed": 0,
         "pass_rate": 1.0,
     }
@@ -28,7 +28,7 @@ def test_missing_showcases_fail_without_hiding_route_results(tmp_path: Path) -> 
     result = build_release_evaluation(tmp_path)
 
     assert result["summary"]["passed"] == 6
-    assert result["summary"]["failed"] == 7
+    assert result["summary"]["failed"] == 8
     assert all(case["passed"] for case in result["route_cases"])
     assert not any(case["passed"] for case in result["showcase_cases"])
 

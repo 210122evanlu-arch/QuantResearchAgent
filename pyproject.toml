@@ -29,8 +29,10 @@ ignore = ["E501"]
 "tests/**/*.py" = ["RUF001"]
 "agents/industry_research.py" = ["RUF001"]
 "agents/event_study.py" = ["RUF001"]
+"agents/market_strategy.py" = ["RUF001"]
 "examples/byd_risk_advisory_demo.py" = ["RUF001"]
 "examples/byd_event_study_demo.py" = ["RUF001"]
+"examples/a_share_market_strategy_demo.py" = ["RUF001"]
 "examples/moutai_company_research_demo.py" = ["RUF001"]
 "examples/baijiu_industry_research_demo.py" = ["RUF001"]
 "examples/momentum_factor_demo.py" = ["RUF001"]
@@ -44,6 +46,7 @@ ignore = ["E501"]
 "tools/industry_research_report.py" = ["RUF001"]
 "tools/event_report.py" = ["RUF001"]
 "tools/event_study_report.py" = ["RUF001"]
+"tools/market_strategy_report.py" = ["RUF001"]
 "tools/event_intelligence.py" = ["RUF001"]
 
 [tool.mypy]
@@ -69,6 +72,7 @@ module = [
     "graph.company_research",
     "graph.industry_research",
     "graph.event_study",
+    "graph.market_strategy",
     "graph.debate",
     "graph.debate_gate",
     "graph.workflow",

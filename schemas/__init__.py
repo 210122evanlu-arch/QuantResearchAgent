@@ -24,6 +24,12 @@ from schemas.industry_research import (
     IndustryScenario,
 )
 from schemas.literature import RetrievedPaper
+from schemas.market_strategy import (
+    MarketRegimeAssessment,
+    MarketSignalSnapshot,
+    MarketStrategyReport,
+    MarketStrategyReviewResult,
+)
 from schemas.model_design import ModelDesign
 from schemas.platform import (
     AnalysisArtifact,
@@ -63,6 +69,10 @@ __all__ = [
     "IndustryResearchReport",
     "IndustryResearchReviewResult",
     "IndustryScenario",
+    "MarketRegimeAssessment",
+    "MarketSignalSnapshot",
+    "MarketStrategyReport",
+    "MarketStrategyReviewResult",
     "ModelDesign",
     "ModeratorAssessment",
     "ProponentCase",

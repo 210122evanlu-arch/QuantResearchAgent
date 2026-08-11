@@ -36,6 +36,7 @@ APPROVED_REPORTS = {
     "reports/showcase/baijiu_industry_research.md",
     "reports/showcase/event_intelligence_showcase.md",
     "reports/showcase/byd_event_study.md",
+    "reports/showcase/a_share_market_strategy.md",
     "reports/showcase/momentum_factor_research.md",
     "reports/showcase/dcf_sensitivity_showcase.md",
 }
