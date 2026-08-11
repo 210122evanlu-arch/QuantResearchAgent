@@ -23,6 +23,8 @@
 
 标准化任务输入覆盖研究对象、证券代码、研究主题、评估截止日、数据范围、辩论开关与交付类型。Intent Router 据此分发至对应服务线，并将研究产物汇总为统一 Schema 下的可审计交付物。
 
+六条服务线均已具备标准化输入与路由契约，但交付成熟度并不相同：量化研究、上市公司研究与经营风险咨询已有端到端案例；行业研究、市场策略与统计事件研究仍以路由和模板能力为主。完整边界见[能力成熟度说明](docs/capability_status.md)。
+
 ## 研究与咨询工作流
 
 <p align="center">
@@ -224,12 +226,14 @@ QuantResearchAgent/
 ├── api/                # FastAPI、任务状态与报告下载层
 ├── analysis_engines/   # 财务、战略、估值与同业分析引擎
 ├── data_sources/       # 披露、行情、论文与本地数据适配器
+├── evals/              # 业务路由与作品集交付评测基线
 ├── graph/              # LangGraph、Router、Debate 与平台调度
 ├── literature/         # 期刊白名单与 Crossref 检索
 ├── llm/                # Structured LLM 与多 Provider 工厂
 ├── schemas/            # Pydantic Schema 与 ResearchState
 ├── tools/              # 统计、实验、评审与报告工具
 ├── examples/           # 业务、研究和数据 Demo
+├── scripts/            # 发布、文档和数据构建审计脚本
 ├── tests/              # 自动化测试
 ├── docs/               # 架构、数据和可信边界
 └── reports/            # 运行时报告与批准发布的示例
@@ -248,6 +252,8 @@ QuantResearchAgent/
 - [DCF 与敏感性引擎](docs/valuation_engine.md)
 - [评测基线](docs/evaluation.md)
 - [运行监控与故障诊断](docs/operations.md)
+- [能力成熟度说明](docs/capability_status.md)
+- [版本与接口状态](docs/release_status.md)
 
 ## 可信边界
 
@@ -262,9 +268,10 @@ QuantResearchAgent/
 ```powershell
 .\.venv\Scripts\python.exe -m ruff check .
 .\.venv\Scripts\python.exe -m ruff format --check .
-.\.venv\Scripts\python.exe -m mypy agents api data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
+.\.venv\Scripts\python.exe -m mypy agents api data_sources evals graph literature llm schemas tools examples production.py config.py logging_config.py main.py scripts/docs_audit.py
 .\.venv\Scripts\python.exe -m pytest --cov --cov-report=term-missing
 .\.venv\Scripts\python.exe -m evals.release_benchmark --baseline evals/baseline.json
+.\.venv\Scripts\python.exe scripts\docs_audit.py
 .\.venv\Scripts\python.exe scripts\release_audit.py
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock
 ```
@@ -273,7 +280,9 @@ GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码
 
 ## 发布与贡献
 
-- 当前版本：[v0.1.0](https://github.com/210122evanlu-arch/QuantResearchAgent/releases/tag/v0.1.0)
+- 当前公开 Release：[v0.1.0](https://github.com/210122evanlu-arch/QuantResearchAgent/releases/tag/v0.1.0)
+- `main` 分支：`CHANGELOG.md` 中的 Unreleased 状态；API 契约版本为 `0.3.0`，不等同于项目 Release 版本
+- 版本口径：[版本与接口状态](docs/release_status.md)
 - 开发路线：[ROADMAP.md](ROADMAP.md)
 - 更新记录：[CHANGELOG.md](CHANGELOG.md)
 - 贡献约定：[CONTRIBUTING.md](CONTRIBUTING.md)

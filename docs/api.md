@@ -16,7 +16,7 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 | --- | --- | --- |
 | `GET` | `/health` | Liveness check |
 | `GET` | `/v1/operations/metrics` | Read non-sensitive lifecycle, latency, and failure aggregates |
-| `GET` | `/v1/capabilities` | Enabled and planned service lines |
+| `GET` | `/v1/capabilities` | Service lines enabled in the bundled HTTP executor |
 | `POST` | `/v1/events/analyze` | Deduplicate events and decide whether research must be refreshed |
 | `POST` | `/v1/jobs` | Validate and submit a standardized research request |
 | `GET` | `/v1/jobs/{job_id}` | Read lifecycle status, summary, or failure reason |
@@ -36,7 +36,7 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 }
 ```
 
-The bundled offline executor supports the BYD corporate-advisory and Moutai company-research showcases. `create_app(runner=...)` accepts an injected runner for production workflows, licensed data, or an external queue. The HTTP contract and job lifecycle remain unchanged.
+The bundled offline executor supports the BYD corporate-advisory and Moutai company-research showcases. In this endpoint, `enabled=false` means that the bundled HTTP runner does not execute that service line; it does not mean the platform lacks an intake route or report template. See [Capability maturity](capability_status.md). `create_app(runner=...)` accepts an injected runner for production workflows, licensed data, or an external queue. The HTTP contract and job lifecycle remain unchanged.
 
 Jobs expose start/completion timestamps, execution duration, and a stable failure category. Error messages are bounded and credential-shaped values are redacted before they enter API responses or logs. See [Operations and failure diagnostics](operations.md).
 

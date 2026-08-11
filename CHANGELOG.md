@@ -18,6 +18,7 @@ All notable changes to this project are documented in this file.
 - Non-IVOL momentum research showcase combining panel estimation and long-short validation.
 - Deterministic release evaluation spanning six service lines and five approved showcase reports.
 - API lifecycle observability with latency metrics, failure categories, and credential-safe diagnostics.
+- Capability-maturity and release-status documents plus a CI-enforced documentation consistency audit.
 
 ### Changed
 

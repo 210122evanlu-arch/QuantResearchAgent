@@ -13,8 +13,10 @@ Before opening a pull request, run:
 ```powershell
 .\.venv\Scripts\python.exe -m ruff check .
 .\.venv\Scripts\python.exe -m ruff format --check .
-.\.venv\Scripts\python.exe -m mypy agents data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
+.\.venv\Scripts\python.exe -m mypy agents api data_sources evals graph literature llm schemas tools examples production.py config.py logging_config.py main.py scripts/docs_audit.py
 .\.venv\Scripts\python.exe -m pytest --cov --cov-report=term-missing
+.\.venv\Scripts\python.exe -m evals.release_benchmark --baseline evals/baseline.json
+.\.venv\Scripts\python.exe scripts\docs_audit.py
 .\.venv\Scripts\python.exe scripts\release_audit.py
 $env:PYTHONUTF8='1'
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock

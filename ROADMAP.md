@@ -2,7 +2,9 @@
 
 本路线图按照“每轮都能验证、每轮不引入过多变量”的原则推进。完成一轮并通过验收后，再进入下一轮。
 
-## Round 0：项目基线与开发环境（已完成）
+## MVP Build Track
+
+### Round 0：项目基线与开发环境（已完成）
 
 任务：
 
@@ -18,7 +20,7 @@
 - `pytest` 全部通过。
 - `main.py` 可以编译 LangGraph。
 
-## Round 1：Node 接口与 LLM 基础设施（已完成）
+### Round 1：Node 接口与 LLM 基础设施（已完成）
 
 任务：
 
@@ -34,7 +36,7 @@
 - 缺少配置时给出清楚错误，而不是在调用深处失败。
 - 单元测试不需要网络和真实 API Key。
 
-## Round 2：Research Manager 与 Research Analysis（已完成）
+### Round 2：Research Manager 与 Research Analysis（已完成）
 
 任务：
 
@@ -50,7 +52,7 @@
 - ResearchAnalysis 中的每篇文献都有可追溯来源或明确标记为待核验。
 - refined_hypotheses 能与原 hypothesis_id 对应。
 
-## Round 3：Model Design 与 Data Preparation（已完成）
+### Round 3：Model Design 与 Data Preparation（已完成）
 
 任务：
 
@@ -66,7 +68,7 @@
 - DataProfile 的质量指标由代码计算，而不是由 LLM 猜测。
 - 缺失字段或日期穿越会阻止实验开始。
 
-## Round 4：Experiment 与金融统计工具（已完成）
+### Round 4：Experiment 与金融统计工具（已完成）
 
 任务：
 
@@ -82,7 +84,7 @@
 - coefficient、t-stat、p-value 和 significant 保持一致。
 - 至少包含一个稳健性检验及其通过/失败结果。
 
-## Round 5：Research Committee 与修改闭环（已完成）
+### Round 5：Research Committee 与修改闭环（已完成）
 
 任务：
 
@@ -98,7 +100,7 @@
 - Graph 不会无限循环。
 - Approved 只能进入报告节点，Need Revision 必须有修改目标和问题清单。
 
-## Round 6：Report Generator 与端到端案例（已完成）
+### Round 6：Report Generator 与端到端案例（已完成）
 
 任务：
 
@@ -114,7 +116,7 @@
 - 最终报告中的数字与 ExperimentResult 一致。
 - 未通过评审的结果不会被写成无保留的正式结论。
 
-## Round 7：工程质量与 MVP 发布（已完成）
+### Round 7：工程质量与 MVP 发布（已完成）
 
 任务：
 
@@ -131,7 +133,9 @@
 - 仓库中不包含 API Key、受限数据或生成的敏感报告。
 - MVP Demo、测试和文档保持一致。
 
-## Platform Round 1：上市公司深度研究（已完成）
+## Platform Expansion Track
+
+### Platform Round 1：上市公司深度研究（已完成）
 
 已完成：
 
@@ -141,7 +145,7 @@
 - 支持注册到平台 WorkflowRegistry，并生成带证据索引的 Markdown 报告。
 - 增加 BYD 离线样例，证明路由到报告的端到端闭环。
 
-## Platform Round 2：公司公开数据自动采集（已完成）
+### Platform Round 2：公司公开数据自动采集（已完成）
 
 - 接入上市公司法定披露元数据、PDF 链接、行情和财务指标采集器。
 - 使用 BaoStock 自动获取免 Key 行情、估值倍数和按发布日期筛选的财务指标。
@@ -149,7 +153,7 @@
 - 用代码计算收益率、波动率、最大回撤、同业中位数和估值溢折价。
 - 增加截止日、证据引用和数据不足阻断测试。
 
-## Platform Round 3：财报全文与专业研究报告（已完成）
+### Platform Round 3：财报全文与专业研究报告（已完成）
 
 - 下载、校验并缓存定期报告 PDF，提取业务模式、管理层讨论、业务分部、现金流和风险页面。
 - 为每个年报页面生成稳定 Evidence ID，并校验 LLM 引用不存在悬空证据。
@@ -158,17 +162,28 @@
 - 生成专业 Word 报告，并使用 LibreOffice/Poppler 完成八页视觉验收。
 - 保存完整 LangGraph 状态为结构化 JSON artifact，供报告渲染器重复使用。
 
-## Platform Round 4：事件情报与多公司扩展（后续）
+### Platform Round 4：事件情报与 API 交付（已完成）
 
-- 对公告全文进行分类、重大事件识别、跨公告证据去重和影响链分析。
-- 扩展可比公司筛选、估值情景与行业基准，不再依赖手工指定的窄样本。
-- 增加通用 Backtest、DCF/敏感性分析和研究更新触发器。
-- 提供 Web/API 输入层，让用户选择公司、咨询类型、研究截止日和交付模板。
+- 对公告和新闻元数据进行分类、重大性识别、证据去重和报告更新判断。
+- 提供 FastAPI 输入层、任务状态、报告下载、运行指标和可注入执行器。
+- 保留公告全文影响链分析与持久化任务队列作为后续生产化工作。
 
-## Platform Round 6：评测、可观测性与发布验收（已完成）
+### Platform Round 5：估值与量化能力泛化（已完成）
+
+- 增加通用实体固定效应、交易成本后 Backtest 和动量研究案例。
+- 增加 DCF、WACC×永续增长敏感性分析和公司研究估值接口。
+- 保留自动可比公司筛选、完整行业基准和持牌数据接入作为后续工作。
+
+### Platform Round 6：评测、可观测性与发布验收（已完成）
 
 - 为研究任务记录生命周期时间、执行耗时和结构化失败类别。
 - 提供不暴露提示词、报告正文、密钥和本地路径的运行指标接口。
 - 建立覆盖六条业务线与五份作品集报告的确定性评测基线。
 - 将业务能力评测、测试覆盖率、类型检查、安全审计和依赖审计统一接入 CI。
 - 补充故障分类、排查顺序、可信边界和发布验收文档。
+
+## Backlog
+
+- 建设行业研究、市场策略与统计事件研究的专属数据及执行工作流。
+- 将进程内任务状态升级为持久化队列、鉴权、分布式追踪与监控后端。
+- 在持牌点时数据上扩展自动可比公司筛选、行业基准和多公司组合研究。
