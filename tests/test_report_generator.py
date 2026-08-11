@@ -52,6 +52,9 @@ def test_source_digest_ignores_derived_paths_and_float_tail_noise() -> None:
     coefficient = result.statistical_results[0].coefficient
     result.statistical_results[0].coefficient = nextafter(coefficient, float("inf"))
     result.artifact_path = "/a/different/output/location.json"
+    second["data_profile"].data_sources = [
+        "/home/runner/work/project/examples/data/ivol_fixture.csv"
+    ]
 
     first_report = create_report_node()(first)["final_report"]
     second_report = create_report_node()(second)["final_report"]

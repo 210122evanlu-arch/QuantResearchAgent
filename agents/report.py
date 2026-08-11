@@ -21,11 +21,20 @@ class ReportConsistencyError(ValueError):
 def _canonicalize_digest_value(value: Any) -> Any:
     """Remove derived locations and stabilize insignificant float noise."""
     if isinstance(value, dict):
-        return {
-            key: _canonicalize_digest_value(item)
-            for key, item in value.items()
-            if key != "artifact_path"
-        }
+        canonical = {}
+        for key, item in value.items():
+            if key == "artifact_path":
+                continue
+            if key == "data_sources" and isinstance(item, list):
+                canonical[key] = [
+                    source.replace("\\", "/").rsplit("/", 1)[-1]
+                    if isinstance(source, str)
+                    else _canonicalize_digest_value(source)
+                    for source in item
+                ]
+                continue
+            canonical[key] = _canonicalize_digest_value(item)
+        return canonical
     if isinstance(value, list):
         return [_canonicalize_digest_value(item) for item in value]
     if isinstance(value, float):

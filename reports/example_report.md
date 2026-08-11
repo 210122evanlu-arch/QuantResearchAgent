@@ -87,7 +87,7 @@ The research committee approved the reported specification and results, subject 
 
 ## Provenance
 
-- Source digest: `sha256:3ccfe164fda29f25911e79695d5e13ab3905f3a4bad077a7ca53b35f2835bea9`
+- Source digest: `sha256:db5b36fe78f81ad90499115452fc358f96c2eb9d4c68e3c0ea6d8dc53acd0953`
 - Data fingerprint: `sha256:ea2267007e3253400b17cb1f1bb64ac5d4df61775d5dc971fd3bd386cbc70ce8`
 - Numeric tables were rendered directly from ExperimentResult.
 - This research output is not investment advice.
