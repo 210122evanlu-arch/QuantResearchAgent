@@ -28,10 +28,12 @@ ignore = ["E501"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["RUF001"]
 "examples/byd_risk_advisory_demo.py" = ["RUF001"]
+"examples/moutai_company_research_demo.py" = ["RUF001"]
 "examples/byd_live_consulting_report.py" = ["RUF001"]
 "scripts/build_byd_consulting_docx.py" = ["RUF001"]
 "scripts/build_company_research_docx.py" = ["RUF001"]
 "tools/advisory_report.py" = ["RUF001"]
+"tools/company_research_report.py" = ["RUF001"]
 
 [tool.mypy]
 python_version = "3.11"

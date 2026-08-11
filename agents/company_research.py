@@ -58,6 +58,11 @@ class CompanyResearchSynthesisNode:
             for item in bundle.artifacts
             for key, value in item.metrics.items()
         ]
+        key_metrics = {
+            key: str(value)
+            for item in bundle.artifacts
+            for key, value in item.metrics.items()
+        }
         limitations = list(
             dict.fromkeys(
                 [
@@ -72,6 +77,7 @@ class CompanyResearchSynthesisNode:
             security_code=security_code,
             as_of_date=request.as_of_date,
             executive_summary=" ".join(item.summary for item in bundle.artifacts),
+            key_metrics=key_metrics,
             business_model=strategy.summary,
             competitive_position="; ".join(
                 finding.statement for finding in strategy.findings

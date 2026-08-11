@@ -63,6 +63,13 @@
 
 完整交付示例：[比亚迪公开信息风险咨询报告](reports/showcase/byd_risk_advisory.md)。报告包括 Partner View、影响×可能性二维矩阵、90 天行动路线、委员会争议处理及公开证据附录。
 
+同一平台还提供跨行业公司研究案例：[贵州茅台上市公司深度研究](reports/showcase/moutai_company_research.md)。两个案例共用任务输入、证据模型、分析引擎注册、研究委员会和报告发布机制，但进入不同业务路线：
+
+| 案例 | 服务线 | 分析重点 | 交付结构 |
+| --- | --- | --- | --- |
+| 比亚迪 | 经营风险咨询 | 风险联动、管理优先级、缓释动作 | Partner View、二维矩阵、Owner / Timeline / KPI |
+| 贵州茅台 | 上市公司研究 | 财务质量、竞争优势、同业与估值框架 | 指标快照、商业模式、催化与风险、证据附录 |
+
 运行方式：
 
 ```powershell
@@ -114,6 +121,9 @@ python3.11 -m venv .venv
 
 # 上市公司研究：财务质量、竞争地位、相对估值与同业比较
 .\.venv\Scripts\python.exe -m examples.company_research_demo
+
+# 跨行业公司研究案例：贵州茅台财务质量与估值框架
+.\.venv\Scripts\python.exe -m examples.moutai_company_research_demo
 
 # 六类研究与咨询服务线的输入路由
 .\.venv\Scripts\python.exe -m examples.platform_routing_demo

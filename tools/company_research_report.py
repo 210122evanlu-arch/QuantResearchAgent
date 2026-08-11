@@ -13,76 +13,105 @@ def render_company_research_report(
     review: CompanyResearchReviewResult,
     debate: DebateResult | None = None,
 ) -> str:
+    """Render an evidence-grounded, committee-ready company research note."""
     status = review.decision.value.upper()
     lines = [
         f"# {report.title}",
         "",
-        f"> Security: {report.security_code} | As of: {report.as_of_date.isoformat()} | Review: **{status}**",
-        "> Public-information research prototype; not investment advice.",
+        "| 报告属性 | 内容 |",
+        "| --- | --- |",
+        f"| 公司 / 证券代码 | {report.company_name} / {report.security_code} |",
+        f"| 评估截止日 | {report.as_of_date.isoformat()} |",
+        f"| 委员会状态 | {status} |",
+        f"| 已引用证据 | {len(report.evidence_ids)} 项 |",
         "",
-        "## Executive Summary",
+        "## 执行摘要",
         "",
         report.executive_summary,
-        "",
-        "## Company and Business Model",
-        "",
-        report.business_model,
-        "",
-        "### Competitive Position",
-        "",
-        report.competitive_position,
-        "",
-        "## Financial Quality",
-        "",
-        report.financial_quality,
-        "",
-        "## Valuation and Peer Comparison",
-        "",
-        f"**Valuation:** {report.valuation}",
-        "",
-        f"**Peers:** {report.peer_comparison}",
-        "",
-        "## Catalysts",
-        "",
-        *(f"- {item}" for item in report.catalysts),
-        "",
-        "## Risks and Monitoring",
-        "",
-        *(f"- {item}" for item in report.risks),
-        "",
-        "### Monitoring indicators",
-        "",
-        *(f"- {item}" for item in report.monitoring_indicators),
-        "",
-        "## Research Committee",
-        "",
-        review.overall_assessment,
-        "",
     ]
+    if report.key_metrics:
+        lines.extend(
+            [
+                "",
+                "### 关键指标快照",
+                "",
+                "| 指标 | 当前观察 |",
+                "| --- | --- |",
+                *(f"| {key} | {value} |" for key, value in report.key_metrics.items()),
+            ]
+        )
+    lines.extend(
+        [
+            "",
+            "## 商业模式与竞争位置",
+            "",
+            report.business_model,
+            "",
+            "### 竞争位置",
+            "",
+            report.competitive_position,
+            "",
+            "## 财务质量",
+            "",
+            report.financial_quality,
+            "",
+            "## 估值框架与同业比较",
+            "",
+            f"**估值框架：** {report.valuation}",
+            "",
+            f"**同业比较：** {report.peer_comparison}",
+            "",
+            "## 催化因素",
+            "",
+            *(f"- {item}" for item in report.catalysts),
+            "",
+            "## 风险与跟踪指标",
+            "",
+            *(f"- {item}" for item in report.risks),
+            "",
+            "### 跟踪指标",
+            "",
+            *(f"- {item}" for item in report.monitoring_indicators),
+            "",
+            "## 研究委员会",
+            "",
+            review.overall_assessment,
+            "",
+        ]
+    )
     if debate is not None:
         lines.extend(
             [
-                "### Debate synthesis",
+                "### 辩论结论",
                 "",
                 debate.moderator_conclusion,
                 "",
-                *(f"- Unresolved: {item}" for item in debate.unresolved_issues),
+                *(f"- 待解决：{item}" for item in debate.unresolved_issues),
                 "",
             ]
         )
-    lines.extend(["## Limitations", ""])
+    lines.extend(["## 局限性", ""])
     lines.extend(f"- {item}" for item in report.limitations)
-    lines.extend(["", "## Conclusion", "", report.conclusion, "", "## Evidence", ""])
+    lines.extend(["", "## 研究结论", "", report.conclusion, "", "## 证据附录", ""])
     referenced = set(report.evidence_ids)
     for item in analysis.evidence:
         if item.evidence_id not in referenced:
             continue
-        locator = item.url or item.document_id or "No public locator supplied"
+        locator = item.url or item.document_id or "未提供公开定位信息"
         lines.append(
-            f"- **[{item.evidence_id}] {item.title}** — {item.source_name}; "
-            f"{item.summary} ({locator})"
+            f"- **[{item.evidence_id}] [{item.title}]({locator})** — "
+            f"{item.source_name}；{item.summary}"
         )
-    lines.append("")
+    lines.extend(
+        [
+            "",
+            "---",
+            "",
+            "本报告为公开信息研究与研究工程演示，不构成投资建议、估值承诺或"
+            "证券买卖依据。结论仅在列明证据及评估截止日范围内成立。",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 

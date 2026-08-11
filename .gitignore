@@ -27,6 +27,7 @@ reports/*
 !reports/example_report.md
 !reports/showcase/
 !reports/showcase/byd_risk_advisory.md
+!reports/showcase/moutai_company_research.md
 
 # Downloaded/licensed market data and provider caches
 /data/

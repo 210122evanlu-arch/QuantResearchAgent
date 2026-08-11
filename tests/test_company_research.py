@@ -30,8 +30,8 @@ def test_company_research_demo_runs_end_to_end(tmp_path: Path) -> None:
     assert result["revision_count"] == 0
     assert Path(result["report_markdown_path"]) == output.resolve()
     content = output.read_text(encoding="utf-8")
-    assert "## Financial Quality" in content
-    assert "## Valuation and Peer Comparison" in content
+    assert "## 财务质量" in content
+    assert "## 估值框架与同业比较" in content
     assert "BYD-CR-E1" in content
 
 

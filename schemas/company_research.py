@@ -19,6 +19,7 @@ class CompanyResearchReport(BaseModel):
     security_code: str = Field(min_length=1)
     as_of_date: date
     executive_summary: str = Field(min_length=1)
+    key_metrics: dict[str, str] = Field(default_factory=dict)
     business_model: str = Field(min_length=1)
     competitive_position: str = Field(min_length=1)
     financial_quality: str = Field(min_length=1)
