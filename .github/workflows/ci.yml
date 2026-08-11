@@ -40,7 +40,8 @@ jobs:
         run: mypy agents data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
 
       - name: Test with branch coverage
-        run: pytest --cov --cov-report=term-missing --cov-report=xml
+        # ``python -m`` keeps the repository root on sys.path on every runner.
+        run: python -m pytest --cov --cov-report=term-missing --cov-report=xml
 
       - name: Audit release contents
         run: python scripts/release_audit.py
