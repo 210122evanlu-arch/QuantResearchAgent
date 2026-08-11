@@ -1,3 +1,4 @@
+from math import nextafter
 from pathlib import Path
 
 import pytest
@@ -42,6 +43,20 @@ def test_source_digest_is_stable_for_identical_verified_state(tmp_path: Path) ->
 
     assert first["final_report"].source_digest == second["final_report"].source_digest
     assert first["final_report"].artifact_path != second["final_report"].artifact_path
+
+
+def test_source_digest_ignores_derived_paths_and_float_tail_noise() -> None:
+    first, _ = run_ivol_fake_demo()
+    second, _ = run_ivol_fake_demo()
+    result = second["experiment_result"]
+    coefficient = result.statistical_results[0].coefficient
+    result.statistical_results[0].coefficient = nextafter(coefficient, float("inf"))
+    result.artifact_path = "/a/different/output/location.json"
+
+    first_report = create_report_node()(first)["final_report"]
+    second_report = create_report_node()(second)["final_report"]
+
+    assert first_report.source_digest == second_report.source_digest
 
 
 def test_unapproved_report_preserves_blocking_issue_and_prominent_status(

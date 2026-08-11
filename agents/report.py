@@ -18,9 +18,27 @@ class ReportConsistencyError(ValueError):
     """Raised when an approved report conflicts with verified upstream state."""
 
 
+def _canonicalize_digest_value(value: Any) -> Any:
+    """Remove derived locations and stabilize insignificant float noise."""
+    if isinstance(value, dict):
+        return {
+            key: _canonicalize_digest_value(item)
+            for key, item in value.items()
+            if key != "artifact_path"
+        }
+    if isinstance(value, list):
+        return [_canonicalize_digest_value(item) for item in value]
+    if isinstance(value, float):
+        return format(value, ".12g")
+    return value
+
+
 def _source_digest(state: ResearchState, keys: tuple[str, ...]) -> str:
     state_values: Mapping[str, Any] = state
-    payload = {key: state_values[key].model_dump(mode="json") for key in keys}
+    payload = {
+        key: _canonicalize_digest_value(state_values[key].model_dump(mode="json"))
+        for key in keys
+    }
     payload["revision_limit_reached"] = state.get("revision_limit_reached", False)
     canonical = json.dumps(
         payload,
