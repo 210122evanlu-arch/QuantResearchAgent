@@ -1,6 +1,11 @@
 from pathlib import Path
 
-from scripts.docs_audit import ROOT, audit_consistency, audit_links
+from scripts.docs_audit import (
+    ROOT,
+    audit_consistency,
+    audit_links,
+    latest_release_version,
+)
 
 
 def test_repository_documentation_is_consistent() -> None:
@@ -32,3 +37,10 @@ def test_link_audit_reports_non_utf8_document(tmp_path: Path) -> None:
     errors = audit_links(tmp_path, [Path("broken.md")])
 
     assert errors and errors[0].startswith("cannot read UTF-8 document broken.md")
+
+
+def test_latest_release_version_skips_unreleased_heading() -> None:
+    changelog = "# Changelog\n\n## [Unreleased]\n\n## [0.2.0] - 2026-08-11\n"
+
+    assert latest_release_version(changelog) == "0.2.0"
+    assert latest_release_version("## [Unreleased]\n") is None

@@ -1,14 +1,13 @@
 # Release and interface status
 
-- Public release: v0.1.0
-- Main branch: Unreleased
+- Public release: v0.2.0
+- Main branch baseline: v0.2.0
 - API contract: 0.3.0
 - Python runtime: 3.11
 
 The public GitHub release is the last tagged portfolio snapshot. The `main` branch
-contains the additions listed under `Unreleased` in `CHANGELOG.md`; it remains
-subject to the same CI quality gates but has not yet been assigned a new release
-tag.
+currently aligns with that baseline; subsequent work is recorded under `Unreleased`
+in `CHANGELOG.md` and remains subject to the same CI quality gates.
 
 The API contract version is the FastAPI/OpenAPI interface version. It can advance
 independently from the repository's public release tag and must not be presented as

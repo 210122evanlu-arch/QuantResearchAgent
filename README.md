@@ -11,6 +11,13 @@
 
 模型接入层支持 DeepSeek、Gemini 及 OpenAI 兼容接口，并提供无需 API Key 的离线测试环境。统计计算、数据指纹、条件路由和审批状态由确定性代码控制；语言模型负责研究任务拆解、证据解释与观点组织。
 
+## 快速评估
+
+- 业务与技术全景：[项目速览](docs/portfolio_brief.md)
+- 面试现场运行：[五分钟演示指南](docs/demo_guide.md)
+- 已实现与规划边界：[能力成熟度说明](docs/capability_status.md)
+- 当前版本变化：[v0.2.0 Release Notes](docs/releases/v0.2.0.md)
+
 ## 业务范围
 
 | 服务线 | 典型课题 | 核心产出 |
@@ -254,6 +261,8 @@ QuantResearchAgent/
 - [运行监控与故障诊断](docs/operations.md)
 - [能力成熟度说明](docs/capability_status.md)
 - [版本与接口状态](docs/release_status.md)
+- [项目速览](docs/portfolio_brief.md)
+- [五分钟演示指南](docs/demo_guide.md)
 
 ## 可信边界
 
@@ -280,8 +289,8 @@ GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码
 
 ## 发布与贡献
 
-- 当前公开 Release：[v0.1.0](https://github.com/210122evanlu-arch/QuantResearchAgent/releases/tag/v0.1.0)
-- `main` 分支：`CHANGELOG.md` 中的 Unreleased 状态；API 契约版本为 `0.3.0`，不等同于项目 Release 版本
+- 当前公开 Release：[v0.2.0](https://github.com/210122evanlu-arch/QuantResearchAgent/releases/tag/v0.2.0)
+- `main` 分支基线与 `v0.2.0` 对齐；后续变化记录在 `CHANGELOG.md` 的 Unreleased 部分。API 契约版本为 `0.3.0`，不等同于项目 Release 版本
 - 版本口径：[版本与接口状态](docs/release_status.md)
 - 开发路线：[ROADMAP.md](ROADMAP.md)
 - 更新记录：[CHANGELOG.md](CHANGELOG.md)

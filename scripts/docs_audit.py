@@ -19,6 +19,7 @@ MARKDOWN_LINK = re.compile(
 )
 HTML_LINK = re.compile(r"(?:href|src)=[\"'](?P<target>[^\"']+)[\"']")
 EXTERNAL_PREFIXES = ("http://", "https://", "mailto:", "data:")
+RELEASE_HEADING = re.compile(r"^## \[(?P<version>\d+\.\d+\.\d+)\]", re.MULTILINE)
 
 
 def document_paths(root: Path = ROOT) -> list[Path]:
@@ -87,6 +88,12 @@ def audit_links(root: Path, paths: list[Path]) -> list[str]:
     return errors
 
 
+def latest_release_version(changelog: str) -> str | None:
+    """Return the newest semantic release heading below Unreleased."""
+    match = RELEASE_HEADING.search(changelog)
+    return match.group("version") if match else None
+
+
 def audit_consistency(root: Path = ROOT) -> list[str]:
     """Return documentation consistency violations."""
     errors = audit_links(root, document_paths(root))
@@ -94,7 +101,6 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
         "README.md": (
             QUALITY_COMMAND,
             "docs/capability_status.md",
-            "当前公开 Release\uff1a[v0.1.0]",
             "API 契约版本为 `0.3.0`",
         ),
         "CONTRIBUTING.md": (
@@ -102,11 +108,7 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
             "python.exe -m evals.release_benchmark",
             "python.exe scripts\\docs_audit.py",
         ),
-        "docs/release_status.md": (
-            "Public release: v0.1.0",
-            "Main branch: Unreleased",
-            "API contract: 0.3.0",
-        ),
+        "docs/release_status.md": ("API contract: 0.3.0",),
         "CHANGELOG.md": ("## [Unreleased]", "## [0.1.0]"),
         ".github/workflows/ci.yml": (
             f"run: mypy {MYPY_TARGETS}",
@@ -126,6 +128,25 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
         for marker in markers:
             if marker not in text:
                 errors.append(f"missing documentation marker in {relative}: {marker}")
+
+    changelog_text = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+    release_version = latest_release_version(changelog_text)
+    if release_version is None:
+        errors.append("CHANGELOG has no semantic release heading")
+    else:
+        release_markers = {
+            "README.md": f"[v{release_version}]",
+            "docs/release_status.md": f"Public release: v{release_version}",
+            f"docs/releases/v{release_version}.md": f"v{release_version}",
+        }
+        for relative, marker in release_markers.items():
+            path = root / relative
+            if not path.is_file():
+                errors.append(f"missing release document: {relative}")
+            elif marker not in path.read_text(encoding="utf-8"):
+                errors.append(
+                    f"release version differs in {relative}: expected {marker}"
+                )
 
     app_path = root / "api" / "app.py"
     if app_path.is_file():
