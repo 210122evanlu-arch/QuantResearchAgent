@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Business-facing listed-company risk-consulting demo with a decision summary.
+- Compact 4:3 workflow graphic covering intake, research, revision, evidence, and delivery.
+
+### Changed
+
+- Reframed the README around client mandates, business outcomes, and consulting deliverables.
+- Described DeepSeek, Gemini, OpenAI-compatible providers, and the offline test environment without exposing test implementation details on the project landing page.
+
 ## [0.1.0] - 2026-08-11
 
 ### Added

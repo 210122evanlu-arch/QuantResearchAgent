@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">QuantResearchAgent business workflow</title>
+  <desc id="desc">A compact four-to-three diagram showing business intake, the seven-node research workflow, revision routing, evidence tools, governance, and report delivery.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071426"/>
+      <stop offset="0.55" stop-color="#0c2340"/>
+      <stop offset="1" stop-color="#123b51"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f766e"/><stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d28d9"/><stop offset="1" stop-color="#c084fc"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c2410c"/><stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#020617" flood-opacity="0.35"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7dd3fc"/>
+    </marker>
+    <style>
+      .title{font:700 34px Inter,"Microsoft YaHei",sans-serif;fill:#f8fafc}.subtitle{font:400 16px Inter,"Microsoft YaHei",sans-serif;fill:#bae6fd}.lane{font:700 14px Inter,"Microsoft YaHei",sans-serif;fill:#7dd3fc;letter-spacing:1.6px}.nodeTitle{font:700 17px Inter,"Microsoft YaHei",sans-serif;fill:#fff}.nodeText{font:400 12px Inter,"Microsoft YaHei",sans-serif;fill:#e0f2fe}.pill{font:600 12px Inter,"Microsoft YaHei",sans-serif;fill:#dbeafe}.small{font:500 12px Inter,"Microsoft YaHei",sans-serif;fill:#cbd5e1}.footerTitle{font:700 15px Inter,"Microsoft YaHei",sans-serif;fill:#fff}.footerText{font:400 12px Inter,"Microsoft YaHei",sans-serif;fill:#dbeafe}
+    </style>
+  </defs>
+
+  <rect width="1200" height="900" rx="28" fill="url(#bg)"/>
+  <circle cx="1070" cy="92" r="170" fill="#0ea5e9" opacity="0.08"/>
+  <circle cx="100" cy="810" r="200" fill="#8b5cf6" opacity="0.08"/>
+
+  <text x="64" y="64" class="title">从业务委托到可评审研究交付</text>
+  <text x="64" y="94" class="subtitle">QuantResearchAgent · 研究、证据、实验、辩论与报告的一体化闭环</text>
+
+  <text x="64" y="140" class="lane">01 业务入口 · ENGAGEMENT INTAKE</text>
+  <rect x="64" y="158" width="1072" height="82" rx="18" fill="#0f2945" stroke="#1e5a7d"/>
+  <g>
+    <rect x="88" y="181" width="150" height="36" rx="18" fill="#1d4ed8" opacity="0.85"/><text x="163" y="204" text-anchor="middle" class="pill">量化课题研究</text>
+    <rect x="258" y="181" width="150" height="36" rx="18" fill="#0369a1" opacity="0.9"/><text x="333" y="204" text-anchor="middle" class="pill">上市公司研究</text>
+    <rect x="428" y="181" width="150" height="36" rx="18" fill="#0f766e" opacity="0.9"/><text x="503" y="204" text-anchor="middle" class="pill">行业与市场策略</text>
+    <rect x="598" y="181" width="150" height="36" rx="18" fill="#7e22ce" opacity="0.9"/><text x="673" y="204" text-anchor="middle" class="pill">事件影响评估</text>
+    <rect x="768" y="181" width="150" height="36" rx="18" fill="#c2410c" opacity="0.9"/><text x="843" y="204" text-anchor="middle" class="pill">经营风险咨询</text>
+    <rect x="938" y="181" width="174" height="36" rx="18" fill="#334155"/><text x="1025" y="204" text-anchor="middle" class="pill">公司 · 主题 · 截止日</text>
+  </g>
+
+  <text x="64" y="286" class="lane">02 核心研究闭环 · SEVEN-NODE WORKFLOW</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="310" width="224" height="106" rx="18" fill="url(#blue)"/>
+    <text x="84" y="343" class="nodeTitle">1  Research Manager</text><text x="84" y="367" class="nodeText">明确目标、假设、方法与数据需求</text><text x="84" y="389" class="nodeText">输出：ResearchPlan</text>
+    <rect x="346" y="310" width="224" height="106" rx="18" fill="url(#purple)"/>
+    <text x="366" y="343" class="nodeTitle">2  Research Analysis</text><text x="366" y="367" class="nodeText">文献、理论机制与研究缺口</text><text x="366" y="389" class="nodeText">输出：ResearchAnalysis</text>
+    <rect x="628" y="310" width="224" height="106" rx="18" fill="url(#blue)"/>
+    <text x="648" y="343" class="nodeTitle">3  Model Design</text><text x="648" y="367" class="nodeText">变量、公式、估计器与识别策略</text><text x="648" y="389" class="nodeText">输出：ModelDesign</text>
+    <rect x="910" y="310" width="224" height="106" rx="18" fill="url(#teal)"/>
+    <text x="930" y="343" class="nodeTitle">4  Data Preparation</text><text x="930" y="367" class="nodeText">披露、行情、质量与偏差检查</text><text x="930" y="389" class="nodeText">输出：DataProfile</text>
+
+    <rect x="910" y="484" width="224" height="106" rx="18" fill="url(#orange)"/>
+    <text x="930" y="517" class="nodeTitle">5  Experiment</text><text x="930" y="541" class="nodeText">回归、组合、稳健性与样本外检验</text><text x="930" y="563" class="nodeText">输出：ExperimentResult</text>
+    <rect x="628" y="484" width="224" height="106" rx="18" fill="url(#purple)"/>
+    <text x="648" y="517" class="nodeTitle">6  Research Committee</text><text x="648" y="541" class="nodeText">Reviewer + Risk Analyst + Debate Gate</text><text x="648" y="563" class="nodeText">输出：ReviewResult</text>
+    <rect x="346" y="484" width="224" height="106" rx="18" fill="url(#teal)"/>
+    <text x="366" y="517" class="nodeTitle">7  Report Generator</text><text x="366" y="541" class="nodeText">观点、风险矩阵、行动路线与证据</text><text x="366" y="563" class="nodeText">输出：FinalReport</text>
+    <rect x="64" y="484" width="224" height="106" rx="18" fill="#f8fafc"/>
+    <text x="84" y="517" style="font:700 17px Inter,'Microsoft YaHei';fill:#0f172a">Decision-ready Delivery</text><text x="84" y="541" style="font:400 12px Inter,'Microsoft YaHei';fill:#334155">Markdown · Word · JSON Artifact</text><text x="84" y="563" style="font:400 12px Inter,'Microsoft YaHei';fill:#334155">Owner · Timeline · KPI · Evidence</text>
+  </g>
+
+  <g fill="none" stroke="#7dd3fc" stroke-width="3" marker-end="url(#arrow)">
+    <path d="M288 363 H338"/><path d="M570 363 H620"/><path d="M852 363 H902"/><path d="M1022 416 V476"/><path d="M910 537 H860"/><path d="M628 537 H578"/><path d="M346 537 H296"/>
+  </g>
+
+  <path d="M740 590 V642 H1022 V598" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+  <path d="M740 642 H740 V424" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+  <path d="M880 642 V452 H1022 V424" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+  <text x="770" y="632" class="small">Need revision · 按模型 / 数据 / 实验问题定向返工</text>
+
+  <text x="64" y="694" class="lane">03 能力底座与治理 · EVIDENCE, TOOLS &amp; GOVERNANCE</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="716" width="250" height="120" rx="18" fill="#12304c" stroke="#38bdf8"/>
+    <text x="84" y="748" class="footerTitle">证据与数据</text><text x="84" y="774" class="footerText">公告 / 年报 PDF / 行情 / 财务指标</text><text x="84" y="796" class="footerText">Crossref / BaoStock / CNInfo / 本地数据</text><text x="84" y="818" class="footerText">截止日、指纹、证据 ID、偏差检查</text>
+    <rect x="335" y="716" width="250" height="120" rx="18" fill="#12304c" stroke="#2dd4bf"/>
+    <text x="355" y="748" class="footerTitle">分析与实验</text><text x="355" y="774" class="footerText">OLS / Fama–MacBeth / Portfolio Sort</text><text x="355" y="796" class="footerText">财务分析 / 相对估值 / 同业比较</text><text x="355" y="818" class="footerText">稳健性、显著性、审计 Artifact</text>
+    <rect x="606" y="716" width="250" height="120" rx="18" fill="#12304c" stroke="#c084fc"/>
+    <text x="626" y="748" class="footerTitle">多模型 Provider</text><text x="626" y="774" class="footerText">DeepSeek · Gemini</text><text x="626" y="796" class="footerText">OpenAI-compatible API</text><text x="626" y="818" class="footerText">结构化输出 + 离线测试环境</text>
+    <rect x="877" y="716" width="259" height="120" rx="18" fill="#12304c" stroke="#fb923c"/>
+    <text x="897" y="748" class="footerTitle">可信与评审</text><text x="897" y="774" class="footerText">Debate Gate · 研究委员会</text><text x="897" y="796" class="footerText">证据约束 · Revision Limit</text><text x="897" y="818" class="footerText">人类分析师保留最终判断权</text>
+  </g>
+  <text x="600" y="872" text-anchor="middle" class="small">Business question → traceable evidence → tested conclusion → reviewable deliverable</text>
+</svg>
