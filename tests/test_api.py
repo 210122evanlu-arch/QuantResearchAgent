@@ -32,6 +32,9 @@ def test_health_and_capability_discovery(tmp_path: Path) -> None:
             capabilities = (await client.get("/v1/capabilities")).json()
             enabled = {item["task_type"] for item in capabilities if item["enabled"]}
             assert enabled == {"company_research", "corporate_advisory"}
+            metrics = (await client.get("/v1/operations/metrics")).json()
+            assert metrics["total_jobs"] == 0
+            assert metrics["completion_rate"] == 0
 
     asyncio.run(scenario())
 
@@ -49,11 +52,17 @@ def test_submit_status_and_download_report(tmp_path: Path) -> None:
             job = await client.get(f"/v1/jobs/{job_id}")
             assert job.json()["status"] == JobStatus.COMPLETED
             assert job.json()["summary"]["deliverable"] == "company_research"
+            assert job.json()["duration_ms"] >= 0
 
             report = await client.get(f"/v1/jobs/{job_id}/report")
             assert report.status_code == 200
             assert "贵州茅台酒股份有限公司" in report.text
             assert 'align="center"' in report.text
+
+            metrics = (await client.get("/v1/operations/metrics")).json()
+            assert metrics["total_jobs"] == 1
+            assert metrics["status_counts"]["completed"] == 1
+            assert metrics["completion_rate"] == 1
 
     asyncio.run(scenario())
 

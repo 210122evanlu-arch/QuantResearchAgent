@@ -246,6 +246,8 @@ QuantResearchAgent/
 - [Research Jobs API](docs/api.md)
 - [事件情报与研究更新](docs/event_intelligence.md)
 - [DCF 与敏感性引擎](docs/valuation_engine.md)
+- [评测基线](docs/evaluation.md)
+- [运行监控与故障诊断](docs/operations.md)
 
 ## 可信边界
 
@@ -262,11 +264,12 @@ QuantResearchAgent/
 .\.venv\Scripts\python.exe -m ruff format --check .
 .\.venv\Scripts\python.exe -m mypy agents api data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
 .\.venv\Scripts\python.exe -m pytest --cov --cov-report=term-missing
+.\.venv\Scripts\python.exe -m evals.release_benchmark --baseline evals/baseline.json
 .\.venv\Scripts\python.exe scripts\release_audit.py
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock
 ```
 
-GitHub Actions 在 push 与 pull request 时执行同一套质量门。发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。
+GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与五份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
 
 ## 发布与贡献
 

@@ -5,7 +5,13 @@ from pathlib import Path
 from fastapi import BackgroundTasks, FastAPI, HTTPException, status
 from fastapi.responses import FileResponse
 
-from api.schemas import Capability, HealthResponse, JobStatus, ResearchJob
+from api.schemas import (
+    Capability,
+    HealthResponse,
+    JobStatus,
+    OperationsMetrics,
+    ResearchJob,
+)
 from api.service import JobRunner, ResearchJobService
 from examples.business_risk_consulting_demo import run_business_risk_consulting_demo
 from examples.moutai_company_research_demo import run_moutai_company_research_demo
@@ -43,7 +49,7 @@ def create_app(
 ) -> FastAPI:
     app = FastAPI(
         title="QuantResearchAgent API",
-        version="0.2.0",
+        version="0.3.0",
         description="Submit evidence-grounded research jobs and retrieve reports.",
     )
     service = ResearchJobService(runner or offline_showcase_runner, report_directory)
@@ -52,6 +58,14 @@ def create_app(
     @app.get("/health", response_model=HealthResponse, tags=["operations"])
     def health() -> HealthResponse:
         return HealthResponse(status="ok", service="quant-research-agent")
+
+    @app.get(
+        "/v1/operations/metrics",
+        response_model=OperationsMetrics,
+        tags=["operations"],
+    )
+    def operations_metrics() -> OperationsMetrics:
+        return service.metrics()
 
     @app.get("/v1/capabilities", response_model=list[Capability], tags=["research"])
     def capabilities() -> list[Capability]:

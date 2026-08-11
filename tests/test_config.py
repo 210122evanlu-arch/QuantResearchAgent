@@ -117,6 +117,24 @@ def test_log_formatter_redacts_gemini_api_key() -> None:
     assert "[REDACTED_API_KEY]" in rendered
 
 
+def test_log_formatter_redacts_named_secret() -> None:
+    formatter = RedactingFormatter("%(message)s")
+    record = logging.LogRecord(
+        name="test",
+        level=logging.ERROR,
+        pathname=__file__,
+        lineno=1,
+        msg="provider failed DEEPSEEK_API_KEY=do-not-log-this",
+        args=(),
+        exc_info=None,
+    )
+
+    rendered = formatter.format(record)
+
+    assert "do-not-log-this" not in rendered
+    assert "DEEPSEEK_API_KEY=[REDACTED]" in rendered
+
+
 def test_deepseek_settings_load_defaults(monkeypatch, tmp_path) -> None:
     monkeypatch.setenv("DEEPSEEK_API_KEY", "offline-deepseek-key")
     monkeypatch.delenv("DEEPSEEK_MODEL", raising=False)

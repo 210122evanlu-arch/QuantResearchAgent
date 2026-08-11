@@ -37,11 +37,14 @@ jobs:
         run: ruff format --check .
 
       - name: Type check
-        run: mypy agents api data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
+        run: mypy agents api data_sources evals graph literature llm schemas tools examples production.py config.py logging_config.py main.py
 
       - name: Test with branch coverage
         # ``python -m`` keeps the repository root on sys.path on every runner.
         run: python -m pytest --cov --cov-report=term-missing --cov-report=xml
+
+      - name: Check business capability evaluation
+        run: python -m evals.release_benchmark --baseline evals/baseline.json
 
       - name: Audit release contents
         run: python scripts/release_audit.py

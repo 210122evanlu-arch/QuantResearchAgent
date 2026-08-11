@@ -16,6 +16,8 @@ All notable changes to this project are documented in this file.
 - DCF valuation engine with configurable WACC and terminal-growth sensitivity grids.
 - Categorical fixed-effects regression and transaction-cost-aware quantile backtesting.
 - Non-IVOL momentum research showcase combining panel estimation and long-short validation.
+- Deterministic release evaluation spanning six service lines and five approved showcase reports.
+- API lifecycle observability with latency metrics, failure categories, and credential-safe diagnostics.
 
 ### Changed
 

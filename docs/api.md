@@ -15,6 +15,7 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/health` | Liveness check |
+| `GET` | `/v1/operations/metrics` | Read non-sensitive lifecycle, latency, and failure aggregates |
 | `GET` | `/v1/capabilities` | Enabled and planned service lines |
 | `POST` | `/v1/events/analyze` | Deduplicate events and decide whether research must be refreshed |
 | `POST` | `/v1/jobs` | Validate and submit a standardized research request |
@@ -37,4 +38,6 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 
 The bundled offline executor supports the BYD corporate-advisory and Moutai company-research showcases. `create_app(runner=...)` accepts an injected runner for production workflows, licensed data, or an external queue. The HTTP contract and job lifecycle remain unchanged.
 
-The MVP store is process-local. A production deployment should replace it with a persistent job repository and distributed worker while retaining the API schemas.
+Jobs expose start/completion timestamps, execution duration, and a stable failure category. Error messages are bounded and credential-shaped values are redacted before they enter API responses or logs. See [Operations and failure diagnostics](operations.md).
+
+The MVP store and metrics registry are process-local. A production deployment should replace them with a persistent job repository, distributed worker, and monitoring backend while retaining the API schemas.

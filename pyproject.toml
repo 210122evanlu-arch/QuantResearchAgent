@@ -4,7 +4,7 @@ addopts = "--strict-markers --strict-config"
 
 [tool.coverage.run]
 branch = true
-source = ["agents", "analysis_engines", "api", "data_sources", "graph", "literature", "llm", "production", "schemas", "tools"]
+source = ["agents", "analysis_engines", "api", "data_sources", "evals", "graph", "literature", "llm", "production", "schemas", "tools"]
 omit = ["tests/*"]
 
 [tool.coverage.report]

@@ -1,0 +1,79 @@
+{
+  "benchmark_version": "1.0",
+  "summary": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "pass_rate": 1.0
+  },
+  "route_cases": [
+    {
+      "case_id": "company_research_dcf",
+      "passed": true,
+      "workflow": "company_research",
+      "missing_methods": []
+    },
+    {
+      "case_id": "industry_research",
+      "passed": true,
+      "workflow": "industry_research",
+      "missing_methods": []
+    },
+    {
+      "case_id": "quant_research",
+      "passed": true,
+      "workflow": "quant_research",
+      "missing_methods": []
+    },
+    {
+      "case_id": "market_strategy",
+      "passed": true,
+      "workflow": "market_strategy",
+      "missing_methods": []
+    },
+    {
+      "case_id": "event_study",
+      "passed": true,
+      "workflow": "event_study",
+      "missing_methods": []
+    },
+    {
+      "case_id": "corporate_advisory",
+      "passed": true,
+      "workflow": "corporate_advisory",
+      "missing_methods": []
+    }
+  ],
+  "showcase_cases": [
+    {
+      "case_id": "risk_advisory",
+      "passed": true,
+      "missing_headings": [],
+      "length_ok": true
+    },
+    {
+      "case_id": "company_research",
+      "passed": true,
+      "missing_headings": [],
+      "length_ok": true
+    },
+    {
+      "case_id": "event_intelligence",
+      "passed": true,
+      "missing_headings": [],
+      "length_ok": true
+    },
+    {
+      "case_id": "momentum_research",
+      "passed": true,
+      "missing_headings": [],
+      "length_ok": true
+    },
+    {
+      "case_id": "dcf_sensitivity",
+      "passed": true,
+      "missing_headings": [],
+      "length_ok": true
+    }
+  ]
+}

@@ -15,6 +15,7 @@ REQUIRED_FILES = {
     ".github/workflows/ci.yml",
     "LICENSE",
     "README.md",
+    "evals/baseline.json",
     "examples/data/DATA_LICENSE.md",
     "pyproject.toml",
     "requirements-dev.lock",
