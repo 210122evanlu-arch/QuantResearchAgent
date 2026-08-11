@@ -111,6 +111,16 @@ python3.11 -m venv .venv
 
 `main.py` 默认只编译 Graph，不访问网络，也不会产生模型调用。
 
+### Research Jobs API
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn api.app:app --host 127.0.0.1 --port 8000
+```
+
+服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询与贵州茅台公司研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
+
+接口定义与请求示例见 [Research Jobs API](docs/api.md)。
+
 ## 示例场景
 
 以下 Demo 均可在离线测试环境中运行：
@@ -195,6 +205,7 @@ Provider 层支持：
 ```text
 QuantResearchAgent/
 ├── agents/             # Agent 角色与 Node 实现
+├── api/                # FastAPI、任务状态与报告下载层
 ├── analysis_engines/   # 财务、战略、估值与同业分析引擎
 ├── data_sources/       # 披露、行情、论文与本地数据适配器
 ├── graph/              # LangGraph、Router、Debate 与平台调度
@@ -216,6 +227,7 @@ QuantResearchAgent/
 - [研究委员会](docs/research_committee.md)
 - [报告与证据规则](docs/reporting.md)
 - [实验引擎](docs/experiment_engine.md)
+- [Research Jobs API](docs/api.md)
 
 ## 可信边界
 
@@ -230,7 +242,7 @@ QuantResearchAgent/
 ```powershell
 .\.venv\Scripts\python.exe -m ruff check .
 .\.venv\Scripts\python.exe -m ruff format --check .
-.\.venv\Scripts\python.exe -m mypy agents data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
+.\.venv\Scripts\python.exe -m mypy agents api data_sources graph literature llm schemas tools examples production.py config.py logging_config.py main.py
 .\.venv\Scripts\python.exe -m pytest --cov --cov-report=term-missing
 .\.venv\Scripts\python.exe scripts\release_audit.py
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock

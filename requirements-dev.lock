@@ -12,7 +12,8 @@ anyio==4.14.2
     #   httpx
     #   langsmith
     #   openai
-ast-serialize==0.6.0
+    #   starlette
+ast-serialize==0.8.0
     # via mypy
 baostock==0.9.3
     # via -r requirements.txt
@@ -38,18 +39,20 @@ cffi==2.1.1
 charset-normalizer==3.4.9
     # via requests
 click==8.4.2
-    # via pip-tools
+    # via
+    #   pip-tools
+    #   uvicorn
 colorama==0.4.6
     # via
     #   build
     #   click
     #   pytest
     #   tqdm
-coverage==7.15.3
+coverage==7.15.4
     # via pytest-cov
 cryptography==50.0.0
     # via google-auth
-cyclonedx-python-lib==11.11.0
+cyclonedx-python-lib==11.11.1
     # via pip-audit
 defusedxml==0.7.1
     # via py-serializable
@@ -60,6 +63,8 @@ distro==1.9.0
     #   openai
 et-xmlfile==2.0.0
     # via openpyxl
+fastapi==0.116.2
+    # via -r requirements.txt
 filelock==3.32.2
     # via cachecontrol
 google-auth==2.56.3
@@ -67,7 +72,9 @@ google-auth==2.56.3
 google-genai==2.17.0
     # via -r requirements.txt
 h11==0.16.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   uvicorn
 httpcore==1.0.9
     # via httpx
 httpx==0.28.1
@@ -96,7 +103,7 @@ langchain-core==1.5.3
     #   langgraph-checkpoint
     #   langgraph-prebuilt
     #   langgraph-sdk
-langchain-openai==1.4.1
+langchain-openai==1.4.3
     # via -r requirements.txt
 langchain-protocol==0.0.18
     # via
@@ -104,7 +111,7 @@ langchain-protocol==0.0.18
     #   langgraph-sdk
 langgraph==1.2.10
     # via -r requirements.txt
-langgraph-checkpoint==4.1.1
+langgraph-checkpoint==4.2.0
     # via
     #   langgraph
     #   langgraph-prebuilt
@@ -112,9 +119,9 @@ langgraph-prebuilt==1.1.0
     # via langgraph
 langgraph-sdk==0.4.2
     # via langgraph
-langsmith==0.10.16
+langsmith==0.10.17
     # via langchain-core
-librt==0.13.0
+librt==0.15.0
     # via mypy
 license-expression==30.4.4
     # via cyclonedx-python-lib
@@ -184,7 +191,7 @@ pip-requirements-parser==32.0.1
     # via pip-audit
 pip-tools==7.5.3
     # via -r requirements-dev.txt
-platformdirs==4.11.0
+platformdirs==4.11.2
     # via pip-audit
 pluggy==1.6.0
     # via
@@ -192,7 +199,7 @@ pluggy==1.6.0
     #   pytest-cov
 py-serializable==2.1.0
     # via cyclonedx-python-lib
-pyarrow==25.0.0
+pyarrow==25.0.1
     # via -r requirements.txt
 pyasn1==0.6.4
     # via pyasn1-modules
@@ -203,6 +210,7 @@ pycparser==3.0
 pydantic==2.13.4
     # via
     #   -r requirements.txt
+    #   fastapi
     #   google-genai
     #   langchain-core
     #   langgraph
@@ -270,8 +278,10 @@ sniffio==1.3.1
     #   openai
 sortedcontainers==2.4.0
     # via cyclonedx-python-lib
-soupsieve==2.9.1
+soupsieve==2.9.2
     # via beautifulsoup4
+starlette==0.48.0
+    # via fastapi
 statsmodels==0.14.6
     # via -r requirements.txt
 tenacity==9.1.4
@@ -297,6 +307,7 @@ typing-extensions==4.16.0
     #   anyio
     #   beautifulsoup4
     #   cyclonedx-python-lib
+    #   fastapi
     #   google-genai
     #   langchain-core
     #   langchain-protocol
@@ -306,8 +317,9 @@ typing-extensions==4.16.0
     #   pydantic
     #   pydantic-core
     #   python-docx
+    #   starlette
     #   typing-inspection
-typing-inspection==0.4.2
+typing-inspection==0.4.3
     # via pydantic
 tzdata==2026.3
     # via pandas
@@ -319,6 +331,8 @@ uuid-utils==0.17.0
     # via
     #   langchain-core
     #   langsmith
+uvicorn==0.35.0
+    # via -r requirements.txt
 websocket-client==1.9.0
     # via tushare
 websockets==15.0.1
@@ -341,5 +355,5 @@ pip==25.3
     #   -r requirements-dev.txt
     #   pip-api
     #   pip-tools
-setuptools==83.0.0
+setuptools==84.0.0
     # via pip-tools

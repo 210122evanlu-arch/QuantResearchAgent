@@ -16,7 +16,14 @@ def render_company_research_report(
     """Render an evidence-grounded, committee-ready company research note."""
     status = review.decision.value.upper()
     lines = [
-        f"# {report.title}",
+        '<div align="center">',
+        "",
+        f"<h1>{report.title}</h1>",
+        "",
+        f"<p><strong>{report.company_name} · {report.security_code}</strong><br>",
+        f"评估截止日 {report.as_of_date.isoformat()} · 委员会状态 {status}</p>",
+        "",
+        "</div>",
         "",
         "| 报告属性 | 内容 |",
         "| --- | --- |",
