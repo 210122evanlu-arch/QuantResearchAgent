@@ -38,6 +38,11 @@ class CompanyResearchSynthesisNode:
         financial = _artifact(bundle, AnalysisMethod.FINANCIAL_STATEMENT_ANALYSIS)
         strategy = _artifact(bundle, AnalysisMethod.STRATEGIC_DIAGNOSIS)
         valuation = _artifact(bundle, AnalysisMethod.RELATIVE_VALUATION)
+        dcf = [
+            item
+            for item in bundle.artifacts
+            if item.method == AnalysisMethod.DCF_VALUATION
+        ]
         peers = _artifact(bundle, AnalysisMethod.PEER_BENCHMARKING)
 
         company_name = (
@@ -84,7 +89,7 @@ class CompanyResearchSynthesisNode:
             ),
             financial_quality=financial.summary,
             peer_comparison=peers.summary,
-            valuation=valuation.summary,
+            valuation=" ".join([valuation.summary, *(item.summary for item in dcf)]),
             catalysts=implications or ["No evidence-backed catalyst was identified."],
             risks=limitations,
             monitoring_indicators=metrics or ["Refresh the evidence set each quarter."],

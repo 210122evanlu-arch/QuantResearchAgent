@@ -27,11 +27,14 @@ from schemas.research_analysis import ResearchAnalysis
 from schemas.research_plan import ResearchPlan
 from schemas.review import ReviewResult
 from schemas.state import ResearchState
+from schemas.valuation import DCFInput, DCFResult
 
 __all__ = [
     "AnalysisArtifact",
     "AnalysisBundle",
     "ChallengerCase",
+    "DCFInput",
+    "DCFResult",
     "DataProfile",
     "DebateArgument",
     "DebateGateResult",

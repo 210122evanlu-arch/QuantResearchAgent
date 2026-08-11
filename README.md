@@ -72,6 +72,8 @@
 
 事件情报案例：[公告与新闻研究更新提示](reports/showcase/event_intelligence_showcase.md)。该链路对公告和新闻元数据进行去重、分类与重大性判断；正式披露可触发报告更新或委员会复核，未经原始证据确认的新闻只进入观察清单。
 
+模型通用性案例：[动量因子预测能力研究](reports/showcase/momentum_factor_research.md)。案例完全不使用 IVOL，通过实体固定效应回归和含交易成本的多空回测验证 ModelDesign、Estimator Router 与 ExperimentResult 可以复用于其他金融课题。另见 [DCF 与敏感性分析](reports/showcase/dcf_sensitivity_showcase.md)。
+
 运行方式：
 
 ```powershell
@@ -147,6 +149,12 @@ python3.11 -m venv .venv
 
 # 公告 + 新闻元数据：去重、事件分类与报告更新触发
 .\.venv\Scripts\python.exe -m examples.event_intelligence_demo
+
+# 非 IVOL 研究：动量信号、实体固定效应与交易成本后回测
+.\.venv\Scripts\python.exe -m examples.momentum_factor_demo
+
+# 假设显式的 DCF 与 WACC × 永续增长敏感性矩阵
+.\.venv\Scripts\python.exe -m examples.dcf_valuation_demo
 ```
 
 量化示例报告见 [reports/example_report.md](reports/example_report.md)。
@@ -237,6 +245,7 @@ QuantResearchAgent/
 - [实验引擎](docs/experiment_engine.md)
 - [Research Jobs API](docs/api.md)
 - [事件情报与研究更新](docs/event_intelligence.md)
+- [DCF 与敏感性引擎](docs/valuation_engine.md)
 
 ## 可信边界
 

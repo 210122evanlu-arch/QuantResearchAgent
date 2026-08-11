@@ -70,10 +70,18 @@ ROUTE_PROFILES: dict[TaskType, RouteProfile] = {
 def route_request(request: ResearchRequest) -> WorkflowSelection:
     """Return an auditable default route; downstream planning may narrow methods."""
     profile = ROUTE_PROFILES[request.task_type]
+    methods = list(profile.methods)
+    if request.task_type == TaskType.COMPANY_RESEARCH and "dcf" in {
+        topic.casefold() for topic in request.topics
+    }:
+        methods.insert(
+            methods.index(AnalysisMethod.PEER_BENCHMARKING),
+            AnalysisMethod.DCF_VALUATION,
+        )
     return WorkflowSelection(
         task_type=request.task_type,
         workflow_name=profile.workflow_name,
-        analysis_methods=list(profile.methods),
+        analysis_methods=methods,
         report_template=profile.report_template,
         rationale=(
             f"Selected the {profile.workflow_name} capability profile for "

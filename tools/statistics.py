@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
-from schemas.enums import Estimator
+from schemas.enums import Estimator, ExpectedDirection
 from schemas.experiment import (
     ExperimentResult,
     ModelMetrics,
@@ -33,6 +33,9 @@ class ExperimentConfig:
     portfolio_groups: int = 5
     portfolio_primary_variable: str = "turnover"
     portfolio_secondary_variable: str = "IVOL"
+    backtest_entity_column: str = "stock_id"
+    transaction_cost_bps: float = 10.0
+    periods_per_year: int = 12
 
     def __post_init__(self) -> None:
         if not 0 < self.significance_level < 1:
@@ -48,6 +51,12 @@ class ExperimentConfig:
             == self.portfolio_secondary_variable.casefold()
         ):
             raise ValueError("portfolio sort variables must be different")
+        if not self.backtest_entity_column.strip():
+            raise ValueError("backtest_entity_column cannot be blank")
+        if self.transaction_cost_bps < 0:
+            raise ValueError("transaction_cost_bps must be non-negative")
+        if self.periods_per_year < 1:
+            raise ValueError("periods_per_year must be positive")
 
 
 def _model_columns(model: ModelDesign) -> tuple[str, list[str]]:
@@ -150,20 +159,33 @@ def run_ols(
     *,
     data_fingerprint: str | None = None,
 ) -> ExperimentResult:
-    if model.fixed_effects:
-        raise UnsupportedEstimatorError(
-            "OLS fixed effects are not implemented in the Round 4 engine"
-        )
     dependent, regressors = _model_columns(model)
-    sample, dropped = _complete_sample(frame, dependent, regressors)
+    sample, dropped = _complete_sample(
+        frame, dependent, regressors, model.fixed_effects
+    )
+    design = sample[regressors].astype(float)
+    fixed_effect_dummy_count = 0
+    if model.fixed_effects:
+        dummies = pd.get_dummies(
+            sample[model.fixed_effects].astype(str),
+            columns=model.fixed_effects,
+            drop_first=True,
+            dtype=float,
+        )
+        if dummies.empty:
+            raise ExperimentEngineError(
+                "Fixed-effect columns must contain at least two categories"
+            )
+        fixed_effect_dummy_count = dummies.shape[1]
+        design = pd.concat([design, dummies], axis=1)
     cov_type, cov_kwds = _covariance_settings(
         model.standard_error_method, config.hac_maxlags
     )
-    results = _fit_ols(sample[dependent], sample[regressors], cov_type, cov_kwds)
+    results = _fit_ols(sample[dependent], design, cov_type, cov_kwds)
     statistics = _statistical_results(results, regressors, config.significance_level)
 
     alternative_cov = "nonrobust" if cov_type == "HC3" else "HC3"
-    alternative = _fit_ols(sample[dependent], sample[regressors], alternative_cov, {})
+    alternative = _fit_ols(sample[dependent], design, alternative_cov, {})
     stability = all(
         bool(results.pvalues[name] < config.significance_level)
         == bool(alternative.pvalues[name] < config.significance_level)
@@ -190,7 +212,11 @@ def run_ols(
     )
     residuals = np.asarray(results.resid, dtype=float)
     return ExperimentResult(
-        method=f"OLS with {cov_type} covariance",
+        method=(
+            f"OLS with {','.join(model.fixed_effects)} fixed effects and {cov_type} covariance"
+            if model.fixed_effects
+            else f"OLS with {cov_type} covariance"
+        ),
         estimator=Estimator.OLS,
         sample_size=len(sample),
         significance_level=config.significance_level,
@@ -212,6 +238,8 @@ def run_ols(
             "covariance_type": cov_type,
             "hac_maxlags": config.hac_maxlags,
             "intercept": True,
+            "fixed_effects": ",".join(model.fixed_effects),
+            "fixed_effect_dummy_count": fixed_effect_dummy_count,
         },
     )
 
@@ -554,10 +582,168 @@ def run_portfolio_sort(
     )
 
 
-def run_backtest(*args, **kwargs) -> ExperimentResult:
-    """Reserved Round 4 route; implementation is intentionally explicit."""
-    raise UnsupportedEstimatorError(
-        "Estimator 'backtest' is not implemented in Round 4"
+def run_backtest(
+    frame: pd.DataFrame,
+    model: ModelDesign,
+    config: ExperimentConfig,
+    *,
+    date_column: str,
+    data_fingerprint: str | None = None,
+) -> ExperimentResult:
+    """Run an equal-weight, quantile long-short strategy with transaction costs."""
+    if model.fixed_effects:
+        raise UnsupportedEstimatorError(
+            "Backtests do not accept regression fixed effects"
+        )
+    dependent, regressors = _model_columns(model)
+    if len(model.independent_variables) != 1 or model.control_variables:
+        raise ExperimentEngineError(
+            "Backtest requires exactly one signal and no regression controls"
+        )
+    signal = regressors[0]
+    direction = model.independent_variables[0].expected_sign
+    if direction not in {ExpectedDirection.POSITIVE, ExpectedDirection.NEGATIVE}:
+        raise ExperimentEngineError(
+            "Backtest signal expected_sign must be positive or negative"
+        )
+    entity = config.backtest_entity_column
+    sample, dropped = _complete_sample(
+        frame, dependent, [signal], [date_column, entity]
+    )
+    sample[date_column] = pd.to_datetime(sample[date_column], errors="coerce")
+    if sample[date_column].isna().any():
+        raise ExperimentEngineError("Backtest date column contains invalid values")
+    groups = config.portfolio_groups
+    period_rows: list[dict[str, float | pd.Timestamp]] = []
+    previous_long: set[str] | None = None
+    previous_short: set[str] | None = None
+    skipped_periods = 0
+    used_observations = 0
+    for period_date, period in sample.groupby(date_column, sort=True):
+        if len(period) < groups * 2 or period[signal].nunique() < groups:
+            skipped_periods += 1
+            continue
+        ranked = period.copy()
+        ranked["_group"] = pd.qcut(
+            ranked[signal].rank(method="first"), groups, labels=False
+        ).astype(int)
+        low = ranked.loc[ranked["_group"] == 0]
+        high = ranked.loc[ranked["_group"] == groups - 1]
+        if low.empty or high.empty:
+            skipped_periods += 1
+            continue
+        if direction == ExpectedDirection.POSITIVE:
+            long_leg, short_leg = high, low
+        else:
+            long_leg, short_leg = low, high
+        long_members = set(long_leg[entity].astype(str))
+        short_members = set(short_leg[entity].astype(str))
+        if previous_long is None or previous_short is None:
+            turnover = 1.0
+        else:
+            long_change = 1 - len(long_members & previous_long) / len(long_members)
+            short_change = 1 - len(short_members & previous_short) / len(short_members)
+            turnover = 0.5 * (long_change + short_change)
+        gross_return = float(long_leg[dependent].mean() - short_leg[dependent].mean())
+        net_return = gross_return - turnover * config.transaction_cost_bps / 10_000
+        if net_return <= -1:
+            raise ExperimentEngineError(
+                "Backtest period return is less than or equal to -100%"
+            )
+        period_rows.append(
+            {
+                "date": pd.Timestamp(str(period_date)),
+                "gross_return": gross_return,
+                "net_return": net_return,
+                "turnover": turnover,
+            }
+        )
+        previous_long, previous_short = long_members, short_members
+        used_observations += len(ranked)
+
+    if len(period_rows) < 3:
+        raise ExperimentEngineError("Backtest requires at least three valid periods")
+    period_frame = pd.DataFrame(period_rows)
+    net = period_frame["net_return"].astype(float)
+    gross = period_frame["gross_return"].astype(float)
+    maxlags = min(config.hac_maxlags, len(net) - 1)
+    inference = sm.OLS(net.to_numpy(), np.ones((len(net), 1))).fit(
+        cov_type="HAC", cov_kwds={"maxlags": maxlags}, use_t=True
+    )
+    interval = inference.conf_int(alpha=config.significance_level)[0]
+    p_value = float(inference.pvalues[0])
+    annualized_return = float(net.mean() * config.periods_per_year)
+    annualized_volatility = float(net.std(ddof=1) * np.sqrt(config.periods_per_year))
+    sharpe = (
+        annualized_return / annualized_volatility if annualized_volatility > 0 else None
+    )
+    wealth = (1 + net).cumprod()
+    max_drawdown = float((wealth / wealth.cummax() - 1).min())
+    sign_stable = bool(np.sign(net.mean()) == np.sign(gross.mean()))
+    warnings = []
+    if dropped:
+        warnings.append(f"Dropped {dropped} rows with missing backtest values.")
+    if skipped_periods:
+        warnings.append(
+            f"Skipped {skipped_periods} periods with insufficient dispersion."
+        )
+    return ExperimentResult(
+        method=f"{groups}-quantile equal-weight long-short backtest",
+        estimator=Estimator.BACKTEST,
+        sample_size=used_observations,
+        significance_level=config.significance_level,
+        model_metrics=ModelMetrics(
+            observations=used_observations,
+            annualized_return=annualized_return,
+            annualized_volatility=annualized_volatility,
+            sharpe_ratio=sharpe,
+            max_drawdown=max_drawdown,
+            average_turnover=float(period_frame["turnover"].mean()),
+            win_rate=float((net > 0).mean()),
+        ),
+        statistical_results=[
+            StatisticalResult(
+                variable="net_long_short_return",
+                coefficient=float(inference.params[0]),
+                standard_error=float(inference.bse[0]),
+                t_stat=float(inference.tvalues[0]),
+                p_value=p_value,
+                confidence_interval=(float(interval[0]), float(interval[1])),
+                significant=bool(p_value < config.significance_level),
+            )
+        ],
+        robustness_checks=[
+            RobustnessCheck(
+                name="Transaction-cost sensitivity",
+                method=(
+                    f"Compare gross and net returns at {config.transaction_cost_bps:g} bps"
+                ),
+                result=(
+                    "Return direction remains stable after transaction costs"
+                    if sign_stable
+                    else "Transaction costs reverse the strategy return direction"
+                ),
+                passed=sign_stable,
+            )
+        ],
+        warnings=warnings,
+        conclusion=(
+            f"Net annualized return is {annualized_return:.2%}; Sharpe ratio is "
+            f"{sharpe:.2f}."
+            if sharpe is not None
+            else f"Net annualized return is {annualized_return:.2%}; Sharpe is undefined."
+        ),
+        data_fingerprint=data_fingerprint,
+        parameters={
+            "periods": len(period_frame),
+            "groups": groups,
+            "signal": signal,
+            "signal_direction": direction.value,
+            "weighting": "equal",
+            "transaction_cost_bps": config.transaction_cost_bps,
+            "periods_per_year": config.periods_per_year,
+            "entity_column": entity,
+        },
     )
 
 
@@ -589,5 +775,11 @@ def run_experiment(
             data_fingerprint=data_fingerprint,
         )
     if model.estimator == Estimator.BACKTEST:
-        return run_backtest()
+        return run_backtest(
+            frame,
+            model,
+            config,
+            date_column=date_column,
+            data_fingerprint=data_fingerprint,
+        )
     raise UnsupportedEstimatorError(f"Unknown estimator: {model.estimator.value!r}")

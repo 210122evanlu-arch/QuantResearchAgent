@@ -13,6 +13,9 @@ All notable changes to this project are documented in this file.
 - FastAPI research-job layer with capability discovery, lifecycle status, and report download endpoints.
 - Disclosure and RSS/Atom event-intelligence pipeline with deduplication, materiality classification, and research-refresh decisions.
 - Event watchlist showcase and `/v1/events/analyze` API endpoint.
+- DCF valuation engine with configurable WACC and terminal-growth sensitivity grids.
+- Categorical fixed-effects regression and transaction-cost-aware quantile backtesting.
+- Non-IVOL momentum research showcase combining panel estimation and long-short validation.
 
 ### Changed
 

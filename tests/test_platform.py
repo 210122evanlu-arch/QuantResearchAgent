@@ -48,6 +48,13 @@ def test_intent_router_node_preserves_question_for_legacy_nodes() -> None:
     assert routed["workflow_selection"].workflow_name == "quant_research"
 
 
+def test_company_route_adds_dcf_only_when_requested() -> None:
+    base = request(TaskType.COMPANY_RESEARCH)
+    dcf_request = base.model_copy(update={"topics": ["valuation", "dcf"]})
+    assert AnalysisMethod.DCF_VALUATION not in route_request(base).analysis_methods
+    assert AnalysisMethod.DCF_VALUATION in route_request(dcf_request).analysis_methods
+
+
 def test_scoped_requests_require_a_subject() -> None:
     with pytest.raises(ValidationError, match="require a company or security"):
         ResearchRequest(

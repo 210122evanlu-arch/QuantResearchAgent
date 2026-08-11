@@ -10,6 +10,7 @@ from schemas.model_design import ModelDesign
 from tools.financial_data import LocalDataConfig, build_data_profile
 from tools.statistics import (
     ExperimentConfig,
+    run_backtest,
     run_experiment,
     run_fama_macbeth,
     run_ols,
@@ -77,6 +78,107 @@ def test_ols_returns_computed_statistics_and_robustness() -> None:
     assert ivol.significant == (ivol.p_value < result.significance_level)
     assert len(result.robustness_checks) == 1
     assert result.parameters["covariance_type"] == "HC3"
+
+
+def test_ols_absorbs_categorical_fixed_effects() -> None:
+    rng = np.random.default_rng(23)
+    rows = []
+    for entity_index in range(10):
+        entity_effect = entity_index / 100
+        for _period in range(12):
+            signal = rng.normal()
+            rows.append(
+                {
+                    "stock_id": f"S{entity_index:02d}",
+                    "future_return": entity_effect
+                    + 0.03 * signal
+                    + rng.normal(0, 0.002),
+                    "momentum": signal,
+                }
+            )
+    model = ModelDesign.model_validate(
+        {
+            "model_name": "Momentum panel",
+            "formula": "future_return ~ momentum + entity FE",
+            "estimator": "ols",
+            "dependent_variable": {
+                "name": "future_return",
+                "role": "dependent",
+                "definition": "Next-period return",
+            },
+            "independent_variables": [
+                {
+                    "name": "momentum",
+                    "role": "independent",
+                    "definition": "Past return",
+                    "expected_sign": "positive",
+                }
+            ],
+            "control_variables": [],
+            "fixed_effects": ["stock_id"],
+            "standard_error_method": "HC3",
+            "assumptions": ["Additive entity effects"],
+            "endogeneity_strategy": ["Lagged signal"],
+            "limitations": [],
+        }
+    )
+    result = run_ols(pd.DataFrame(rows), model, ExperimentConfig())
+    momentum = result.statistical_results[0]
+    assert momentum.coefficient == pytest.approx(0.03, abs=0.002)
+    assert result.parameters["fixed_effects"] == "stock_id"
+    assert result.parameters["fixed_effect_dummy_count"] == 9
+
+
+def test_generic_backtest_routes_a_positive_momentum_signal() -> None:
+    rng = np.random.default_rng(31)
+    rows = []
+    scores = np.linspace(-1, 1, 50)
+    for month in pd.date_range("2024-01-31", periods=18, freq="ME"):
+        for stock, score in enumerate(scores):
+            signal = score + rng.normal(0, 0.03)
+            rows.append(
+                {
+                    "date": month,
+                    "stock_id": f"S{stock:03d}",
+                    "momentum": signal,
+                    "future_return": 0.01 * signal + rng.normal(0, 0.001),
+                }
+            )
+    model = ModelDesign.model_validate(
+        {
+            "model_name": "Momentum long-short",
+            "formula": "future_return ~ momentum",
+            "estimator": "backtest",
+            "dependent_variable": {
+                "name": "future_return",
+                "role": "dependent",
+                "definition": "Next-month return",
+            },
+            "independent_variables": [
+                {
+                    "name": "momentum",
+                    "role": "independent",
+                    "definition": "Past twelve-month return",
+                    "expected_sign": "positive",
+                }
+            ],
+            "control_variables": [],
+            "fixed_effects": [],
+            "standard_error_method": "Newey-West",
+            "assumptions": ["Monthly rebalancing"],
+            "endogeneity_strategy": ["Lagged signal"],
+            "limitations": [],
+        }
+    )
+    result = run_backtest(
+        pd.DataFrame(rows), model, ExperimentConfig(), date_column="date"
+    )
+    assert result.estimator.value == "backtest"
+    assert result.model_metrics.annualized_return is not None
+    assert result.model_metrics.annualized_return > 0
+    assert result.model_metrics.sharpe_ratio is not None
+    assert result.statistical_results[0].coefficient > 0
+    assert result.parameters["signal"] == "momentum"
 
 
 def test_fama_macbeth_averages_cross_sectional_slopes() -> None:

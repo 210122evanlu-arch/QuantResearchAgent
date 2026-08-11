@@ -41,4 +41,9 @@ class ModelDesign(BaseModel):
         normalised = [name.strip().casefold() for name in names]
         if len(normalised) != len(set(normalised)):
             raise ValueError("model variable names must be unique")
+        fixed_effects = [name.strip().casefold() for name in self.fixed_effects]
+        if len(fixed_effects) != len(set(fixed_effects)):
+            raise ValueError("fixed_effects must be unique")
+        if set(fixed_effects).intersection(normalised):
+            raise ValueError("fixed_effects must not duplicate model variables")
         return self

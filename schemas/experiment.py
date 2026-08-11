@@ -11,6 +11,12 @@ class ModelMetrics(BaseModel):
     observations: int = Field(ge=0)
     rmse: float | None = Field(default=None, ge=0)
     information_coefficient: float | None = None
+    annualized_return: float | None = None
+    annualized_volatility: float | None = Field(default=None, ge=0)
+    sharpe_ratio: float | None = None
+    max_drawdown: float | None = Field(default=None, ge=-1, le=0)
+    average_turnover: float | None = Field(default=None, ge=0)
+    win_rate: float | None = Field(default=None, ge=0, le=1)
 
 
 class StatisticalResult(BaseModel):
