@@ -1,19 +1,19 @@
 # QuantResearchAgent
 
-**把一个模糊的研究课题或咨询委托，转化为有证据、有模型、有评审、可返工的专业报告。**
+**面向证券研究与管理咨询的可追溯多智能体研究平台。**
 
 [![CI](https://github.com/210122evanlu-arch/QuantResearchAgent/actions/workflows/ci.yml/badge.svg)](https://github.com/210122evanlu-arch/QuantResearchAgent/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/210122evanlu-arch/QuantResearchAgent)](https://github.com/210122evanlu-arch/QuantResearchAgent/releases)
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB)
 ![License](https://img.shields.io/badge/License-MIT-0f766e)
 
-QuantResearchAgent 面向券商研究所、上市公司研究和管理咨询场景。它不是只负责“生成一段答案”的聊天机器人，而是一套将业务问题、公开披露、市场数据、金融模型、研究委员会和报告交付连接起来的多智能体工作流。
+平台围绕研究规划、证据检索、金融建模、实证分析、委员会评审和报告生成构建端到端工作流。项目关注的核心问题，是如何将大语言模型纳入可验证、可复现、可审计的研究流程，而非扩展通用对话能力。
 
-项目支持多模型 Provider，包括 **DeepSeek、Gemini 及 OpenAI 兼容接口**，并提供无需 API Key 的离线测试环境。统计计算、数据指纹、条件路由和审批状态由代码控制，模型主要负责结构化研究、证据解释与观点组织。
+模型接入层支持 DeepSeek、Gemini 及 OpenAI 兼容接口，并提供无需 API Key 的离线测试环境。统计计算、数据指纹、条件路由和审批状态由确定性代码控制；语言模型负责研究任务拆解、证据解释与观点组织。
 
-## 它能接什么业务委托？
+## 业务范围
 
-| 服务线 | 客户问题示例 | 系统交付 |
+| 服务线 | 典型课题 | 核心产出 |
 | --- | --- | --- |
 | 量化研究 | “投资者情绪是否预测未来收益？” | 研究计划、文献与理论、模型设计、回归/组合实验、稳健性结果、评审报告 |
 | 上市公司研究 | “这家公司的增长质量、竞争力和估值如何？” | 财务质量、业务诊断、同业比较、相对估值、风险与证据附录 |
@@ -21,34 +21,34 @@ QuantResearchAgent 面向券商研究所、上市公司研究和管理咨询场�
 | 行业与市场策略 | “行业景气变化会影响哪些公司和指标？” | 驱动因素、情景假设、监测指标、影响路径与研究结论 |
 | 事件研究 | “政策或公司事件带来了什么短中期影响？” | 事件窗口、对照基准、异常表现、机制解释与局限性 |
 
-用户可以在输入层指定：**公司 / 证券代码、研究主题、截止日期、数据范围、是否需要辩论，以及期望的报告类型**。平台根据任务类型选择研究路线，最终仍汇总为统一、可复核的交付物。
+标准化任务输入覆盖研究对象、证券代码、研究主题、评估截止日、数据范围、辩论开关与交付类型。Intent Router 据此分发至对应服务线，并将研究产物汇总为统一 Schema 下的可审计交付物。
 
-## 从委托到交付
+## 研究与咨询工作流
 
 <p align="center">
   <img src="docs/assets/workflow-4x3.svg" width="880" alt="QuantResearchAgent 业务研究工作流" />
 </p>
 
-七个核心 Node 各自只读取 `ResearchState` 并返回结构化增量，Node 之间不直接调用。研究委员会决定通过或修改；需要修改时，Revision Router 会把任务送回模型、数据或实验节点，并通过修改次数上限防止无限循环。
+七个核心 Node 各自读取 `ResearchState` 并返回结构化增量，节点之间不直接调用。Research Committee 对研究结论作出批准或修订决定；Revision Router 根据问题类型返回模型、数据或实验节点，修改次数上限用于保证流程可终止。
 
-公司研究和咨询任务共享同一套证据、分析、Debate Gate、委员会评审与报告能力。业务上的“质量控制”，在系统中被翻译为可执行规则：
+公司研究与咨询任务复用证据管理、分析引擎、Debate Gate、委员会评审和报告生成能力。研究质量要求在系统中映射为以下可执行约束：
 
-| 业务要求 | 系统机制 |
+| 研究质量要求 | 系统机制 |
 | --- | --- |
-| 观点必须有出处 | EvidenceRecord、页级证据 ID、文档哈希与截止日 |
-| 数字不能由模型编造 | Data Preparation 与 Experiment 使用确定性代码执行 |
-| 重大结论需要反方挑战 | Debate Gate 根据复杂度和风险决定是否进入辩论 |
-| 报告不过审需要返工 | Decision Router + Revision Router 定向返回问题节点 |
-| 项目不能无限讨论 | Moderator 与 `max_revisions` 控制辩论和修改次数 |
-| 管理层需要行动方案 | 报告输出风险矩阵、Owner、Timeline、KPI 与证据附录 |
+| 结论可追溯 | EvidenceRecord、页级证据 ID、文档哈希与评估截止日 |
+| 数值可复现 | Data Preparation 与 Experiment 由确定性代码执行 |
+| 重大判断接受对抗审查 | Debate Gate 根据复杂度与风险决定是否进入辩论 |
+| 研究缺陷闭环修订 | Decision Router 与 Revision Router 返回对应问题节点 |
+| 评审流程可终止 | Moderator、`max_debate_rounds` 与 `max_revisions` 约束循环次数 |
+| 建议具备可执行性 | 报告输出风险矩阵、Owner、Timeline、KPI 与证据附录 |
 
-## 业务场景 Demo：上市公司风险咨询
+## 案例：上市公司经营风险咨询
 
-**客户委托**
+**案例设定**
 
 > 基于截止日内公开信息，评估比亚迪的经营、财务、治理与外部风险。识别管理层应优先处理的问题，并形成可以进入风险委员会议程的行动建议。
 
-这个 Demo 会完成以下业务链路：
+案例覆盖以下研究与咨询链路：
 
 1. 将委托转化为公司、主题、截止日和交付目标；
 2. 登记年度报告、产销公告、担保公告、关联交易和外部风险证据；
@@ -72,7 +72,7 @@ Priority risks: 盈利质量与现金转化 / 销量与竞争压力 / 担保与�
 Deliverable: reports/advisory/byd_risk_advisory_demo.md
 ```
 
-该场景使用固定的公开披露证据快照，在离线测试环境中即可跑通完整闭环。它演示的是业务流程、证据约束与报告结构，不构成对示例公司的实时判断或投资建议。
+本案例使用固定的公开披露证据快照，在离线测试环境中复现完整工作流，用于展示证据约束、对抗评审与报告结构；案例结论不构成对示例公司的实时判断或投资建议。
 
 ## 快速开始
 
@@ -98,7 +98,7 @@ python3.11 -m venv .venv
 
 `main.py` 默认只编译 Graph，不访问网络，也不会产生模型调用。
 
-## 更多可运行场景
+## 示例场景
 
 以下 Demo 均可在离线测试环境中运行：
 
@@ -118,7 +118,7 @@ python3.11 -m venv .venv
 
 量化示例报告见 [reports/example_report.md](reports/example_report.md)。
 
-## 多模型 Provider
+## 模型接入与执行边界
 
 复制本地配置模板：
 
