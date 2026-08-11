@@ -57,6 +57,12 @@
 5. Moderator 区分“披露事实、合理推断和仍缺失的数据”；
 6. 输出管理层风险优先级、委员会综合判断和咨询报告。
 
+<p align="center">
+  <img src="docs/assets/byd-advisory-preview.svg" width="880" alt="比亚迪经营风险咨询报告预览" />
+</p>
+
+完整交付示例：[比亚迪公开信息风险咨询报告](reports/showcase/byd_risk_advisory.md)。报告包括 Partner View、影响×可能性二维矩阵、90 天行动路线、委员会争议处理及公开证据附录。
+
 运行方式：
 
 ```powershell

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">比亚迪经营风险咨询报告预览</title>
+  <desc id="desc">包含 Partner View、风险矩阵和九十天行动路线的咨询报告首页</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071a2b"/>
+      <stop offset="1" stop-color="#102f43"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#00111f" flood-opacity=".24"/>
+    </filter>
+    <style>
+      .sans { font-family: Inter, "Microsoft YaHei", "PingFang SC", Arial, sans-serif; }
+      .muted { fill: #9eb4c3; }
+      .ink { fill: #102a3a; }
+      .small { font-size: 15px; }
+      .body { font-size: 17px; }
+      .label { font-size: 13px; font-weight: 700; letter-spacing: 1.2px; }
+    </style>
+  </defs>
+  <rect width="1200" height="720" rx="24" fill="url(#bg)"/>
+  <circle cx="1114" cy="76" r="150" fill="#2cc9a3" opacity=".08"/>
+  <circle cx="76" cy="662" r="180" fill="#4b8ff7" opacity=".08"/>
+
+  <g class="sans">
+    <text x="56" y="54" class="label" fill="#48d9b5">MANAGEMENT RISK ADVISORY · SHOWCASE</text>
+    <text x="56" y="91" font-size="30" font-weight="700" fill="#ffffff">比亚迪股份有限公司</text>
+    <text x="56" y="119" font-size="16" class="muted">公开信息风险咨询报告 · 002594.SZ · 截止 2026-08-07</text>
+    <rect x="976" y="47" width="166" height="42" rx="21" fill="#173f50" stroke="#3d6878"/>
+    <text x="1059" y="73" text-anchor="middle" font-size="14" font-weight="700" fill="#dffaf3">COMMITTEE READY</text>
+
+    <rect x="40" y="146" width="710" height="214" rx="18" fill="#ffffff" filter="url(#shadow)"/>
+    <text x="68" y="179" class="label" fill="#158a72">PARTNER VIEW</text>
+    <text x="68" y="213" font-size="23" font-weight="700" class="ink">核心管理命题是经营压力的联动，而非单一指标波动</text>
+    <line x1="68" y1="231" x2="720" y2="231" stroke="#dbe6eb"/>
+    <circle cx="78" cy="259" r="5" fill="#16a085"/>
+    <text x="96" y="265" class="body ink">先管现金，再解释增长：建立季度现金转化桥接与营运资本归因。</text>
+    <circle cx="78" cy="298" r="5" fill="#f3a83b"/>
+    <text x="96" y="304" class="body ink">将销量与毛利放入同一情景，识别促销、结构和出口的二阶影响。</text>
+    <circle cx="78" cy="337" r="5" fill="#4b8ff7"/>
+    <text x="96" y="343" class="body ink">对担保敞口与海外合规设置阈值、台账和连续性预案。</text>
+
+    <rect x="772" y="146" width="388" height="214" rx="18" fill="#f5f9fb" filter="url(#shadow)"/>
+    <text x="798" y="179" class="label" fill="#516b7a">ENGAGEMENT SNAPSHOT</text>
+    <text x="798" y="221" font-size="38" font-weight="700" fill="#102a3a">4</text>
+    <text x="828" y="221" class="small" fill="#516b7a">项高优先级风险</text>
+    <text x="1000" y="221" font-size="38" font-weight="700" fill="#102a3a">6</text>
+    <text x="1030" y="221" class="small" fill="#516b7a">项公开证据</text>
+    <line x1="798" y1="242" x2="1134" y2="242" stroke="#d7e3e8"/>
+    <text x="798" y="274" class="small" fill="#516b7a">研究审查</text>
+    <rect x="899" y="254" width="128" height="28" rx="14" fill="#dff6ef"/>
+    <text x="963" y="273" text-anchor="middle" font-size="13" font-weight="700" fill="#11745f">DEBATE ENTERED</text>
+    <text x="798" y="315" class="small" fill="#516b7a">管理窗口</text>
+    <text x="899" y="315" class="small" font-weight="700" fill="#102a3a">30 / 60 / 90 天</text>
+    <text x="798" y="343" font-size="13" fill="#7d939f">公开披露 · 证据 ID · 置信度 · 可信边界</text>
+
+    <rect x="40" y="382" width="534" height="292" rx="18" fill="#ffffff" filter="url(#shadow)"/>
+    <text x="68" y="417" class="label" fill="#516b7a">IMPACT × LIKELIHOOD</text>
+    <text x="68" y="447" font-size="21" font-weight="700" class="ink">风险优先级二维矩阵</text>
+    <text x="182" y="480" class="small" fill="#516b7a">发生可能性 →</text>
+    <text x="64" y="551" class="small" fill="#516b7a" transform="rotate(-90 64 551)">潜在影响 →</text>
+    <rect x="106" y="493" width="206" height="72" rx="10" fill="#ffe2df"/>
+    <text x="122" y="518" font-size="14" font-weight="700" fill="#a83c35">HIGH / HIGH</text>
+    <text x="122" y="542" font-size="14" fill="#6c2925">现金转化 · 销量竞争</text>
+    <rect x="322" y="493" width="220" height="72" rx="10" fill="#fff0d8"/>
+    <text x="338" y="518" font-size="14" font-weight="700" fill="#9a6212">HIGH / MEDIUM</text>
+    <text x="338" y="542" font-size="14" fill="#6d4916">集团信用 · 海外合规</text>
+    <rect x="106" y="575" width="206" height="72" rx="10" fill="#eef4f7"/>
+    <text x="122" y="600" font-size="14" font-weight="700" fill="#53707e">MEDIUM / HIGH</text>
+    <text x="122" y="624" font-size="14" fill="#6d7f87">—</text>
+    <rect x="322" y="575" width="220" height="72" rx="10" fill="#e5f2f5"/>
+    <text x="338" y="600" font-size="14" font-weight="700" fill="#35697a">MEDIUM / MEDIUM</text>
+    <text x="338" y="624" font-size="14" fill="#385e69">关联交易 · 基础设施执行</text>
+
+    <rect x="596" y="382" width="564" height="292" rx="18" fill="#ffffff" filter="url(#shadow)"/>
+    <text x="624" y="417" class="label" fill="#516b7a">90-DAY ACTION ROADMAP</text>
+    <text x="624" y="447" font-size="21" font-weight="700" class="ink">Owner、Timeline 与 KPI</text>
+    <line x1="624" y1="467" x2="1132" y2="467" stroke="#dbe6eb"/>
+    <text x="624" y="495" class="label" fill="#158a72">30 DAYS</text>
+    <text x="708" y="495" class="small ink">CFO：现金桥接表 · 经营现金流/净利润</text>
+    <text x="708" y="520" class="small ink">销售：销量—毛利情景 · 渠道库存天数</text>
+    <line x1="624" y1="541" x2="1132" y2="541" stroke="#edf2f4"/>
+    <text x="624" y="568" class="label" fill="#d08a24">60 DAYS</text>
+    <text x="708" y="568" class="small ink">资金管理：担保敞口台账 · 压力测试覆盖率</text>
+    <line x1="624" y1="589" x2="1132" y2="589" stroke="#edf2f4"/>
+    <text x="624" y="616" class="label" fill="#4b70b5">90 DAYS</text>
+    <text x="708" y="616" class="small ink">合规 / CTO：连续性演练 · 投后评价机制</text>
+    <text x="624" y="649" font-size="13" fill="#7d939f">每项行动均关联证据、责任人、时间窗口与可监测指标</text>
+  </g>
+</svg>

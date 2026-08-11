@@ -11,11 +11,16 @@ class RiskAssessment(BaseModel):
     risk_id: str = Field(min_length=1)
     category: str = Field(min_length=1)
     severity: IssueSeverity
+    impact: IssueSeverity
+    likelihood: IssueSeverity
     observation: str = Field(min_length=1)
     implication: str = Field(min_length=1)
     evidence_ids: list[str] = Field(min_length=1)
     monitoring_indicators: list[str] = Field(min_length=1)
     mitigation_actions: list[str] = Field(min_length=1)
+    action_owner: str = Field(min_length=1)
+    timeline: str = Field(min_length=1)
+    kpis: list[str] = Field(min_length=1)
     confidence: float = Field(ge=0, le=1)
 
 

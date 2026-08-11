@@ -8,11 +8,13 @@ All notable changes to this project are documented in this file.
 
 - Business-facing listed-company risk-consulting demo with a decision summary.
 - Compact 4:3 workflow graphic covering intake, research, revision, evidence, and delivery.
+- Approved BYD risk-advisory showcase with a Partner View, two-dimensional risk matrix, and 90-day action roadmap.
 
 ### Changed
 
 - Reframed the README around client mandates, business outcomes, and consulting deliverables.
 - Described DeepSeek, Gemini, OpenAI-compatible providers, and the offline test environment without exposing test implementation details on the project landing page.
+- Extended risk-assessment contracts with impact, likelihood, accountable owner, timeline, and KPI fields.
 
 ## [0.1.0] - 2026-08-11
 

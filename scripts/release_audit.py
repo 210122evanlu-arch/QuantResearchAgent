@@ -22,6 +22,10 @@ REQUIRED_FILES = {
 }
 FORBIDDEN_EXACT = {".env", ".coverage", "coverage.xml"}
 FORBIDDEN_SUFFIXES = {".parquet", ".pq", ".xlsx", ".xls", ".pdf"}
+APPROVED_REPORTS = {
+    "reports/example_report.md",
+    "reports/showcase/byd_risk_advisory.md",
+}
 SECRET_PATTERNS = (
     re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b"),
     re.compile(r"\bAIza[A-Za-z0-9_-]{30,}\b"),
@@ -84,10 +88,7 @@ def audit(root: Path = ROOT) -> list[str]:
             errors.append(f"forbidden local artifact: {normalized}")
         if relative.suffix.lower() in FORBIDDEN_SUFFIXES:
             errors.append(f"unapproved binary/data artifact: {normalized}")
-        if (
-            normalized.startswith("reports/")
-            and normalized != "reports/example_report.md"
-        ):
+        if normalized.startswith("reports/") and normalized not in APPROVED_REPORTS:
             errors.append(f"generated report must stay ignored: {normalized}")
         if relative.suffix.lower() == ".csv":
             if not normalized.startswith("examples/data/"):
