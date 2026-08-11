@@ -1,0 +1,61 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers --strict-config"
+
+[tool.coverage.run]
+branch = true
+source = ["agents", "analysis_engines", "data_sources", "graph", "literature", "llm", "production", "schemas", "tools"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+exclude = [".venv", "reports"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["RUF001"]
+"examples/byd_risk_advisory_demo.py" = ["RUF001"]
+"examples/byd_live_consulting_report.py" = ["RUF001"]
+"scripts/build_byd_consulting_docx.py" = ["RUF001"]
+"scripts/build_company_research_docx.py" = ["RUF001"]
+"tools/advisory_report.py" = ["RUF001"]
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+show_error_codes = true
+exclude = ["^tests/"]
+
+[[tool.mypy.overrides]]
+module = ["statsmodels", "statsmodels.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["baostock", "baostock.*", "tushare", "tushare.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "graph.company_research",
+    "graph.debate",
+    "graph.debate_gate",
+    "graph.workflow",
+]
+disable_error_code = ["arg-type", "call-overload", "type-var"]

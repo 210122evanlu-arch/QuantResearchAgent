@@ -1,0 +1,17 @@
+langgraph>=0.2
+langchain-openai>=0.3
+google-genai>=2.16
+pydantic>=2.0
+python-dotenv>=1.0
+pandas>=2.0
+openpyxl>=3.1
+pyarrow>=16.0
+numpy>=1.26
+scipy>=1.11
+statsmodels>=0.14
+baostock>=0.8.9
+tushare>=1.4.29
+requests>=2.32
+pypdf>=5.0
+python-docx>=1.1
+Pillow>=10.0
