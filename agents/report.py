@@ -29,7 +29,8 @@ def _canonicalize_digest_value(value: Any) -> Any:
     if isinstance(value, list):
         return [_canonicalize_digest_value(item) for item in value]
     if isinstance(value, float):
-        return format(value, ".12g")
+        # Match the precision used in the report's disclosed numeric tables.
+        return format(value, ".8g")
     return value
 
 
