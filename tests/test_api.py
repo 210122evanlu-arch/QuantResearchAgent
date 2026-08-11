@@ -83,3 +83,34 @@ def test_unknown_job_returns_404(tmp_path: Path) -> None:
             assert response.status_code == 404
 
     asyncio.run(scenario())
+
+
+def test_event_analysis_endpoint_returns_refresh_decision(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        async with await _client(create_app(report_directory=tmp_path)) as client:
+            response = await client.post(
+                "/v1/events/analyze",
+                json={
+                    "company_name": "示例股份",
+                    "security_code": "600000.SH",
+                    "as_of_date": "2026-08-10",
+                    "report_as_of_date": "2026-08-01",
+                    "evidence": [
+                        {
+                            "evidence_id": "E1",
+                            "source_type": "company_announcement",
+                            "title": "2026年度业绩预告：利润下降",
+                            "source_name": "CNInfo",
+                            "url": "https://example.test/E1",
+                            "published_at": "2026-08-08T00:00:00Z",
+                            "retrieved_at": "2026-08-10T00:00:00Z",
+                            "summary": "利润下降。",
+                        }
+                    ],
+                },
+            )
+            assert response.status_code == 200
+            assert response.json()["action"] == "refresh_report"
+            assert response.json()["trigger_event_ids"]
+
+    asyncio.run(scenario())

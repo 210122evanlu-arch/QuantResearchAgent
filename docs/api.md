@@ -16,6 +16,7 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 | --- | --- | --- |
 | `GET` | `/health` | Liveness check |
 | `GET` | `/v1/capabilities` | Enabled and planned service lines |
+| `POST` | `/v1/events/analyze` | Deduplicate events and decide whether research must be refreshed |
 | `POST` | `/v1/jobs` | Validate and submit a standardized research request |
 | `GET` | `/v1/jobs/{job_id}` | Read lifecycle status, summary, or failure reason |
 | `GET` | `/v1/jobs/{job_id}/report` | Download a completed Markdown report |

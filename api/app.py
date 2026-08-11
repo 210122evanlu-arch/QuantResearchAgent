@@ -10,7 +10,9 @@ from api.service import JobRunner, ResearchJobService
 from examples.business_risk_consulting_demo import run_business_risk_consulting_demo
 from examples.moutai_company_research_demo import run_moutai_company_research_demo
 from schemas.enums import TaskType
+from schemas.events import EventAnalysisRequest, EventIntelligenceResult
 from schemas.platform import ResearchRequest
+from tools.event_intelligence import analyze_events
 
 
 def offline_showcase_runner(request: ResearchRequest, output: Path) -> dict[str, str]:
@@ -62,6 +64,16 @@ def create_app(
             )
             for task_type in TaskType
         ]
+
+    @app.post(
+        "/v1/events/analyze",
+        response_model=EventIntelligenceResult,
+        tags=["event intelligence"],
+    )
+    def analyze_event_evidence(
+        request: EventAnalysisRequest,
+    ) -> EventIntelligenceResult:
+        return analyze_events(request)
 
     @app.post(
         "/v1/jobs",

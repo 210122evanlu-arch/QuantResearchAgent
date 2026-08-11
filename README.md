@@ -70,6 +70,8 @@
 | 比亚迪 | 经营风险咨询 | 风险联动、管理优先级、缓释动作 | Partner View、二维矩阵、Owner / Timeline / KPI |
 | 贵州茅台 | 上市公司研究 | 财务质量、竞争优势、同业与估值框架 | 指标快照、商业模式、催化与风险、证据附录 |
 
+事件情报案例：[公告与新闻研究更新提示](reports/showcase/event_intelligence_showcase.md)。该链路对公告和新闻元数据进行去重、分类与重大性判断；正式披露可触发报告更新或委员会复核，未经原始证据确认的新闻只进入观察清单。
+
 运行方式：
 
 ```powershell
@@ -119,6 +121,8 @@ python3.11 -m venv .venv
 
 服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询与贵州茅台公司研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
 
+`POST /v1/events/analyze` 接受 EvidenceRecord 列表，返回事件指纹、重复项数量、重大性、影响方向、受影响报告章节和研究更新动作。
+
 接口定义与请求示例见 [Research Jobs API](docs/api.md)。
 
 ## 示例场景
@@ -140,6 +144,9 @@ python3.11 -m venv .venv
 
 # 独立的 Debate Gate 与多轮观点审查
 .\.venv\Scripts\python.exe -m examples.debate_workflow_demo
+
+# 公告 + 新闻元数据：去重、事件分类与报告更新触发
+.\.venv\Scripts\python.exe -m examples.event_intelligence_demo
 ```
 
 量化示例报告见 [reports/example_report.md](reports/example_report.md)。
@@ -183,6 +190,7 @@ Provider 层支持：
 - **Tushare Pro**：可选适配器，不是默认依赖；
 - **CSV / Parquet**：支持本地研究面板和持牌数据的合规接入；
 - **PDF Evidence Pipeline**：文件类型、大小、SHA-256、逐页文本与稳定证据 ID。
+- **Event Intelligence**：CNInfo 公告与可配置 RSS/Atom 新闻源，提供事件去重、重大性分级和报告更新触发。
 
 真实公开数据 Demo：
 
@@ -228,6 +236,7 @@ QuantResearchAgent/
 - [报告与证据规则](docs/reporting.md)
 - [实验引擎](docs/experiment_engine.md)
 - [Research Jobs API](docs/api.md)
+- [事件情报与研究更新](docs/event_intelligence.md)
 
 ## 可信边界
 

@@ -26,6 +26,7 @@ APPROVED_REPORTS = {
     "reports/example_report.md",
     "reports/showcase/byd_risk_advisory.md",
     "reports/showcase/moutai_company_research.md",
+    "reports/showcase/event_intelligence_showcase.md",
 }
 SECRET_PATTERNS = (
     re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b"),

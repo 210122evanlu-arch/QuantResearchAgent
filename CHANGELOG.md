@@ -11,6 +11,8 @@ All notable changes to this project are documented in this file.
 - Approved BYD risk-advisory showcase with a Partner View, two-dimensional risk matrix, and 90-day action roadmap.
 - Cross-industry Moutai company-research showcase using official filing and exchange evidence locators.
 - FastAPI research-job layer with capability discovery, lifecycle status, and report download endpoints.
+- Disclosure and RSS/Atom event-intelligence pipeline with deduplication, materiality classification, and research-refresh decisions.
+- Event watchlist showcase and `/v1/events/analyze` API endpoint.
 
 ### Changed
 
