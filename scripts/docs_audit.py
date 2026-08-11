@@ -101,14 +101,13 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
         "README.md": (
             QUALITY_COMMAND,
             "docs/capability_status.md",
-            "API 契约版本为 `0.3.0`",
         ),
         "CONTRIBUTING.md": (
             QUALITY_COMMAND,
             "python.exe -m evals.release_benchmark",
             "python.exe scripts\\docs_audit.py",
         ),
-        "docs/release_status.md": ("API contract: 0.3.0",),
+        "docs/release_status.md": ("API contract:",),
         "CHANGELOG.md": ("## [Unreleased]", "## [0.1.0]"),
         ".github/workflows/ci.yml": (
             f"run: mypy {MYPY_TARGETS}",
@@ -153,12 +152,15 @@ def audit_consistency(root: Path = ROOT) -> list[str]:
         app_text = app_path.read_text(encoding="utf-8")
         match = re.search(r'version="(?P<version>[^"]+)"', app_text)
         status_text = (root / "docs" / "release_status.md").read_text(encoding="utf-8")
-        if (
-            match is None
-            or f"API contract: {match.group('version')}" not in status_text
+        readme_text = (root / "README.md").read_text(encoding="utf-8")
+        if match is None:
+            errors.append("API contract version is missing from code")
+        elif (
+            f"API contract: {match.group('version')}" not in status_text
+            or f"API 契约版本为 `{match.group('version')}`" not in readme_text
         ):
             errors.append(
-                "API contract version differs between code and release status"
+                "API contract version differs between code, README, and release status"
             )
     if "\uff08后续\uff09" in (root / "ROADMAP.md").read_text(encoding="utf-8"):
         errors.append("ROADMAP uses ambiguous status '后续'; move work to Backlog")

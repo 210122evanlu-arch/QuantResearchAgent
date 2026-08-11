@@ -25,12 +25,13 @@
 | 量化研究 | “投资者情绪是否预测未来收益？” | 研究计划、文献与理论、模型设计、回归/组合实验、稳健性结果、评审报告 |
 | 上市公司研究 | “这家公司的增长质量、竞争力和估值如何？” | 财务质量、业务诊断、同业比较、相对估值、风险与证据附录 |
 | 经营风险咨询 | “哪些风险应进入管理层未来 90 天议程？” | 风险优先级矩阵、关键争议、缓释措施、Owner、Timeline 与 KPI |
-| 行业与市场策略 | “行业景气变化会影响哪些公司和指标？” | 驱动因素、情景假设、监测指标、影响路径与研究结论 |
+| 行业研究 | “高端白酒上市公司呈现怎样的经营分化？” | 产业链、需求与竞争格局、同业对照、情景矩阵、监测指标 |
+| 市场策略 | “市场环境变化会影响哪些公司和指标？” | 驱动因素、情景假设、监测指标、影响路径与研究结论 |
 | 事件研究 | “政策或公司事件带来了什么短中期影响？” | 事件窗口、对照基准、异常表现、机制解释与局限性 |
 
 标准化任务输入覆盖研究对象、证券代码、研究主题、评估截止日、数据范围、辩论开关与交付类型。Intent Router 据此分发至对应服务线，并将研究产物汇总为统一 Schema 下的可审计交付物。
 
-六条服务线均已具备标准化输入与路由契约，但交付成熟度并不相同：量化研究、上市公司研究与经营风险咨询已有端到端案例；行业研究、市场策略与统计事件研究仍以路由和模板能力为主。完整边界见[能力成熟度说明](docs/capability_status.md)。
+六条服务线均已具备标准化输入与路由契约，但交付成熟度并不相同：量化研究、上市公司研究、行业研究与经营风险咨询已有端到端案例；市场策略与统计事件研究仍以路由和模板能力为主。完整边界见[能力成熟度说明](docs/capability_status.md)。
 
 ## 研究与咨询工作流
 
@@ -78,6 +79,9 @@
 | --- | --- | --- | --- |
 | 比亚迪 | 经营风险咨询 | 风险联动、管理优先级、缓释动作 | Partner View、二维矩阵、Owner / Timeline / KPI |
 | 贵州茅台 | 上市公司研究 | 财务质量、竞争优势、同业与估值框架 | 指标快照、商业模式、催化与风险、证据附录 |
+| 高端白酒 | 行业研究 | 产业结构、龙头经营分化、需求与渠道情景 | 产业链、有限同业对照、三情景矩阵、监测指标 |
+
+行业研究案例：[高端白酒上市公司经营分化与情景研究](reports/showcase/baijiu_industry_research.md)。案例调用独立的 Industry Analysis、Peer Benchmarking 和 Scenario Analysis 引擎，并经过行业研究委员会与返工次数保护。样本边界明确限定为贵州茅台与泸州老窖的公开信息快照，不将两家公司对照包装为全行业排名。
 
 事件情报案例：[公告与新闻研究更新提示](reports/showcase/event_intelligence_showcase.md)。该链路对公告和新闻元数据进行去重、分类与重大性判断；正式披露可触发报告更新或委员会复核，未经原始证据确认的新闻只进入观察清单。
 
@@ -130,7 +134,7 @@ python3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m uvicorn api.app:app --host 127.0.0.1 --port 8000
 ```
 
-服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询与贵州茅台公司研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
+服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询、贵州茅台公司研究与高端白酒行业研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
 
 `POST /v1/events/analyze` 接受 EvidenceRecord 列表，返回事件指纹、重复项数量、重大性、影响方向、受影响报告章节和研究更新动作。
 
@@ -149,6 +153,9 @@ python3.11 -m venv .venv
 
 # 跨行业公司研究案例：贵州茅台财务质量与估值框架
 .\.venv\Scripts\python.exe -m examples.moutai_company_research_demo
+
+# 行业研究：高端白酒经营分化、同业对照与三情景矩阵
+.\.venv\Scripts\python.exe -m examples.baijiu_industry_research_demo
 
 # 六类研究与咨询服务线的输入路由
 .\.venv\Scripts\python.exe -m examples.platform_routing_demo
@@ -285,12 +292,12 @@ QuantResearchAgent/
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock
 ```
 
-GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与五份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
+GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与六份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
 
 ## 发布与贡献
 
 - 当前公开 Release：[v0.2.0](https://github.com/210122evanlu-arch/QuantResearchAgent/releases/tag/v0.2.0)
-- `main` 分支基线与 `v0.2.0` 对齐；后续变化记录在 `CHANGELOG.md` 的 Unreleased 部分。API 契约版本为 `0.3.0`，不等同于项目 Release 版本
+- `main` 分支包含 `v0.2.0` 之后的 Unreleased 变化。API 契约版本为 `0.4.0`，不等同于项目 Release 版本
 - 版本口径：[版本与接口状态](docs/release_status.md)
 - 开发路线：[ROADMAP.md](ROADMAP.md)
 - 更新记录：[CHANGELOG.md](CHANGELOG.md)

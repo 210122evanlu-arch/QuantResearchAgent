@@ -33,6 +33,7 @@ APPROVED_REPORTS = {
     "reports/example_report.md",
     "reports/showcase/byd_risk_advisory.md",
     "reports/showcase/moutai_company_research.md",
+    "reports/showcase/baijiu_industry_research.md",
     "reports/showcase/event_intelligence_showcase.md",
     "reports/showcase/momentum_factor_research.md",
     "reports/showcase/dcf_sensitivity_showcase.md",

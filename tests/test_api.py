@@ -31,7 +31,11 @@ def test_health_and_capability_discovery(tmp_path: Path) -> None:
             assert (await client.get("/health")).json()["status"] == "ok"
             capabilities = (await client.get("/v1/capabilities")).json()
             enabled = {item["task_type"] for item in capabilities if item["enabled"]}
-            assert enabled == {"company_research", "corporate_advisory"}
+            assert enabled == {
+                "company_research",
+                "industry_research",
+                "corporate_advisory",
+            }
             metrics = (await client.get("/v1/operations/metrics")).json()
             assert metrics["total_jobs"] == 0
             assert metrics["completion_rate"] == 0
@@ -80,6 +84,32 @@ def test_unsupported_offline_scope_is_recorded_as_failed(tmp_path: Path) -> None
             assert "offline showcase supports" in job["error"]
             response = await client.get(f"/v1/jobs/{job_id}/report")
             assert response.status_code == 409
+
+    asyncio.run(scenario())
+
+
+def test_submit_industry_research_and_download_report(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        async with await _client(create_app(report_directory=tmp_path)) as client:
+            submitted = await client.post(
+                "/v1/jobs",
+                json={
+                    "task_type": TaskType.INDUSTRY_RESEARCH.value,
+                    "question": "研究高端白酒行业的经营分化与情景。",
+                    "industries": ["中国高端白酒"],
+                    "as_of_date": "2026-08-08",
+                },
+            )
+            assert submitted.status_code == 202
+            job_id = submitted.json()["job_id"]
+            job = (await client.get(f"/v1/jobs/{job_id}")).json()
+            assert job["status"] == JobStatus.COMPLETED
+            assert job["summary"]["deliverable"] == "industry_research"
+
+            report = await client.get(f"/v1/jobs/{job_id}/report")
+            assert report.status_code == 200
+            assert "## 情景矩阵" in report.text
+            assert "仅覆盖两家公司" in report.text
 
     asyncio.run(scenario())
 

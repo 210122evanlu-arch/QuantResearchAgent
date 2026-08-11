@@ -19,6 +19,10 @@ from schemas.debate import (
     ProponentCase,
 )
 from schemas.experiment import ExperimentResult
+from schemas.industry_research import (
+    IndustryResearchReport,
+    IndustryResearchReviewResult,
+)
 from schemas.literature import RetrievedPaper
 from schemas.model_design import ModelDesign
 from schemas.platform import AnalysisBundle, ResearchRequest, WorkflowSelection
@@ -36,6 +40,8 @@ class ResearchState(TypedDict, total=False):
     risk_profile: CompanyRiskProfile
     company_research_report: CompanyResearchReport
     company_research_review: CompanyResearchReviewResult
+    industry_research_report: IndustryResearchReport
+    industry_research_review: IndustryResearchReviewResult
     company_data: CompanyPublicDataPackage
     peer_company_data: list[CompanyPublicDataPackage]
     company_filing_extraction: FilingExtractionResult

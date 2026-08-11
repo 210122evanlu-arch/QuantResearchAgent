@@ -11,12 +11,12 @@ and executor is production-ready.
 | Listed-company research | End-to-end offline showcase | Public-data package, filing evidence, company analysis engines, committee review, DCF/relative valuation, Moutai report, injectable API runner |
 | Corporate advisory | End-to-end offline showcase | Risk register, Debate Gate, committee challenge, priority matrix, Owner/Timeline/KPI roadmap, BYD report, injectable API runner |
 | Event intelligence | Implemented supporting capability | Announcement/news deduplication, materiality assessment, watchlist and report-refresh decision; this is separate from a statistical event-study executor |
-| Industry research | Route contract and template | Standardised intake, method selection and report template; dedicated data/execution workflow remains planned |
+| Industry research | End-to-end offline showcase | Industry, peer, and scenario engines; committee revision loop; three-scenario matrix; bounded high-end baijiu report; injectable API runner |
 | Market strategy | Route contract and template | Standardised intake, regime/scenario method selection and report template; dedicated data/execution workflow remains planned |
 | Event study | Route contract and template | Standardised intake and method selection; abnormal-return estimation and an approved end-to-end report remain planned |
 
-The bundled HTTP executor currently enables the Moutai company-research and BYD
-corporate-advisory showcases. Other workflows can be injected behind the same API
+The bundled HTTP executor currently enables the Moutai company-research, high-end
+baijiu industry-research, and BYD corporate-advisory showcases. Other workflows can be injected behind the same API
 contract as their data licences and execution policies are approved.
 
 “Offline showcase” means deterministic fixtures or frozen public-evidence snapshots

@@ -14,11 +14,12 @@
 | --- | --- | --- |
 | 经营风险咨询 | [比亚迪公开信息风险咨询](../reports/showcase/byd_risk_advisory.md) | Partner View、二维风险矩阵、90 天行动路线、Owner/Timeline/KPI、证据附录 |
 | 上市公司研究 | [贵州茅台公司深度研究](../reports/showcase/moutai_company_research.md) | 财务质量、竞争位置、同业比较、估值框架、委员会意见 |
+| 行业研究 | [高端白酒行业研究](../reports/showcase/baijiu_industry_research.md) | 产业链、龙头经营分化、三情景矩阵、监测指标与证据边界 |
 | 量化研究 | [动量因子研究](../reports/showcase/momentum_factor_research.md) | 固定效应回归、交易成本后回测、风险收益指标与研究边界 |
 | 估值分析 | [DCF 敏感性分析](../reports/showcase/dcf_sensitivity_showcase.md) | 显式现金流假设、企业价值、股权价值、WACC×永续增长矩阵 |
 | 事件情报 | [公告与新闻更新提示](../reports/showcase/event_intelligence_showcase.md) | 去重、重大性判断、观察清单与报告更新决策 |
 
-行业研究、市场策略和统计事件研究已经具备输入、路由和模板契约，但尚未包装成端到端交付。具体成熟度见[能力状态表](capability_status.md)。
+市场策略和统计事件研究已经具备输入、路由和模板契约，但尚未包装成端到端交付。具体成熟度见[能力状态表](capability_status.md)。
 
 ## 技术与研究设计亮点
 
@@ -33,12 +34,12 @@
 
 - Python 3.11，Pydantic Structured Output，LangGraph，pandas/statsmodels，FastAPI。
 - DeepSeek、Gemini 和 OpenAI 兼容 Provider；离线环境不需要 API Key。
-- 246 项自动化测试，分支覆盖率 86.04%，六条服务线与五份报告的 11/11 发布评测。
+- 252 项自动化测试，总覆盖率 85.94%，六条服务线与六份报告的 12/12 发布评测。
 - Ruff、mypy、pytest、依赖漏洞审计、密钥/数据发布审计和文档一致性审计统一进入 GitHub Actions。
 
 ## 面试中的 60 秒介绍
 
-> 我设计的不是一个直接回答金融问题的聊天机器人，而是一套研究生产流程。用户提交量化课题、公司研究或风险咨询委托后，系统先结构化研究目标和证据范围，再由模型设计、数据准备和确定性分析引擎完成研究。结论必须经过 Research Committee；发现模型、数据或实验问题时，LangGraph 会定向返回相应节点修改。项目还加入 Debate Gate、证据 ID、截止日控制、回测和估值引擎、专业报告模板，以及 API、评测和运行诊断。目前已经用 IVOL、动量、贵州茅台和比亚迪等不同案例验证平台并不依赖单一研究主题。
+> 我设计的不是一个直接回答金融问题的聊天机器人，而是一套研究生产流程。用户提交量化课题、公司研究、行业研究或风险咨询委托后，系统先结构化研究目标和证据范围，再由模型设计、数据准备和确定性分析引擎完成研究。结论必须经过 Research Committee；发现模型、数据或实验问题时，LangGraph 会定向返回相应节点修改。项目还加入 Debate Gate、证据 ID、截止日控制、回测和估值引擎、专业报告模板，以及 API、评测和运行诊断。目前已经用 IVOL、动量、贵州茅台、白酒行业和比亚迪等不同案例验证平台并不依赖单一研究主题。
 
 ## 可信边界
 

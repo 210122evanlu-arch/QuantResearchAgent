@@ -4,6 +4,16 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- End-to-end industry-research workflow with dedicated schemas, synthesis, committee review, targeted revision routing, and loop protection.
+- High-end baijiu industry showcase combining industry structure, bounded peer comparison, three explicit scenarios, monitoring indicators, and evidence appendix.
+- Industry-research execution through the bundled Research Jobs API and release evaluation.
+
+### Changed
+
+- Advanced the FastAPI/OpenAPI contract to 0.4.0 and enabled the bundled industry-research showcase.
+
 ## [0.2.0] - 2026-08-11
 
 ### Added

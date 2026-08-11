@@ -14,7 +14,7 @@ from schemas.enums import AnalysisMethod, TaskType
 from schemas.platform import ResearchRequest
 
 ROOT = Path(__file__).resolve().parents[1]
-BENCHMARK_VERSION = "1.0"
+BENCHMARK_VERSION = "1.1"
 
 
 @dataclass(frozen=True)
@@ -119,6 +119,17 @@ SHOWCASE_CASES = (
         "company_research",
         "reports/showcase/moutai_company_research.md",
         ("## 执行摘要", "## 财务质量", "## 估值框架与同业比较", "## 研究委员会"),
+        2_500,
+    ),
+    ShowcaseCase(
+        "industry_research",
+        "reports/showcase/baijiu_industry_research.md",
+        (
+            "## 产业链与价值分配",
+            "## 需求、供给与竞争格局",
+            "## 情景矩阵",
+            "## 局限性与适用边界",
+        ),
         2_500,
     ),
     ShowcaseCase(

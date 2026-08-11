@@ -12,6 +12,11 @@ from schemas.debate import (
 )
 from schemas.events import EventAnalysisRequest, EventIntelligenceResult, ResearchEvent
 from schemas.experiment import ExperimentResult
+from schemas.industry_research import (
+    IndustryResearchReport,
+    IndustryResearchReviewResult,
+    IndustryScenario,
+)
 from schemas.literature import RetrievedPaper
 from schemas.model_design import ModelDesign
 from schemas.platform import (
@@ -45,6 +50,9 @@ __all__ = [
     "EvidenceRecord",
     "ExperimentResult",
     "FinalReport",
+    "IndustryResearchReport",
+    "IndustryResearchReviewResult",
+    "IndustryScenario",
     "ModelDesign",
     "ModeratorAssessment",
     "ProponentCase",

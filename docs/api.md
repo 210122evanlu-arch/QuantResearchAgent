@@ -36,7 +36,7 @@ Interactive OpenAPI documentation is available at `http://127.0.0.1:8000/docs`.
 }
 ```
 
-The bundled offline executor supports the BYD corporate-advisory and Moutai company-research showcases. In this endpoint, `enabled=false` means that the bundled HTTP runner does not execute that service line; it does not mean the platform lacks an intake route or report template. See [Capability maturity](capability_status.md). `create_app(runner=...)` accepts an injected runner for production workflows, licensed data, or an external queue. The HTTP contract and job lifecycle remain unchanged.
+The bundled offline executor supports the BYD corporate-advisory, Moutai company-research, and high-end baijiu industry-research showcases. In this endpoint, `enabled=false` means that the bundled HTTP runner does not execute that service line; it does not mean the platform lacks an intake route or report template. See [Capability maturity](capability_status.md). `create_app(runner=...)` accepts an injected runner for production workflows, licensed data, or an external queue. The HTTP contract and job lifecycle remain unchanged.
 
 Jobs expose start/completion timestamps, execution duration, and a stable failure category. Error messages are bounded and credential-shaped values are redacted before they enter API responses or logs. See [Operations and failure diagnostics](operations.md).
 

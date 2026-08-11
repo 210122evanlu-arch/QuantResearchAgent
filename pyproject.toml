@@ -27,8 +27,10 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["RUF001"]
+"agents/industry_research.py" = ["RUF001"]
 "examples/byd_risk_advisory_demo.py" = ["RUF001"]
 "examples/moutai_company_research_demo.py" = ["RUF001"]
+"examples/baijiu_industry_research_demo.py" = ["RUF001"]
 "examples/momentum_factor_demo.py" = ["RUF001"]
 "examples/dcf_valuation_demo.py" = ["RUF001"]
 "examples/event_intelligence_demo.py" = ["RUF001"]
@@ -37,6 +39,7 @@ ignore = ["E501"]
 "scripts/build_company_research_docx.py" = ["RUF001"]
 "tools/advisory_report.py" = ["RUF001"]
 "tools/company_research_report.py" = ["RUF001"]
+"tools/industry_research_report.py" = ["RUF001"]
 "tools/event_report.py" = ["RUF001"]
 "tools/event_intelligence.py" = ["RUF001"]
 
@@ -61,6 +64,7 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = [
     "graph.company_research",
+    "graph.industry_research",
     "graph.debate",
     "graph.debate_gate",
     "graph.workflow",

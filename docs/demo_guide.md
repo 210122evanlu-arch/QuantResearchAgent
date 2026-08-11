@@ -32,6 +32,16 @@ Open `reports/advisory/byd_risk_advisory_demo.md`, then compare it with the appr
 View, risk matrix, action owners, timeline, KPIs, committee challenge, and evidence
 appendix.
 
+For an industry-research alternative, run:
+
+```powershell
+.\.venv\Scripts\python.exe -m examples.baijiu_industry_research_demo
+```
+
+Open `reports/industry_research/baijiu_industry_research_demo.md` and highlight the
+value chain, bounded peer snapshot, scenario triggers, monitoring indicators, and
+explicit statement that two companies do not constitute a full industry census.
+
 ## 4. Demonstrate engineering controls
 
 ```powershell
@@ -40,15 +50,15 @@ appendix.
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Explain that the release benchmark protects six routing contracts and five showcase
+Explain that the release benchmark protects six routing contracts and six showcase
 deliverables, while the documentation audit prevents broken links, version drift,
 and inconsistent quality commands.
 
 ## 5. Close with the boundary
 
 Open [Capability maturity](capability_status.md). State clearly that quantitative
-research, company research, and corporate advisory have end-to-end showcases;
-industry research, market strategy, and statistical event study currently have
+research, company research, industry research, and corporate advisory have
+end-to-end showcases; market strategy and statistical event study currently have
 route/template contracts and remain expansion work.
 
 Live Provider calls and public-data refreshes are optional follow-up demonstrations.

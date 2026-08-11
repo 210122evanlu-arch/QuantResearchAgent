@@ -13,6 +13,7 @@ from api.schemas import (
     ResearchJob,
 )
 from api.service import JobRunner, ResearchJobService
+from examples.baijiu_industry_research_demo import run_baijiu_industry_research_demo
 from examples.business_risk_consulting_demo import run_business_risk_consulting_demo
 from examples.moutai_company_research_demo import run_moutai_company_research_demo
 from schemas.enums import TaskType
@@ -38,8 +39,18 @@ def offline_showcase_runner(request: ResearchRequest, output: Path) -> dict[str,
             "company": result["company_research_report"].company_name,
             "deliverable": "company_research",
         }
+    industry_scope = " ".join(request.industries).lower()
+    if request.task_type == TaskType.INDUSTRY_RESEARCH and (
+        "白酒" in industry_scope or "baijiu" in industry_scope
+    ):
+        result = run_baijiu_industry_research_demo(output)
+        return {
+            "industry": result["industry_research_report"].industry_name,
+            "deliverable": "industry_research",
+        }
     raise ValueError(
-        "offline showcase supports BYD corporate_advisory and Moutai company_research"
+        "offline showcase supports BYD corporate_advisory, Moutai company_research, "
+        "and high-end baijiu industry_research"
     )
 
 
@@ -49,7 +60,7 @@ def create_app(
 ) -> FastAPI:
     app = FastAPI(
         title="QuantResearchAgent API",
-        version="0.3.0",
+        version="0.4.0",
         description="Submit evidence-grounded research jobs and retrieve reports.",
     )
     service = ResearchJobService(runner or offline_showcase_runner, report_directory)
@@ -69,7 +80,11 @@ def create_app(
 
     @app.get("/v1/capabilities", response_model=list[Capability], tags=["research"])
     def capabilities() -> list[Capability]:
-        enabled = {TaskType.COMPANY_RESEARCH, TaskType.CORPORATE_ADVISORY}
+        enabled = {
+            TaskType.COMPANY_RESEARCH,
+            TaskType.INDUSTRY_RESEARCH,
+            TaskType.CORPORATE_ADVISORY,
+        }
         return [
             Capability(
                 task_type=task_type,
