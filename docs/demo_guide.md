@@ -42,6 +42,17 @@ Open `reports/industry_research/baijiu_industry_research_demo.md` and highlight 
 value chain, bounded peer snapshot, scenario triggers, monitoring indicators, and
 explicit statement that two companies do not constitute a full industry census.
 
+To demonstrate the bridge from disclosure intelligence to statistical research:
+
+```powershell
+.\.venv\Scripts\python.exe -m examples.byd_event_study_demo
+```
+
+Open `reports/event_study/byd_event_study_demo.md`. Show the pre-declared windows,
+market-model parameters, daily abnormal returns, CAR significance, contamination
+check, and the explicit separation between real disclosure evidence and fixture
+returns.
+
 ## 4. Demonstrate engineering controls
 
 ```powershell
@@ -50,16 +61,16 @@ explicit statement that two companies do not constitute a full industry census.
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Explain that the release benchmark protects six routing contracts and six showcase
+Explain that the release benchmark protects six routing contracts and seven showcase
 deliverables, while the documentation audit prevents broken links, version drift,
 and inconsistent quality commands.
 
 ## 5. Close with the boundary
 
 Open [Capability maturity](capability_status.md). State clearly that quantitative
-research, company research, industry research, and corporate advisory have
-end-to-end showcases; market strategy and statistical event study currently have
-route/template contracts and remain expansion work.
+research, company research, industry research, statistical event study, and
+corporate advisory have end-to-end showcases; market strategy currently has a
+route/template contract and remains expansion work.
 
 Live Provider calls and public-data refreshes are optional follow-up demonstrations.
 They should only be used when credentials, quota, cutoff dates, and network access

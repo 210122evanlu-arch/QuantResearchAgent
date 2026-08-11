@@ -18,6 +18,11 @@ from schemas.debate import (
     ModeratorAssessment,
     ProponentCase,
 )
+from schemas.event_study import (
+    EventStudyReport,
+    EventStudyResult,
+    EventStudyReviewResult,
+)
 from schemas.experiment import ExperimentResult
 from schemas.industry_research import (
     IndustryResearchReport,
@@ -62,6 +67,9 @@ class ResearchState(TypedDict, total=False):
     model_design: ModelDesign
     data_profile: DataProfile
     experiment_result: ExperimentResult
+    event_study_result: EventStudyResult
+    event_study_report: EventStudyReport
+    event_study_review: EventStudyReviewResult
     review_result: ReviewResult
     final_report: FinalReport
     report_markdown_path: str

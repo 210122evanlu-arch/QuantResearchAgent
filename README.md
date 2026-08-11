@@ -27,11 +27,11 @@
 | 经营风险咨询 | “哪些风险应进入管理层未来 90 天议程？” | 风险优先级矩阵、关键争议、缓释措施、Owner、Timeline 与 KPI |
 | 行业研究 | “高端白酒上市公司呈现怎样的经营分化？” | 产业链、需求与竞争格局、同业对照、情景矩阵、监测指标 |
 | 市场策略 | “市场环境变化会影响哪些公司和指标？” | 驱动因素、情景假设、监测指标、影响路径与研究结论 |
-| 事件研究 | “政策或公司事件带来了什么短中期影响？” | 事件窗口、对照基准、异常表现、机制解释与局限性 |
+| 事件研究 | “政策或公司事件带来了什么短中期影响？” | 事件窗口、市场模型、AR/CAR、显著性、污染检查与局限性 |
 
 标准化任务输入覆盖研究对象、证券代码、研究主题、评估截止日、数据范围、辩论开关与交付类型。Intent Router 据此分发至对应服务线，并将研究产物汇总为统一 Schema 下的可审计交付物。
 
-六条服务线均已具备标准化输入与路由契约，但交付成熟度并不相同：量化研究、上市公司研究、行业研究与经营风险咨询已有端到端案例；市场策略与统计事件研究仍以路由和模板能力为主。完整边界见[能力成熟度说明](docs/capability_status.md)。
+六条服务线均已具备标准化输入与路由契约，但交付成熟度并不相同：量化研究、上市公司研究、行业研究、统计事件研究与经营风险咨询已有端到端案例；市场策略仍以路由和模板能力为主。完整边界见[能力成熟度说明](docs/capability_status.md)。
 
 ## 研究与咨询工作流
 
@@ -85,6 +85,8 @@
 
 事件情报案例：[公告与新闻研究更新提示](reports/showcase/event_intelligence_showcase.md)。该链路对公告和新闻元数据进行去重、分类与重大性判断；正式披露可触发报告更新或委员会复核，未经原始证据确认的新闻只进入观察清单。
 
+统计事件研究案例：[比亚迪产销快报事件研究](reports/showcase/byd_event_study.md)。链路将真实公告定位与明确标记的离线收益夹具分层管理，通过市场模型计算逐日异常收益、多个窗口 CAR、t-stat 和双侧 p-value，并检查事件重叠与数据来源。报告不会把方法夹具解释为示例证券的真实历史表现。
+
 模型通用性案例：[动量因子预测能力研究](reports/showcase/momentum_factor_research.md)。案例完全不使用 IVOL，通过实体固定效应回归和含交易成本的多空回测验证 ModelDesign、Estimator Router 与 ExperimentResult 可以复用于其他金融课题。另见 [DCF 与敏感性分析](reports/showcase/dcf_sensitivity_showcase.md)。
 
 运行方式：
@@ -134,7 +136,7 @@ python3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m uvicorn api.app:app --host 127.0.0.1 --port 8000
 ```
 
-服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询、贵州茅台公司研究与高端白酒行业研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
+服务启动后可访问 `http://127.0.0.1:8000/docs` 查看 OpenAPI 页面。API 接受与平台 Router 相同的标准化 `ResearchRequest`，提供能力发现、任务提交、状态查询和 Markdown 报告下载；内置离线执行器可直接运行比亚迪风险咨询、贵州茅台公司研究、高端白酒行业研究与比亚迪统计事件研究案例，生产环境可通过 `create_app(runner=...)` 注入真实工作流或外部任务队列。
 
 `POST /v1/events/analyze` 接受 EvidenceRecord 列表，返回事件指纹、重复项数量、重大性、影响方向、受影响报告章节和研究更新动作。
 
@@ -165,6 +167,9 @@ python3.11 -m venv .venv
 
 # 公告 + 新闻元数据：去重、事件分类与报告更新触发
 .\.venv\Scripts\python.exe -m examples.event_intelligence_demo
+
+# 统计事件研究：市场模型、逐日AR、CAR、显著性与污染检查
+.\.venv\Scripts\python.exe -m examples.byd_event_study_demo
 
 # 非 IVOL 研究：动量信号、实体固定效应与交易成本后回测
 .\.venv\Scripts\python.exe -m examples.momentum_factor_demo
@@ -292,7 +297,7 @@ QuantResearchAgent/
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock
 ```
 
-GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与六份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
+GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与七份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
 
 ## 发布与贡献
 

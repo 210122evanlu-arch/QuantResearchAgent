@@ -9,6 +9,8 @@ All notable changes to this project are documented in this file.
 - End-to-end industry-research workflow with dedicated schemas, synthesis, committee review, targeted revision routing, and loop protection.
 - High-end baijiu industry showcase combining industry structure, bounded peer comparison, three explicit scenarios, monitoring indicators, and evidence appendix.
 - Industry-research execution through the bundled Research Jobs API and release evaluation.
+- Statistical event-study workflow with market-model estimation, daily abnormal returns, multi-window CAR, significance tests, contamination review, and committee revision control.
+- BYD sales-announcement method showcase separating real disclosure evidence from deterministic fixture returns.
 
 ### Changed
 

@@ -15,6 +15,7 @@ from api.schemas import (
 from api.service import JobRunner, ResearchJobService
 from examples.baijiu_industry_research_demo import run_baijiu_industry_research_demo
 from examples.business_risk_consulting_demo import run_business_risk_consulting_demo
+from examples.byd_event_study_demo import run_byd_event_study_demo
 from examples.moutai_company_research_demo import run_moutai_company_research_demo
 from schemas.enums import TaskType
 from schemas.events import EventAnalysisRequest, EventIntelligenceResult
@@ -48,9 +49,17 @@ def offline_showcase_runner(request: ResearchRequest, output: Path) -> dict[str,
             "industry": result["industry_research_report"].industry_name,
             "deliverable": "industry_research",
         }
+    if request.task_type == TaskType.EVENT_STUDY and (
+        "比亚迪" in company_scope or "byd" in company_scope or "002594" in company_scope
+    ):
+        result = run_byd_event_study_demo(output)
+        return {
+            "company": result["event_study_result"].design.company_name,
+            "deliverable": "event_study",
+        }
     raise ValueError(
         "offline showcase supports BYD corporate_advisory, Moutai company_research, "
-        "and high-end baijiu industry_research"
+        "high-end baijiu industry_research, and BYD event_study"
     )
 
 
@@ -83,6 +92,7 @@ def create_app(
         enabled = {
             TaskType.COMPANY_RESEARCH,
             TaskType.INDUSTRY_RESEARCH,
+            TaskType.EVENT_STUDY,
             TaskType.CORPORATE_ADVISORY,
         }
         return [

@@ -34,6 +34,7 @@ def test_health_and_capability_discovery(tmp_path: Path) -> None:
             assert enabled == {
                 "company_research",
                 "industry_research",
+                "event_study",
                 "corporate_advisory",
             }
             metrics = (await client.get("/v1/operations/metrics")).json()
@@ -110,6 +111,27 @@ def test_submit_industry_research_and_download_report(tmp_path: Path) -> None:
             assert report.status_code == 200
             assert "## 情景矩阵" in report.text
             assert "仅覆盖两家公司" in report.text
+
+    asyncio.run(scenario())
+
+
+def test_submit_event_study_and_download_report(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        async with await _client(create_app(report_directory=tmp_path)) as client:
+            submitted = await client.post(
+                "/v1/jobs",
+                json=_request(TaskType.EVENT_STUDY, "比亚迪", "002594.SZ"),
+            )
+            assert submitted.status_code == 202
+            job_id = submitted.json()["job_id"]
+            job = (await client.get(f"/v1/jobs/{job_id}")).json()
+            assert job["status"] == JobStatus.COMPLETED
+            assert job["summary"]["deliverable"] == "event_study"
+
+            report = await client.get(f"/v1/jobs/{job_id}/report")
+            assert report.status_code == 200
+            assert "## 方法与估计设计" in report.text
+            assert "不得被解释为" in report.text
 
     asyncio.run(scenario())
 

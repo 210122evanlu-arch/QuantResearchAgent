@@ -10,6 +10,12 @@ from schemas.debate import (
     ModeratorAssessment,
     ProponentCase,
 )
+from schemas.event_study import (
+    EventStudyDesign,
+    EventStudyReport,
+    EventStudyResult,
+    EventStudyReviewResult,
+)
 from schemas.events import EventAnalysisRequest, EventIntelligenceResult, ResearchEvent
 from schemas.experiment import ExperimentResult
 from schemas.industry_research import (
@@ -47,6 +53,10 @@ __all__ = [
     "DebateRound",
     "EventAnalysisRequest",
     "EventIntelligenceResult",
+    "EventStudyDesign",
+    "EventStudyReport",
+    "EventStudyResult",
+    "EventStudyReviewResult",
     "EvidenceRecord",
     "ExperimentResult",
     "FinalReport",

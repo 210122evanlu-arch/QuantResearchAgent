@@ -14,7 +14,7 @@ from schemas.enums import AnalysisMethod, TaskType
 from schemas.platform import ResearchRequest
 
 ROOT = Path(__file__).resolve().parents[1]
-BENCHMARK_VERSION = "1.1"
+BENCHMARK_VERSION = "1.2"
 
 
 @dataclass(frozen=True)
@@ -137,6 +137,17 @@ SHOWCASE_CASES = (
         "reports/showcase/event_intelligence_showcase.md",
         ("## 更新决策", "## 建议重跑的报告部分", "## 治理规则"),
         500,
+    ),
+    ShowcaseCase(
+        "statistical_event_study",
+        "reports/showcase/byd_event_study.md",
+        (
+            "## 事件与研究假设",
+            "## 方法与估计设计",
+            "## 稳健性与污染检查",
+            "## 局限性与可信边界",
+        ),
+        1_500,
     ),
     ShowcaseCase(
         "momentum_research",
