@@ -31,13 +31,21 @@ explicit error. `AnalysisExecutionNode` is the method-neutral node for future
 company, industry, market, event, and advisory workflows. The existing Experiment
 node remains its specialised quantitative counterpart.
 
+Corporate advisory can select the deterministic financial-anomaly engine through
+the `financial_anomaly` topic. That workflow adds a post-draft Internal Quality
+Review: the scorecard is independently recalculated, evidence and cutoff controls
+are checked, report values are reconciled to structured output, and failed controls
+are either routed for remediation or blocked. Passing automated controls still
+leaves human sign-off pending.
+
 ## Extension sequence
 
 1. Register the current quant graph as the `quant_research` workflow handler.
 2. Implement company disclosure and financial-analysis engines.
 3. Add company and industry workflows using shared evidence contracts.
 4. Add market, event-study, and corporate-advisory workflows.
-5. Render each final result with the template selected by the router.
+5. Run engagement-quality controls and preserve explicit human sign-off state.
+6. Render each controlled result with the template selected by the router.
 
 No task is routed by free-form LLM output alone. The LLM may recommend a task type,
 but application code must validate it through `ResearchRequest` and the enum-based

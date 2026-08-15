@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Explainable listed-company financial-anomaly screening with eleven versioned signals, reason codes, evidence lineage, and accountable action plans.
+- Independent engagement-quality review with cutoff, evidence, reproduction, audit-trail, report-consistency, and assurance-boundary controls.
+- Controlled delivery states for pass, remediation, block, and pending human sign-off, plus a synthetic showcase, PRD, and UAT pack.
 - End-to-end industry-research workflow with dedicated schemas, synthesis, committee review, targeted revision routing, and loop protection.
 - High-end baijiu industry showcase combining industry structure, bounded peer comparison, three explicit scenarios, monitoring indicators, and evidence appendix.
 - Industry-research execution through the bundled Research Jobs API and release evaluation.

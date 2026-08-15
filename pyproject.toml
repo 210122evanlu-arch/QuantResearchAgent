@@ -37,6 +37,7 @@ ignore = ["E501"]
 "examples/baijiu_industry_research_demo.py" = ["RUF001"]
 "examples/momentum_factor_demo.py" = ["RUF001"]
 "examples/dcf_valuation_demo.py" = ["RUF001"]
+"examples/financial_anomaly_risk_demo.py" = ["RUF001"]
 "examples/event_intelligence_demo.py" = ["RUF001"]
 "examples/byd_live_consulting_report.py" = ["RUF001"]
 "scripts/build_byd_consulting_docx.py" = ["RUF001"]
@@ -47,6 +48,8 @@ ignore = ["E501"]
 "tools/event_report.py" = ["RUF001"]
 "tools/event_study_report.py" = ["RUF001"]
 "tools/market_strategy_report.py" = ["RUF001"]
+"tools/financial_risk.py" = ["RUF001"]
+"tools/financial_risk_report.py" = ["RUF001"]
 "tools/event_intelligence.py" = ["RUF001"]
 
 [tool.mypy]
@@ -73,6 +76,7 @@ module = [
     "graph.industry_research",
     "graph.event_study",
     "graph.market_strategy",
+    "graph.financial_risk",
     "graph.debate",
     "graph.debate_gate",
     "graph.workflow",

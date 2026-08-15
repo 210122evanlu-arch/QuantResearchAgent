@@ -24,6 +24,12 @@ from schemas.event_study import (
     EventStudyReviewResult,
 )
 from schemas.experiment import ExperimentResult
+from schemas.financial_risk import (
+    AuditTrail,
+    FinancialRiskInput,
+    FinancialRiskScorecard,
+    HumanSignOff,
+)
 from schemas.industry_research import (
     IndustryResearchReport,
     IndustryResearchReviewResult,
@@ -31,7 +37,13 @@ from schemas.industry_research import (
 from schemas.literature import RetrievedPaper
 from schemas.market_strategy import MarketStrategyReport, MarketStrategyReviewResult
 from schemas.model_design import ModelDesign
-from schemas.platform import AnalysisBundle, ResearchRequest, WorkflowSelection
+from schemas.platform import (
+    AnalysisBundle,
+    EvidenceRecord,
+    ResearchRequest,
+    WorkflowSelection,
+)
+from schemas.quality_review import QualityReviewResult
 from schemas.report import FinalReport
 from schemas.research_analysis import ResearchAnalysis
 from schemas.research_plan import ResearchPlan
@@ -44,6 +56,13 @@ class ResearchState(TypedDict, total=False):
     analysis_context: dict[str, Any]
     analysis_bundle: AnalysisBundle
     risk_profile: CompanyRiskProfile
+    financial_risk_input: FinancialRiskInput
+    financial_risk_evidence: list[EvidenceRecord]
+    financial_risk_scorecard: FinancialRiskScorecard
+    audit_trail: AuditTrail
+    draft_report_markdown: str
+    quality_review_result: QualityReviewResult
+    human_signoff: HumanSignOff
     company_research_report: CompanyResearchReport
     company_research_review: CompanyResearchReviewResult
     industry_research_report: IndustryResearchReport

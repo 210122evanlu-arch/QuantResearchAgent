@@ -61,6 +61,7 @@ ROUTE_PROFILES: dict[TaskType, RouteProfile] = {
             AnalysisMethod.PEER_BENCHMARKING,
             AnalysisMethod.STRATEGIC_DIAGNOSIS,
             AnalysisMethod.SCENARIO_ANALYSIS,
+            AnalysisMethod.FINANCIAL_ANOMALY_SCREENING,
         ),
         report_template="corporate_advisory.md",
     ),

@@ -49,6 +49,14 @@ FinalReport 同时保存：
 - 使用“无正式研究结论”的结论文本；
 - 不把未通过结果包装为正式发现。
 
+## 咨询报告质量复核
+
+财务风险咨询在 Draft Report 后增加独立 IQR。该节点重新计算风险评分，检查
+截止日、证据 ID、输入输出哈希、报告数值和保证边界，再通过 Router 返回证据、
+分析或报告节点整改。IQR 通过只表示自动控制通过；没有具名人工签署时，报告仍
+显示 `human_signoff=pending`，不得标记为正式终稿。完整控制见
+[`financial_risk_governance.md`](financial_risk_governance.md)。
+
 ## 复现
 
 ```powershell

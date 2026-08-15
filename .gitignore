@@ -34,6 +34,7 @@ reports/*
 !reports/showcase/a_share_market_strategy.md
 !reports/showcase/momentum_factor_research.md
 !reports/showcase/dcf_sensitivity_showcase.md
+!reports/showcase/financial_anomaly_risk_warning.md
 
 # Downloaded/licensed market data and provider caches
 /data/

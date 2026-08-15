@@ -32,6 +32,16 @@ Open `reports/advisory/byd_risk_advisory_demo.md`, then compare it with the appr
 View, risk matrix, action owners, timeline, KPIs, committee challenge, and evidence
 appendix.
 
+Then demonstrate the controlled financial-risk path:
+
+```powershell
+.\.venv\Scripts\python.exe -m examples.financial_anomaly_risk_demo
+```
+
+Open `reports/advisory/financial_anomaly_risk_demo.md`. Show the reason codes,
+transparent thresholds, management actions, 8/8 IQR controls, input/output hashes,
+and the fact that a passing automated review still leaves human sign-off pending.
+
 For an industry-research alternative, run:
 
 ```powershell
@@ -72,7 +82,7 @@ offline normalized signals.
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Explain that the release benchmark protects six routing contracts and eight showcase
+Explain that the release benchmark protects six routing contracts and nine showcase
 deliverables, while the documentation audit prevents broken links, version drift,
 and inconsistent quality commands.
 

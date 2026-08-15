@@ -39,6 +39,7 @@ APPROVED_REPORTS = {
     "reports/showcase/a_share_market_strategy.md",
     "reports/showcase/momentum_factor_research.md",
     "reports/showcase/dcf_sensitivity_showcase.md",
+    "reports/showcase/financial_anomaly_risk_warning.md",
 }
 SECRET_PATTERNS = (
     re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b"),

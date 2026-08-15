@@ -17,6 +17,7 @@ from examples.a_share_market_strategy_demo import run_a_share_market_strategy_de
 from examples.baijiu_industry_research_demo import run_baijiu_industry_research_demo
 from examples.business_risk_consulting_demo import run_business_risk_consulting_demo
 from examples.byd_event_study_demo import run_byd_event_study_demo
+from examples.financial_anomaly_risk_demo import run_financial_anomaly_risk_demo
 from examples.momentum_factor_demo import run_momentum_factor_demo
 from examples.moutai_company_research_demo import run_moutai_company_research_demo
 from schemas.enums import TaskType
@@ -27,6 +28,18 @@ from tools.event_intelligence import analyze_events
 
 def offline_showcase_runner(request: ResearchRequest, output: Path) -> dict[str, str]:
     company_scope = " ".join([*request.companies, *request.securities]).lower()
+    if (
+        request.task_type == TaskType.CORPORATE_ADVISORY
+        and ("示例智造" in company_scope or "demo001" in company_scope)
+        and "financial_anomaly" in {topic.casefold() for topic in request.topics}
+    ):
+        result = run_financial_anomaly_risk_demo(output)
+        return {
+            "company": result["financial_risk_scorecard"].company_name,
+            "deliverable": "financial_anomaly_risk_warning",
+            "quality_review": result["quality_review_result"].decision.value,
+            "human_signoff": result["human_signoff"].status.value,
+        }
     if request.task_type == TaskType.CORPORATE_ADVISORY and (
         "比亚迪" in company_scope or "byd" in company_scope or "002594" in company_scope
     ):
@@ -73,7 +86,8 @@ def offline_showcase_runner(request: ResearchRequest, output: Path) -> dict[str,
             "deliverable": "quant_research",
         }
     raise ValueError(
-        "offline showcase supports BYD corporate_advisory, Moutai company_research, "
+        "offline showcase supports BYD corporate_advisory, DEMO001 financial_anomaly, "
+        "Moutai company_research, "
         "high-end baijiu industry_research, BYD event_study, and A-share "
         "market_strategy, and momentum quant_research"
     )

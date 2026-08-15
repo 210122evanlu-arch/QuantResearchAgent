@@ -74,6 +74,32 @@ def test_submit_status_and_download_report(tmp_path: Path) -> None:
     asyncio.run(scenario())
 
 
+def test_submit_financial_anomaly_warning_with_quality_gate(tmp_path: Path) -> None:
+    async def scenario() -> None:
+        async with await _client(create_app(report_directory=tmp_path)) as client:
+            payload = _request(
+                TaskType.CORPORATE_ADVISORY,
+                "示例智造股份有限公司",
+                "DEMO001",
+            )
+            payload["topics"] = ["financial_anomaly", "financial_risk"]
+            submitted = await client.post("/v1/jobs", json=payload)
+            assert submitted.status_code == 202
+            job_id = submitted.json()["job_id"]
+            job = (await client.get(f"/v1/jobs/{job_id}")).json()
+            assert job["status"] == JobStatus.COMPLETED
+            assert job["summary"]["deliverable"] == "financial_anomaly_risk_warning"
+            assert job["summary"]["quality_review"] == "passed"
+            assert job["summary"]["human_signoff"] == "pending"
+
+            report = await client.get(f"/v1/jobs/{job_id}/report")
+            assert report.status_code == 200
+            assert "## 内部质量复核" in report.text
+            assert "自动质量控制通过不能替代项目负责人签署" in report.text
+
+    asyncio.run(scenario())
+
+
 def test_unsupported_offline_scope_is_recorded_as_failed(tmp_path: Path) -> None:
     async def scenario() -> None:
         async with await _client(create_app(report_directory=tmp_path)) as client:

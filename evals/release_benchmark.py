@@ -14,7 +14,7 @@ from schemas.enums import AnalysisMethod, TaskType
 from schemas.platform import ResearchRequest
 
 ROOT = Path(__file__).resolve().parents[1]
-BENCHMARK_VERSION = "1.3"
+BENCHMARK_VERSION = "1.4"
 
 
 @dataclass(frozen=True)
@@ -114,6 +114,17 @@ SHOWCASE_CASES = (
         "reports/showcase/byd_risk_advisory.md",
         ("## 执行摘要", "## 风险优先级二维矩阵", "## 未来90天行动路线"),
         4_500,
+    ),
+    ShowcaseCase(
+        "financial_anomaly_risk_warning",
+        "reports/showcase/financial_anomaly_risk_warning.md",
+        (
+            "## 财务异常风险信号",
+            "## 管理行动路线",
+            "## 内部质量复核",
+            "## 人工签署",
+        ),
+        4_000,
     ),
     ShowcaseCase(
         "company_research",

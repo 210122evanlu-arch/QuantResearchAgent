@@ -18,6 +18,13 @@ from schemas.event_study import (
 )
 from schemas.events import EventAnalysisRequest, EventIntelligenceResult, ResearchEvent
 from schemas.experiment import ExperimentResult
+from schemas.financial_risk import (
+    AuditTrail,
+    FinancialRiskInput,
+    FinancialRiskScorecard,
+    FinancialRiskSignal,
+    HumanSignOff,
+)
 from schemas.industry_research import (
     IndustryResearchReport,
     IndustryResearchReviewResult,
@@ -39,6 +46,7 @@ from schemas.platform import (
     ResearchRequest,
     WorkflowSelection,
 )
+from schemas.quality_review import QualityReviewResult
 from schemas.report import FinalReport
 from schemas.research_analysis import ResearchAnalysis
 from schemas.research_plan import ResearchPlan
@@ -49,6 +57,7 @@ from schemas.valuation import DCFInput, DCFResult
 __all__ = [
     "AnalysisArtifact",
     "AnalysisBundle",
+    "AuditTrail",
     "ChallengerCase",
     "DCFInput",
     "DCFResult",
@@ -66,6 +75,10 @@ __all__ = [
     "EvidenceRecord",
     "ExperimentResult",
     "FinalReport",
+    "FinancialRiskInput",
+    "FinancialRiskScorecard",
+    "FinancialRiskSignal",
+    "HumanSignOff",
     "IndustryResearchReport",
     "IndustryResearchReviewResult",
     "IndustryScenario",
@@ -76,6 +89,7 @@ __all__ = [
     "ModelDesign",
     "ModeratorAssessment",
     "ProponentCase",
+    "QualityReviewResult",
     "ResearchAnalysis",
     "ResearchEvent",
     "ResearchFinding",

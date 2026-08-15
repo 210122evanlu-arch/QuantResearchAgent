@@ -94,6 +94,7 @@ class AnalysisMethod(StrEnum):
     PORTFOLIO_BACKTEST = "portfolio_backtest"
     SCENARIO_ANALYSIS = "scenario_analysis"
     STRATEGIC_DIAGNOSIS = "strategic_diagnosis"
+    FINANCIAL_ANOMALY_SCREENING = "financial_anomaly_screening"
 
 
 class ReportAudience(StrEnum):
@@ -138,3 +139,45 @@ class DebateTrigger(StrEnum):
     UNVERIFIED_FINDING = "unverified_finding"
     EVIDENCE_CONFLICT = "evidence_conflict"
     ANALYSIS_WARNING = "analysis_warning"
+
+
+class FinancialRiskLevel(StrEnum):
+    LOW = "low"
+    MODERATE = "moderate"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+
+class FinancialRiskCategory(StrEnum):
+    EARNINGS_QUALITY = "earnings_quality"
+    WORKING_CAPITAL = "working_capital"
+    MARGIN = "margin"
+    LIQUIDITY = "liquidity"
+    GOVERNANCE = "governance"
+    REGULATORY = "regulatory"
+
+
+class QualityReviewCategory(StrEnum):
+    EVIDENCE = "evidence"
+    DATA = "data"
+    MODEL = "model"
+    REPORT = "report"
+    AI_GOVERNANCE = "ai_governance"
+
+
+class QualityReviewTarget(StrEnum):
+    EVIDENCE_COLLECTION = "evidence_collection"
+    FINANCIAL_RISK_ANALYSIS = "financial_risk_analysis"
+    DRAFT_REPORT = "draft_report"
+
+
+class QualityReviewDecision(StrEnum):
+    PASSED = "passed"
+    REMEDIATION_REQUIRED = "remediation_required"
+    BLOCKED = "blocked"
+
+
+class SignOffStatus(StrEnum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"

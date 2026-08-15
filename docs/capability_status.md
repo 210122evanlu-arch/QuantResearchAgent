@@ -9,7 +9,7 @@ and executor is production-ready.
 | --- | --- | --- |
 | Quantitative research | End-to-end offline showcase | Seven-node research/revision workflow, OLS, Fama–MacBeth, fixed effects, portfolio analysis, transaction-cost-aware backtesting, IVOL and momentum cases |
 | Listed-company research | End-to-end offline showcase | Public-data package, filing evidence, company analysis engines, committee review, DCF/relative valuation, Moutai report, injectable API runner |
-| Corporate advisory | End-to-end offline showcase | Risk register, Debate Gate, committee challenge, priority matrix, Owner/Timeline/KPI roadmap, BYD report, injectable API runner |
+| Corporate advisory | End-to-end offline showcase | Risk register, Debate Gate, financial anomaly scorecard, reason codes, IQR remediation gate, human-signoff control, Owner/Timeline/KPI roadmap, BYD and synthetic financial-risk reports, injectable API runner |
 | Event intelligence | Implemented supporting capability | Announcement/news deduplication, materiality assessment, watchlist and report-refresh decision feeding research maintenance |
 | Industry research | End-to-end offline showcase | Industry, peer, and scenario engines; committee revision loop; three-scenario matrix; bounded high-end baijiu report; injectable API runner |
 | Market strategy | End-to-end offline showcase | Deterministic five-signal regime score, style/sector views, probability-constrained scenarios, committee loop, A-share strategy report, injectable API runner |

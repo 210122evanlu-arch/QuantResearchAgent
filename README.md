@@ -24,7 +24,7 @@
 | --- | --- | --- |
 | 量化研究 | “投资者情绪是否预测未来收益？” | 研究计划、文献与理论、模型设计、回归/组合实验、稳健性结果、评审报告 |
 | 上市公司研究 | “这家公司的增长质量、竞争力和估值如何？” | 财务质量、业务诊断、同业比较、相对估值、风险与证据附录 |
-| 经营风险咨询 | “哪些风险应进入管理层未来 90 天议程？” | 风险优先级矩阵、关键争议、缓释措施、Owner、Timeline 与 KPI |
+| 经营风险咨询 | “哪些风险应进入管理层未来 90 天议程？” | 风险优先级矩阵、财务异常预警、关键争议、Owner、Timeline 与 KPI |
 | 行业研究 | “高端白酒上市公司呈现怎样的经营分化？” | 产业链、需求与竞争格局、同业对照、情景矩阵、监测指标 |
 | 市场策略 | “市场环境变化会影响哪些公司和指标？” | 驱动因素、情景假设、监测指标、影响路径与研究结论 |
 | 事件研究 | “政策或公司事件带来了什么短中期影响？” | 事件窗口、市场模型、AR/CAR、显著性、污染检查与局限性 |
@@ -51,6 +51,8 @@
 | 研究缺陷闭环修订 | Decision Router 与 Revision Router 返回对应问题节点 |
 | 评审流程可终止 | Moderator、`max_debate_rounds` 与 `max_revisions` 约束循环次数 |
 | 建议具备可执行性 | 报告输出风险矩阵、Owner、Timeline、KPI 与证据附录 |
+| 交付经过独立质量复核 | IQR 重算指标并校验截止日、证据、哈希、报告一致性与保证边界 |
+| 自动审批不冒充人工签字 | IQR 通过后仍需 Human Sign-off，未签署报告保持讨论稿状态 |
 
 ## 案例：上市公司经营风险咨询
 
@@ -72,6 +74,8 @@
 </p>
 
 完整交付示例：[比亚迪公开信息风险咨询报告](reports/showcase/byd_risk_advisory.md)。报告包括 Partner View、影响×可能性二维矩阵、90 天行动路线、委员会争议处理及公开证据附录。
+
+财务风险专业模块示例：[上市公司财务异常识别与风险预警](reports/showcase/financial_anomaly_risk_warning.md)。该案例用可公开分发的合成财务夹具验证 11 类透明规则、原因代码、证据追踪、管理行动和独立质量复核；自动检查通过后仍保留 `human_signoff=pending`。方法和治理边界见[财务异常与项目质量复核](docs/financial_risk_governance.md)，产品需求与验收用例见 [PRD](docs/product/financial_risk_prd.md) 和 [UAT](docs/product/financial_risk_uat.md)。
 
 同一平台还提供跨行业公司研究案例：[贵州茅台上市公司深度研究](reports/showcase/moutai_company_research.md)。两个案例共用任务输入、证据模型、分析引擎注册、研究委员会和报告发布机制，但进入不同业务路线：
 
@@ -166,6 +170,9 @@ python3.11 -m venv .venv
 
 # 独立的 Debate Gate 与多轮观点审查
 .\.venv\Scripts\python.exe -m examples.debate_workflow_demo
+
+# 财务异常识别、可解释评分、内部质量复核与人工签署控制
+.\.venv\Scripts\python.exe -m examples.financial_anomaly_risk_demo
 
 # 公告 + 新闻元数据：去重、事件分类与报告更新触发
 .\.venv\Scripts\python.exe -m examples.event_intelligence_demo
@@ -269,6 +276,7 @@ QuantResearchAgent/
 - [Node 与 Schema 映射](docs/node_schema_mapping.md)
 - [Debate Gate](docs/debate_gate.md)
 - [研究委员会](docs/research_committee.md)
+- [财务异常与项目质量复核](docs/financial_risk_governance.md)
 - [报告与证据规则](docs/reporting.md)
 - [实验引擎](docs/experiment_engine.md)
 - [Research Jobs API](docs/api.md)
@@ -302,7 +310,7 @@ QuantResearchAgent/
 .\.venv\Scripts\python.exe -m pip_audit -r requirements.lock
 ```
 
-GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与八份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
+GitHub Actions 在 push 与 pull request 时执行同一套质量门。除代码测试外，业务能力评测会检查六条服务线的路由契约与九份作品集报告；发布审计会阻止 `.env`、疑似密钥、未批准二进制数据和运行时报告进入发布候选文件。API 运行层提供脱敏后的成功率、耗时和失败分类指标，便于从任务编号定位问题。
 
 ## 发布与贡献
 
