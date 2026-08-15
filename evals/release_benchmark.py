@@ -14,7 +14,7 @@ from schemas.enums import AnalysisMethod, TaskType
 from schemas.platform import ResearchRequest
 
 ROOT = Path(__file__).resolve().parents[1]
-BENCHMARK_VERSION = "1.4"
+BENCHMARK_VERSION = "1.5"
 
 
 @dataclass(frozen=True)
@@ -123,6 +123,8 @@ SHOWCASE_CASES = (
             "## 管理行动路线",
             "## 内部质量复核",
             "## 人工签署",
+            "| 加权数据覆盖率 |",
+            "| 行业阈值 |",
         ),
         4_000,
     ),

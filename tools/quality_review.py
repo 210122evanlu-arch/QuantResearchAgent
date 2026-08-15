@@ -127,6 +127,13 @@ def run_quality_review(
             blocking=True,
         ),
         _check(
+            "IQR-DATA-COVERAGE",
+            QualityReviewCategory.DATA,
+            "Weighted indicator coverage is sufficient for an interpretable screen.",
+            scorecard.data_coverage >= 0.50,
+            f"Weighted indicator coverage: {scorecard.data_coverage:.1%}.",
+        ),
+        _check(
             "IQR-AUDIT-TRAIL",
             QualityReviewCategory.AI_GOVERNANCE,
             "Input/output hashes and methodology version match the audit trail.",
@@ -177,6 +184,7 @@ def run_quality_review(
         "IQR-EVIDENCE-CUTOFF": QualityReviewTarget.EVIDENCE_COLLECTION,
         "IQR-EVIDENCE-LINEAGE": QualityReviewTarget.EVIDENCE_COLLECTION,
         "IQR-MODEL-REPRODUCE": QualityReviewTarget.FINANCIAL_RISK_ANALYSIS,
+        "IQR-DATA-COVERAGE": QualityReviewTarget.EVIDENCE_COLLECTION,
         "IQR-AUDIT-TRAIL": QualityReviewTarget.FINANCIAL_RISK_ANALYSIS,
         "IQR-REPORT-CONTRACT": QualityReviewTarget.DRAFT_REPORT,
         "IQR-REPORT-CONSISTENCY": QualityReviewTarget.DRAFT_REPORT,

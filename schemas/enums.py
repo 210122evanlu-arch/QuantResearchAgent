@@ -181,3 +181,17 @@ class SignOffStatus(StrEnum):
     PENDING = "pending"
     APPROVED = "approved"
     REJECTED = "rejected"
+
+
+class IndustryProfile(StrEnum):
+    GENERAL = "general"
+    MANUFACTURING = "manufacturing"
+    CONSUMER = "consumer"
+    TECHNOLOGY = "technology"
+    REAL_ESTATE = "real_estate"
+
+
+class AuditOpinionStatus(StrEnum):
+    STANDARD_UNQUALIFIED = "standard_unqualified"
+    NON_STANDARD = "non_standard"
+    UNKNOWN = "unknown"

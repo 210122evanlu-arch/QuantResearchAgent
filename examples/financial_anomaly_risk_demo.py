@@ -4,7 +4,7 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 
 from graph.financial_risk import build_financial_risk_workflow
-from schemas.enums import TaskType
+from schemas.enums import AuditOpinionStatus, IndustryProfile, TaskType
 from schemas.financial_risk import FinancialRiskInput, FinancialStatementSnapshot
 from schemas.platform import EvidenceRecord, ResearchRequest
 
@@ -60,6 +60,19 @@ def _input() -> FinancialRiskInput:
             cash_and_equivalents=105,
             gross_margin=0.34,
             non_recurring_profit=36,
+            return_on_equity=0.09,
+            net_profit_margin=0.085,
+            debt_to_assets=0.72,
+            interest_coverage=1.80,
+            receivables_days=95,
+            inventory_days=120,
+            asset_turnover=0.75,
+            impairment_to_assets=0.035,
+            goodwill_to_assets=0.12,
+            related_party_transaction_ratio=0.05,
+            top_five_customer_concentration=0.42,
+            top_five_supplier_concentration=0.38,
+            rd_capitalization_ratio=0.25,
             evidence_ids=["DEMO-FR-E1"],
         ),
         prior=FinancialStatementSnapshot(
@@ -77,10 +90,24 @@ def _input() -> FinancialRiskInput:
             cash_and_equivalents=125,
             gross_margin=0.27,
             non_recurring_profit=8,
+            return_on_equity=0.16,
+            net_profit_margin=0.14,
+            debt_to_assets=0.63,
+            interest_coverage=4.20,
+            receivables_days=60,
+            inventory_days=80,
+            asset_turnover=1.00,
+            impairment_to_assets=0.01,
+            goodwill_to_assets=0.11,
+            related_party_transaction_ratio=0.04,
+            top_five_customer_concentration=0.28,
+            top_five_supplier_concentration=0.29,
+            rd_capitalization_ratio=0.20,
             evidence_ids=["DEMO-FR-E2"],
         ),
         peer_gross_margin_median=0.265,
-        audit_opinion="standard_unqualified",
+        industry_profile=IndustryProfile.MANUFACTURING,
+        audit_opinion=AuditOpinionStatus.STANDARD_UNQUALIFIED,
         exchange_inquiry_count=1,
         regulatory_penalty_count=0,
         source_scope=(

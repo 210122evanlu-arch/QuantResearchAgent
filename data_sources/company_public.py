@@ -133,12 +133,16 @@ class CNInfoAnnouncementClient:
         session: HTTPSession | None = None,
         timeout_seconds: float = 20.0,
         page_size: int = 30,
+        max_pages: int = 10,
     ) -> None:
         if not 1 <= page_size <= 50:
             raise ValueError("page_size must be between 1 and 50")
+        if not 1 <= max_pages <= 100:
+            raise ValueError("max_pages must be between 1 and 100")
         self.session = session or cast(HTTPSession, requests.Session())
         self.timeout_seconds = timeout_seconds
         self.page_size = page_size
+        self.max_pages = max_pages
         self.session.headers.update(
             {
                 "User-Agent": "QuantResearchAgent/0.1 public-disclosure research",
@@ -192,47 +196,64 @@ class CNInfoAnnouncementClient:
             "sortType": "",
             "isHLtitle": "true",
         }
-        try:
-            response = self.session.post(
-                self.endpoint,
-                data=payload,
-                timeout=self.timeout_seconds,
-            )
-            response.raise_for_status()
-            data = response.json()
-        except (requests.RequestException, ValueError, TypeError) as exc:
-            raise CompanyPublicDataError("CNInfo announcement request failed") from exc
         records: list[EvidenceRecord] = []
         retrieved = datetime.now(UTC)
-        for item in data.get("announcements") or []:
-            title = (
-                str(item.get("announcementTitle") or "")
-                .replace("<em>", "")
-                .replace("</em>", "")
-                .strip()
-            )
-            adjunct = str(item.get("adjunctUrl") or "").lstrip("/")
-            timestamp = item.get("announcementTime")
+        seen: set[str] = set()
+        for page_number in range(1, self.max_pages + 1):
+            payload["pageNum"] = page_number
             try:
-                published = datetime.fromtimestamp(float(timestamp) / 1000, tz=UTC)
-            except (TypeError, ValueError, OSError):
-                continue
-            if not title or not adjunct or published.date() > end_date:
-                continue
-            announcement_id = str(item.get("announcementId") or adjunct)
-            records.append(
-                EvidenceRecord(
-                    evidence_id=_evidence_id("CNINFO", security_code, announcement_id),
-                    source_type="company_announcement",
-                    title=title,
-                    source_name="CNInfo",
-                    url=self.static_base + adjunct,
-                    document_id=announcement_id,
-                    published_at=published,
-                    retrieved_at=retrieved,
-                    summary="Official disclosure title; full document interpretation is pending.",
+                response = self.session.post(
+                    self.endpoint,
+                    data=payload,
+                    timeout=self.timeout_seconds,
                 )
-            )
+                response.raise_for_status()
+                data = response.json()
+            except (requests.RequestException, ValueError, TypeError) as exc:
+                raise CompanyPublicDataError(
+                    "CNInfo announcement request failed"
+                ) from exc
+            announcements = data.get("announcements") or []
+            for item in announcements:
+                title = (
+                    str(item.get("announcementTitle") or "")
+                    .replace("<em>", "")
+                    .replace("</em>", "")
+                    .strip()
+                )
+                adjunct = str(item.get("adjunctUrl") or "").lstrip("/")
+                timestamp = item.get("announcementTime")
+                try:
+                    published = datetime.fromtimestamp(float(timestamp) / 1000, tz=UTC)
+                except (TypeError, ValueError, OSError):
+                    continue
+                if not title or not adjunct or published.date() > end_date:
+                    continue
+                announcement_id = str(item.get("announcementId") or adjunct)
+                evidence_id = _evidence_id("CNINFO", security_code, announcement_id)
+                if evidence_id in seen:
+                    continue
+                seen.add(evidence_id)
+                records.append(
+                    EvidenceRecord(
+                        evidence_id=evidence_id,
+                        source_type="company_announcement",
+                        title=title,
+                        source_name="CNInfo",
+                        url=self.static_base + adjunct,
+                        document_id=announcement_id,
+                        published_at=published,
+                        retrieved_at=retrieved,
+                        summary="Official disclosure title; full document interpretation is pending.",
+                    )
+                )
+            total = int(data.get("totalAnnouncement") or len(announcements))
+            if (
+                not announcements
+                or len(seen) >= total
+                or len(announcements) < self.page_size
+            ):
+                break
         return records
 
     def search_annual_reports(

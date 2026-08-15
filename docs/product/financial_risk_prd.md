@@ -18,14 +18,17 @@ difficult to trace back to the engagement cutoff.
 
 ## Functional requirements
 
-1. Accept two comparable reporting periods, peer benchmark, audit opinion, inquiry
-   and penalty counts, evidence records, and an explicit `as_of_date`.
+1. Accept two comparable reporting periods, peer benchmark, industry profile,
+   audit opinion, inquiry and penalty evidence, and an explicit `as_of_date`.
 2. Calculate versioned financial signals using deterministic code.
 3. Return risk score, level, reason codes, interpretations, and actions.
 4. Preserve evidence IDs and SHA-256 input/output fingerprints.
 5. Generate a management report with Owner, Timeline, KPI, and assurance boundary.
 6. Run independent quality controls and route remediable failures to the owning node.
 7. Require explicit human sign-off before the output is labelled a final deliverable.
+8. Distinguish `not_available` from `not_triggered` and expose weighted data coverage.
+9. Support point-in-time BaoStock ratios, CNInfo disclosures and annual-report audit
+   wording, plus a licensed standardized table for complete statement fields.
 
 ## Non-functional requirements
 
@@ -39,7 +42,7 @@ difficult to trace back to the engagement cutoff.
 
 - statutory audit or internal-audit assurance;
 - fraud, default, or misconduct determination;
-- cross-sector threshold calibration from labelled historical samples;
+- statistically estimated threshold calibration from labelled historical samples;
 - automatic ingestion of every listed company and filing format;
 - production identity, role-based approval, and immutable external audit storage.
 
@@ -49,4 +52,5 @@ difficult to trace back to the engagement cutoff.
 - deterministic reproduction of every scorecard;
 - zero final-labelled reports without approved human sign-off;
 - complete Owner, Timeline, action, and KPI fields for every triggered signal;
+- explicit industry profile, threshold version, and data-coverage percentage;
 - test coverage for pass, remediation, blocked, and pending-sign-off paths.

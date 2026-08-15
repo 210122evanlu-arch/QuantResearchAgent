@@ -13,6 +13,7 @@ class FilingSectionTopic(StrEnum):
     SEGMENT_INFORMATION = "segment_information"
     CASH_FLOW = "cash_flow"
     RISK_FACTORS = "risk_factors"
+    AUDIT_OPINION = "audit_opinion"
 
 
 class FilingPageSection(BaseModel):

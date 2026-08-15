@@ -5,11 +5,14 @@ from datetime import date, datetime
 from pydantic import BaseModel, Field, model_validator
 
 from schemas.enums import (
+    AuditOpinionStatus,
     FinancialRiskCategory,
     FinancialRiskLevel,
+    IndustryProfile,
     IssueSeverity,
     SignOffStatus,
 )
+from schemas.platform import EvidenceRecord
 
 
 class FinancialStatementSnapshot(BaseModel):
@@ -17,18 +20,38 @@ class FinancialStatementSnapshot(BaseModel):
 
     period_end: date
     publication_date: date
-    revenue: float
-    net_profit: float
-    operating_cash_flow: float
-    total_assets: float = Field(gt=0)
-    accounts_receivable: float = Field(ge=0)
-    inventory: float = Field(ge=0)
-    current_assets: float = Field(ge=0)
-    current_liabilities: float = Field(ge=0)
-    interest_bearing_debt: float = Field(ge=0)
-    cash_and_equivalents: float = Field(ge=0)
-    gross_margin: float = Field(ge=-1, le=1)
-    non_recurring_profit: float = 0.0
+    revenue: float | None = None
+    net_profit: float | None = None
+    operating_cash_flow: float | None = None
+    total_assets: float | None = Field(default=None, gt=0)
+    accounts_receivable: float | None = Field(default=None, ge=0)
+    inventory: float | None = Field(default=None, ge=0)
+    current_assets: float | None = Field(default=None, ge=0)
+    current_liabilities: float | None = Field(default=None, ge=0)
+    interest_bearing_debt: float | None = Field(default=None, ge=0)
+    cash_and_equivalents: float | None = Field(default=None, ge=0)
+    gross_margin: float | None = Field(default=None, ge=-1, le=1)
+    non_recurring_profit: float | None = None
+    cash_conversion_ratio: float | None = None
+    revenue_growth: float | None = None
+    accounts_receivable_growth: float | None = None
+    inventory_growth: float | None = None
+    current_ratio: float | None = Field(default=None, ge=0)
+    net_debt_to_operating_cash_flow: float | None = None
+    return_on_equity: float | None = None
+    return_on_assets: float | None = None
+    net_profit_margin: float | None = None
+    debt_to_assets: float | None = Field(default=None, ge=0)
+    interest_coverage: float | None = None
+    receivables_days: float | None = Field(default=None, ge=0)
+    inventory_days: float | None = Field(default=None, ge=0)
+    asset_turnover: float | None = Field(default=None, ge=0)
+    impairment_to_assets: float | None = Field(default=None, ge=0)
+    goodwill_to_assets: float | None = Field(default=None, ge=0)
+    related_party_transaction_ratio: float | None = Field(default=None, ge=0)
+    top_five_customer_concentration: float | None = Field(default=None, ge=0, le=1)
+    top_five_supplier_concentration: float | None = Field(default=None, ge=0, le=1)
+    rd_capitalization_ratio: float | None = Field(default=None, ge=0, le=1)
     evidence_ids: list[str] = Field(min_length=1)
 
 
@@ -39,10 +62,15 @@ class FinancialRiskInput(BaseModel):
     current: FinancialStatementSnapshot
     prior: FinancialStatementSnapshot
     peer_gross_margin_median: float | None = Field(default=None, ge=-1, le=1)
-    audit_opinion: str = "standard_unqualified"
+    industry_profile: IndustryProfile = IndustryProfile.GENERAL
+    audit_opinion: AuditOpinionStatus = AuditOpinionStatus.UNKNOWN
+    audit_opinion_evidence_ids: list[str] = Field(default_factory=list)
     exchange_inquiry_count: int = Field(default=0, ge=0)
+    exchange_inquiry_evidence_ids: list[str] = Field(default_factory=list)
     regulatory_penalty_count: int = Field(default=0, ge=0)
+    regulatory_penalty_evidence_ids: list[str] = Field(default_factory=list)
     source_scope: str = Field(min_length=1)
+    data_warnings: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_point_in_time_scope(self) -> "FinancialRiskInput":
@@ -68,6 +96,7 @@ class FinancialRiskSignal(BaseModel):
     label: str = Field(min_length=1)
     value: float | None = None
     threshold: str = Field(min_length=1)
+    available: bool = True
     triggered: bool
     severity: IssueSeverity
     observation: str = Field(min_length=1)
@@ -83,10 +112,52 @@ class FinancialRiskScorecard(BaseModel):
     as_of_date: date
     risk_score: float = Field(ge=0, le=100)
     risk_level: FinancialRiskLevel
+    data_coverage: float = Field(ge=0, le=1)
     signals: list[FinancialRiskSignal] = Field(min_length=1)
     reason_codes: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     methodology_version: str = Field(min_length=1)
+    threshold_profile: str = Field(min_length=1)
+
+
+class RegulatoryDisclosureSummary(BaseModel):
+    audit_opinion: AuditOpinionStatus
+    exchange_inquiry_count: int = Field(ge=0)
+    regulatory_penalty_count: int = Field(ge=0)
+    audit_opinion_evidence_ids: list[str] = Field(default_factory=list)
+    exchange_inquiry_evidence_ids: list[str] = Field(default_factory=list)
+    regulatory_penalty_evidence_ids: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+
+
+class FinancialRiskDataPackage(BaseModel):
+    financial_input: FinancialRiskInput
+    evidence: list[EvidenceRecord] = Field(min_length=1)
+    warnings: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_evidence_lineage_and_cutoff(self) -> "FinancialRiskDataPackage":
+        known = {item.evidence_id for item in self.evidence}
+        referenced = {
+            *self.financial_input.current.evidence_ids,
+            *self.financial_input.prior.evidence_ids,
+            *self.financial_input.audit_opinion_evidence_ids,
+            *self.financial_input.exchange_inquiry_evidence_ids,
+            *self.financial_input.regulatory_penalty_evidence_ids,
+        }
+        if missing := referenced - known:
+            raise ValueError(
+                "financial risk input references unknown evidence_ids: "
+                + ", ".join(sorted(missing))
+            )
+        if any(
+            item.published_at is not None
+            and item.published_at.date() > self.financial_input.as_of_date
+            for item in self.evidence
+        ):
+            raise ValueError("financial risk evidence was published after as_of_date")
+        return self
 
 
 class AuditTrail(BaseModel):

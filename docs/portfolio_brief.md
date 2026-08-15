@@ -13,7 +13,7 @@
 | 服务线 | 代表案例 | 可验证产物 |
 | --- | --- | --- |
 | 经营风险咨询 | [比亚迪公开信息风险咨询](../reports/showcase/byd_risk_advisory.md) | Partner View、二维风险矩阵、90 天行动路线、Owner/Timeline/KPI、证据附录 |
-| 财务异常预警 | [上市公司财务异常识别](../reports/showcase/financial_anomaly_risk_warning.md) | 11 类透明规则、原因代码、IQR、整改路由与人工签署状态 |
+| 财务异常预警 | [上市公司财务异常识别](../reports/showcase/financial_anomaly_risk_warning.md) | 24 类透明规则、五类行业阈值、点时数据、IQR、整改路由与人工签署状态 |
 | 上市公司研究 | [贵州茅台公司深度研究](../reports/showcase/moutai_company_research.md) | 财务质量、竞争位置、同业比较、估值框架、委员会意见 |
 | 行业研究 | [高端白酒行业研究](../reports/showcase/baijiu_industry_research.md) | 产业链、龙头经营分化、三情景矩阵、监测指标与证据边界 |
 | 量化研究 | [动量因子研究](../reports/showcase/momentum_factor_research.md) | 固定效应回归、交易成本后回测、风险收益指标与研究边界 |
@@ -38,7 +38,7 @@
 
 - Python 3.11，Pydantic Structured Output，LangGraph，pandas/statsmodels，FastAPI。
 - DeepSeek、Gemini 和 OpenAI 兼容 Provider；离线环境不需要 API Key。
-- 276 项自动化测试，总覆盖率 86.20%，六条服务线与九份报告的 15/15 发布评测。
+- 283 项自动化测试，总覆盖率 86.27%，六条服务线与九份报告的 15/15 发布评测。
 - Ruff、mypy、pytest、依赖漏洞审计、密钥/数据发布审计和文档一致性审计统一进入 GitHub Actions。
 
 ## 面试中的 60 秒介绍

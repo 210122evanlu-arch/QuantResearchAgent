@@ -21,6 +21,18 @@ def _display_value(signal_id: str, value: float | None) -> str:
         "FR-INVENTORY-GAP",
         "FR-MARGIN-PEER",
         "FR-NONRECURRING",
+        "FR-ROE-DECLINE",
+        "FR-MARGIN-DECLINE",
+        "FR-AR-DAYS",
+        "FR-INVENTORY-DAYS",
+        "FR-ASSET-TURNOVER",
+        "FR-IMPAIRMENT",
+        "FR-GOODWILL",
+        "FR-RELATED-PARTY",
+        "FR-CUSTOMER-CONCENTRATION",
+        "FR-SUPPLIER-CONCENTRATION",
+        "FR-RD-CAPITALIZATION",
+        "FR-DEBT-ASSETS",
     }
     count_signals = {"FR-EXCHANGE-INQUIRY", "FR-REGULATORY-PENALTY"}
     if signal_id in percentage_signals:
@@ -55,10 +67,15 @@ def render_financial_risk_report(
         "| 报告属性 | 内容 |",
         "| --- | --- |",
         f"| 截止日期 | {data.as_of_date.isoformat()} |",
+        f"| 当前/对比报告期 | {data.current.period_end.isoformat()} / {data.prior.period_end.isoformat()} |",
         f"| 交付状态 | {delivery_status} |",
         f"| 风险评分 | {scorecard.risk_score:.1f} / 100 |",
         f"| 风险等级 | `{scorecard.risk_level.value}` |",
         f"| 触发信号 | {len(triggered)} / {len(scorecard.signals)} |",
+        f"| 加权数据覆盖率 | {scorecard.data_coverage:.1%} |",
+        f"| 行业阈值 | {scorecard.threshold_profile} |",
+        f"| 审计意见状态 | {data.audit_opinion.value} |",
+        f"| 问询相关披露 / 监管处罚及措施 | {data.exchange_inquiry_count} / {data.regulatory_penalty_count} |",
         f"| 方法版本 | {scorecard.methodology_version} |",
         "",
         "> 本报告用于财务异常筛查和管理层风险预警，不构成审计意见、"
@@ -84,7 +101,13 @@ def render_financial_risk_report(
     ]
     for signal in scorecard.signals:
         display = _display_value(signal.signal_id, signal.value)
-        status = signal.severity.value if signal.triggered else "not_triggered"
+        status = (
+            signal.severity.value
+            if signal.triggered
+            else "not_triggered"
+            if signal.available
+            else "not_available"
+        )
         lines.append(
             f"| {signal.signal_id} | {signal.category.value} | {signal.label} | "
             f"{display} | {signal.threshold} | {status} |"

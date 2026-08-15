@@ -20,11 +20,14 @@ from schemas.events import EventAnalysisRequest, EventIntelligenceResult, Resear
 from schemas.experiment import ExperimentResult
 from schemas.financial_risk import (
     AuditTrail,
+    FinancialRiskDataPackage,
     FinancialRiskInput,
     FinancialRiskScorecard,
     FinancialRiskSignal,
     HumanSignOff,
+    RegulatoryDisclosureSummary,
 )
+from schemas.financial_risk_thresholds import FinancialRiskThresholds
 from schemas.industry_research import (
     IndustryResearchReport,
     IndustryResearchReviewResult,
@@ -75,9 +78,11 @@ __all__ = [
     "EvidenceRecord",
     "ExperimentResult",
     "FinalReport",
+    "FinancialRiskDataPackage",
     "FinancialRiskInput",
     "FinancialRiskScorecard",
     "FinancialRiskSignal",
+    "FinancialRiskThresholds",
     "HumanSignOff",
     "IndustryResearchReport",
     "IndustryResearchReviewResult",
@@ -90,6 +95,7 @@ __all__ = [
     "ModeratorAssessment",
     "ProponentCase",
     "QualityReviewResult",
+    "RegulatoryDisclosureSummary",
     "ResearchAnalysis",
     "ResearchEvent",
     "ResearchFinding",

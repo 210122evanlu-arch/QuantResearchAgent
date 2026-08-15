@@ -12,6 +12,11 @@
 | UAT-08 | IQR passes without a named reviewer | Report remains `human_signoff=pending` |
 | UAT-09 | Human approval is supplied while IQR failed | Controlled delivery rejects the override |
 | UAT-10 | Same input is rerun under the same methodology | Score and reason codes remain identical |
+| UAT-11 | A financial row is published after `as_of_date` | Row is excluded before period selection |
+| UAT-12 | Consumer and manufacturing profiles receive the same inventory gap | Each uses its own versioned threshold |
+| UAT-13 | A field required by one rule is absent | Rule is `not_available`, not `not_triggered` |
+| UAT-14 | Weighted data coverage is below 50% | IQR requires evidence remediation |
+| UAT-15 | Annual-report page states standard unqualified opinion | Status is standard; “unqualified” is not misread as a reservation |
 
 The automated test suite implements the core pass, remediation, blocking,
 reproduction, and pending-sign-off scenarios. Production UAT must additionally

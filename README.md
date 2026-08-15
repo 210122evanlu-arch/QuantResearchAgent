@@ -75,7 +75,7 @@
 
 完整交付示例：[比亚迪公开信息风险咨询报告](reports/showcase/byd_risk_advisory.md)。报告包括 Partner View、影响×可能性二维矩阵、90 天行动路线、委员会争议处理及公开证据附录。
 
-财务风险专业模块示例：[上市公司财务异常识别与风险预警](reports/showcase/financial_anomaly_risk_warning.md)。该案例用可公开分发的合成财务夹具验证 11 类透明规则、原因代码、证据追踪、管理行动和独立质量复核；自动检查通过后仍保留 `human_signoff=pending`。方法和治理边界见[财务异常与项目质量复核](docs/financial_risk_governance.md)，产品需求与验收用例见 [PRD](docs/product/financial_risk_prd.md) 和 [UAT](docs/product/financial_risk_uat.md)。
+财务风险专业模块示例：[上市公司财务异常识别与风险预警](reports/showcase/financial_anomaly_risk_warning.md)。该案例用可公开分发的合成财务夹具验证 24 类透明规则、原因代码、五类行业阈值、证据追踪、管理行动和独立质量复核；自动检查通过后仍保留 `human_signoff=pending`。方法和治理边界见[财务异常与项目质量复核](docs/financial_risk_governance.md)，数据接入见[点时财务与监管数据](docs/financial_risk_data.md)，产品需求与验收用例见 [PRD](docs/product/financial_risk_prd.md) 和 [UAT](docs/product/financial_risk_uat.md)。
 
 同一平台还提供跨行业公司研究案例：[贵州茅台上市公司深度研究](reports/showcase/moutai_company_research.md)。两个案例共用任务输入、证据模型、分析引擎注册、研究委员会和报告发布机制，但进入不同业务路线：
 
@@ -173,6 +173,13 @@ python3.11 -m venv .venv
 
 # 财务异常识别、可解释评分、内部质量复核与人工签署控制
 .\.venv\Scripts\python.exe -m examples.financial_anomaly_risk_demo
+
+# 免费公开数据：点时财务比率、年度报告审计意见、问询与监管事项
+.\.venv\Scripts\python.exe -m examples.public_financial_risk_demo `
+  --company-name 贵州茅台酒股份有限公司 `
+  --security-code 600519.SH `
+  --as-of-date 2025-06-30 `
+  --industry-profile consumer
 
 # 公告 + 新闻元数据：去重、事件分类与报告更新触发
 .\.venv\Scripts\python.exe -m examples.event_intelligence_demo
@@ -277,6 +284,7 @@ QuantResearchAgent/
 - [Debate Gate](docs/debate_gate.md)
 - [研究委员会](docs/research_committee.md)
 - [财务异常与项目质量复核](docs/financial_risk_governance.md)
+- [点时财务与监管数据](docs/financial_risk_data.md)
 - [报告与证据规则](docs/reporting.md)
 - [实验引擎](docs/experiment_engine.md)
 - [Research Jobs API](docs/api.md)

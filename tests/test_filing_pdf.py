@@ -66,6 +66,7 @@ class FakeReader:
             FakePage("分行业、分产品、分地区的营业收入构成如下。" * 20),
             FakePage("经营活动产生的现金流量和现金及现金等价物变动。" * 20),
             FakePage("公司可能面对的风险包括市场风险、供应链风险和汇率风险。" * 20),
+            FakePage("审计意见为标准无保留意见，财务报表在所有重大方面公允反映。" * 20),
         ]
 
 
@@ -88,7 +89,7 @@ def test_extracts_page_level_filing_evidence(monkeypatch, tmp_path: Path) -> Non
         pages_per_topic=1,
     ).extract(_record())
 
-    assert result.page_count == 5
+    assert result.page_count == 6
     assert {item.topic for item in result.sections} == set(FilingSectionTopic)
     assert all(
         item.page_number == index for index, item in enumerate(result.sections, 1)
@@ -126,7 +127,7 @@ def test_filing_llm_must_cite_extracted_page_ids(monkeypatch, tmp_path: Path) ->
     result = analyse_company_filing(
         extraction, FakeStructuredLLM({CompanyFilingAnalysis: response})
     )
-    assert len(result.findings) == 5
+    assert len(result.findings) == 6
 
     response["findings"][0]["evidence_ids"] = ["UNKNOWN"]
     with pytest.raises(ValueError, match="unknown page evidence_ids"):

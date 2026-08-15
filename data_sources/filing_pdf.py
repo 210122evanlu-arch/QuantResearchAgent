@@ -106,6 +106,13 @@ class FilingPDFExtractor:
             "面对诸多挑战",
             "国际贸易环境充满不确定性",
         ),
+        FilingSectionTopic.AUDIT_OPINION: (
+            "审计意见",
+            "无保留意见",
+            "保留意见",
+            "否定意见",
+            "无法表示意见",
+        ),
     }
 
     def __post_init__(self) -> None:

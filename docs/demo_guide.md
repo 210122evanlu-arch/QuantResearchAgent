@@ -39,7 +39,7 @@ Then demonstrate the controlled financial-risk path:
 ```
 
 Open `reports/advisory/financial_anomaly_risk_demo.md`. Show the reason codes,
-transparent thresholds, management actions, 8/8 IQR controls, input/output hashes,
+transparent thresholds, management actions, 9/9 IQR controls, input/output hashes,
 and the fact that a passing automated review still leaves human sign-off pending.
 
 For an industry-research alternative, run:

@@ -8,7 +8,9 @@ from examples.financial_anomaly_risk_demo import (
 )
 from graph.financial_risk import quality_decision_router, quality_revision_router
 from schemas.enums import (
+    AuditOpinionStatus,
     FinancialRiskLevel,
+    IndustryProfile,
     QualityReviewDecision,
     QualityReviewTarget,
     SignOffStatus,
@@ -26,10 +28,46 @@ def test_financial_screening_is_explainable_and_reproducible() -> None:
 
     assert first == second
     assert first.risk_level == FinancialRiskLevel.CRITICAL
-    assert first.risk_score == 71.1
+    assert first.risk_score == 73.9
+    assert first.data_coverage == 1
+    assert len(first.signals) == 24
     assert "FR-CASH-CONVERSION" in first.reason_codes
     assert "FR-AUDIT-OPINION" not in first.reason_codes
     assert all(signal.action.owner for signal in first.signals if signal.triggered)
+
+
+def test_industry_profiles_change_rule_thresholds_without_llm_judgement() -> None:
+    base = _input()
+    current = base.current.model_copy(
+        update={"revenue_growth": 0.08, "inventory_growth": 0.26}
+    )
+    manufacturing = screen_financial_anomalies(
+        base.model_copy(
+            update={
+                "current": current,
+                "industry_profile": IndustryProfile.MANUFACTURING,
+            }
+        )
+    )
+    consumer = screen_financial_anomalies(
+        base.model_copy(
+            update={
+                "current": current,
+                "industry_profile": IndustryProfile.CONSUMER,
+            }
+        )
+    )
+    manufacturing_signal = next(
+        item for item in manufacturing.signals if item.signal_id == "FR-INVENTORY-GAP"
+    )
+    consumer_signal = next(
+        item for item in consumer.signals if item.signal_id == "FR-INVENTORY-GAP"
+    )
+
+    assert not manufacturing_signal.triggered
+    assert consumer_signal.triggered
+    assert manufacturing.threshold_profile.startswith("manufacturing/")
+    assert consumer.threshold_profile.startswith("consumer/")
 
 
 def test_quality_review_recalculates_and_passes_complete_draft() -> None:
@@ -92,6 +130,36 @@ def test_quality_review_routes_report_contract_remediation() -> None:
     }
     assert quality_decision_router(state) == "remediation"
     assert quality_revision_router(state) == "draft"
+
+
+def test_low_indicator_coverage_routes_evidence_remediation() -> None:
+    base = _input()
+    optional_fields = {
+        name: None
+        for name in type(base.current).model_fields
+        if name not in {"period_end", "publication_date", "evidence_ids"}
+    }
+    data = base.model_copy(
+        update={
+            "current": base.current.model_copy(update=optional_fields),
+            "prior": base.prior.model_copy(update=optional_fields),
+            "peer_gross_margin_median": None,
+            "audit_opinion": AuditOpinionStatus.UNKNOWN,
+            "exchange_inquiry_count": 0,
+            "regulatory_penalty_count": 0,
+        }
+    )
+    scorecard = screen_financial_anomalies(data)
+    trail = build_audit_trail(data, scorecard, code_version="test")
+    draft = render_financial_risk_report(
+        data, scorecard, _evidence(), audit_trail=trail
+    )
+
+    result = run_quality_review(data, scorecard, _evidence(), draft, trail)
+
+    assert scorecard.data_coverage < 0.5
+    assert result.decision == QualityReviewDecision.REMEDIATION_REQUIRED
+    assert result.revision_target == QualityReviewTarget.EVIDENCE_COLLECTION
 
 
 def test_end_to_end_financial_risk_delivery_requires_human_signoff(tmp_path) -> None:
